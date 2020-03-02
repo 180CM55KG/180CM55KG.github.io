@@ -1,0 +1,824 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Linux pwn题目部署环境搭建, F0und">
+    <meta name="description" content="Linux pwn题目部署环境搭建前言环境：Ubuntu 16.04虚拟机
+参考文章：https://www.cnblogs.com/20175211lyz/p/10801501.html
+更换软件源为阿里源
+备份
+sudo cp /etc">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Linux pwn题目部署环境搭建 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Linux pwn题目部署环境搭建
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        5 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Linux-pwn题目部署环境搭建"><a href="#Linux-pwn题目部署环境搭建" class="headerlink" title="Linux pwn题目部署环境搭建"></a>Linux pwn题目部署环境搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>环境：Ubuntu 16.04虚拟机</p>
+<p>参考文章：<a href="https://www.cnblogs.com/20175211lyz/p/10801501.html" target="_blank" rel="noopener">https://www.cnblogs.com/20175211lyz/p/10801501.html</a></p>
+<h2 id="更换软件源为阿里源"><a href="#更换软件源为阿里源" class="headerlink" title="更换软件源为阿里源"></a>更换软件源为阿里源</h2><ol>
+<li><p>备份</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+</code></pre>
+</li>
+<li><p>修改</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">sudo vim /etc/apt/sources.list
+</code></pre>
+<p>将source.list文件内容替换成下面的</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt"># deb cdrom:[Ubuntu 16.04 LTS _Xenial Xerus_ - Release amd64 (20160420.1)]/ xenial main restricted
+deb-src http://archive.ubuntu.com/ubuntu xenial main restricted #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates multiverse
+deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse #Added by software-properties
+deb http://archive.canonical.com/ubuntu xenial partner
+deb-src http://archive.canonical.com/ubuntu xenial partner
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted multiverse universe #Added by software-properties
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security multiverse
+</code></pre>
+</li>
+<li><p>更新</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">sudo apt-get update
+</code></pre>
+</li>
+</ol>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>Docker是一种容器，可以理解为轻量级虚拟机，由于占用的资源少，可以同时开启很多个docker，所以很适合来做ctf题目的容器。<br>我参考的是这篇博客 <a href="https://www.cnblogs.com/ECJTUACM-873284962/p/9789130.html#autoid-0-0-0" target="_blank" rel="noopener">这可能是最为详细的Docker入门吐血总结</a>，关于docker的概念和基本用法大佬讲的很详细了。<br>由于我在ubuntu上安装，参考官方文档 <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">Get Docker CE for Ubuntu</a>，一步一步照着做就行。</p>
+<h3 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h3><p>在Ubuntu上 <a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/ubuntu/</a></p>
+<ol>
+<li><p>更新索引：</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo apt-get update
+</code></pre>
+</li>
+<li><p>安装软件包以允许<code>apt</code>通过HTTPS使用存储库：</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+</code></pre>
+</li>
+<li><p>添加Docker的官方GPG密钥：</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+</code></pre>
+<p>返回OK</p>
+</li>
+<li><p>使用以下命令来设置<strong>稳定的</strong>存储库。要添加 <strong>每晚</strong>或<strong>测试</strong>存储库，请在以下命令中的单词后面添加<code>nightly</code>或<code>test</code>（或同时添加）<code>stable</code>。<a href="https://docs.docker.com/install/" target="_blank" rel="noopener">了解<strong>每晚</strong>和<strong>测试</strong>频道</a>。</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+</code></pre>
+</li>
+</ol>
+<h3 id="安装DOCKER-ENGINE-社区"><a href="#安装DOCKER-ENGINE-社区" class="headerlink" title="安装DOCKER ENGINE-社区"></a>安装DOCKER ENGINE-社区</h3><ol>
+<li><p>更新<code>apt</code>包索引。</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo apt-get update
+</code></pre>
+</li>
+<li><p>安装<em>最新版本</em>的Docker Engine-Community和containerd，或者转到下一步安装特定版本：</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre>
+</li>
+<li><p>通过运行<code>hello-world</code> 映像来验证是否正确安装了Docker Engine-Community 。</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo docker run hello-world
+</code></pre>
+</li>
+</ol>
+<h2 id="镜像部署"><a href="#镜像部署" class="headerlink" title="镜像部署"></a>镜像部署</h2><h3 id="获取Docker-Ubuntu16-04镜像"><a href="#获取Docker-Ubuntu16-04镜像" class="headerlink" title="获取Docker Ubuntu16.04镜像"></a>获取Docker Ubuntu16.04镜像</h3><pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo docker pull ubuntu:16.04
+</code></pre>
+<h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><pre class=" language-lang-shell"><code class="language-lang-shell">$ sudo apt install docker-compose git
+</code></pre>
+<h3 id="安装pwn-deploy-chroot"><a href="#安装pwn-deploy-chroot" class="headerlink" title="安装pwn_deploy_chroot"></a>安装pwn_deploy_chroot</h3><pre class=" language-lang-shell"><code class="language-lang-shell">git clone https://github.com/giantbranch/pwn_deploy_chroot.git
+</code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将我们的题目放入pwn_deploy_chroot的bin目录下，然后根据以下操作即可：</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><pre class=" language-lang-shell"><code class="language-lang-shell">$ python initialize.py
+</code></pre>
+<p>使用完成后会生成</p>
+<p>docker-compose.yml、Dockerfile、flags.txt、pwn.xinetd</p>
+<p>这几个文件</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ docker-compose up --build -d
+</code></pre>
+<p>显示done 查看是否成功</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ netstat -antp | grep docker
+</code></pre>
+<p>显示</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">tcp        0      0 192.168.111.134:33122   104.18.124.25:443       ESTABLISHED 17011/dockerd   
+tcp6       0      0 :::10000                :::*                    LISTEN      23036/docker-proxy
+tcp6       0      0 :::10001                :::*                    LISTEN      23023/docker-proxy
+tcp6       0      0 :::10002                :::*                    LISTEN      23010/docker-proxy
+</code></pre>
+<p>表示成功</p>
+<h3 id="check-amp-exp"><a href="#check-amp-exp" class="headerlink" title="check&amp;exp"></a>check&amp;exp</h3><p>输入<code>ifconfig</code>查看docker的ip，尝试用nc连</p>
+<p>出现</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">pwn test
+</code></pre>
+<p>表示成功</p>
+<p>进入容器</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">sudo docker exec -ti feac591ee90a bash
+</code></pre>
+<h3 id="编译C"><a href="#编译C" class="headerlink" title="编译C"></a>编译C</h3><pre class=" language-lang-shell"><code class="language-lang-shell">gcc -o hello hello.c
+</code></pre>
+<h3 id="初始化时出现的问题"><a href="#初始化时出现的问题" class="headerlink" title="初始化时出现的问题"></a>初始化时出现的问题</h3><p>我在使用过程中出现</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">AttributeError: 'module' object has no attribute 'SSL_ST_INIT'
+</code></pre>
+<p>解决方法：</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell"># ls -l /usr/lib/python2.7/dist-packages/ | grep -i ssl
+drwxr-xr-x  3 root root   4096 Jan  9 09:23 OpenSSL
+drwxr-xr-x  2 root root   4096 Jan  9 09:23 pyOpenSSL-0.15.1.egg-info
+
+# rm -rf /usr/lib/python2.7/dist-packages/OpenSSL
+# rm -rf /usr/lib/python2.7/dist-packages/pyOpenSSL-0.15.1.egg-info
+# pip install pyopenssl
+
+# ls -l /usr/lib/python2.7/dist-packages/ |grep -i ssl
+drwxr-sr-x  2 root staff   4096 Jan  9 09:27 OpenSSL
+drwxr-sr-x  2 root staff   4096 Jan  9 09:27 pyOpenSSL-18.0.0.dist-info
+</code></pre>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p>使用pwn_deploy_chroot部署国赛pwn比赛题目: <a href="https://www.cnblogs.com/20175211lyz/p/10801501.html" target="_blank" rel="noopener">https://www.cnblogs.com/20175211lyz/p/10801501.html</a></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/02/18/ctf/pwn/pwn-env/" class="b-link-green">Linux pwn题目部署环境搭建</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/26/math/lisan-1-1-md/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="命题及其联结词">
+                        
+                        <span class="card-title">命题及其联结词</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">命题符号化及联结词0x00 前置知识命题：能判断真假的陈述句，是具有唯一真值的陈述句 😄
+命题符号化：使用小写的英文字母 ${p},{q},{r},{…},{q_i},{p_i},{r_i},{…}$ 来表示命题
+例1-1：
+
+{p}: </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Math/" class="post-category" target="_blank">
+                                    Math
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/math/" target="_blank">
+                        <span class="chip bg-color">math</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/18/html/vue/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Vue3.x 学习记录">
+                        
+                        <span class="card-title">Vue3.x 学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">期末项目学习记录vue3.x学习引入：
+
+
+
+安装与卸载npm install -g @vue/cli //安装
+npm uninstall -g @vue/cli //卸载
+
+指定版本安装
+3.0以下😔
+
+npm install -g </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/vue/" class="post-category" target="_blank">
+                                    vue
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/vue/" target="_blank">
+                        <span class="chip bg-color">vue</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

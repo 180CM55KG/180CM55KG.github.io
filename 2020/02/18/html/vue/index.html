@@ -1,0 +1,961 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Vue3.x 学习记录, F0und">
+    <meta name="description" content="期末项目学习记录vue3.x学习引入：
+
+
+
+安装与卸载npm install -g @vue/cli //安装
+npm uninstall -g @vue/cli //卸载
+
+指定版本安装
+3.0以下😔
+
+npm install -g ">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Vue3.x 学习记录 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Vue3.x 学习记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/vue/" target="_blank">
+                                <span class="chip bg-color">vue</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/vue/" class="post-category" target="_blank">
+                                vue
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        961
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        4 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="期末项目学习记录"><a href="#期末项目学习记录" class="headerlink" title="期末项目学习记录"></a>期末项目学习记录</h1><h2 id="vue3-x学习"><a href="#vue3-x学习" class="headerlink" title="vue3.x学习"></a>vue3.x学习</h2><p>引入：</p>
+<pre class=" language-lang-html"><code class="language-lang-html"><!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</code></pre>
+<h3 id="安装与卸载"><a href="#安装与卸载" class="headerlink" title="安装与卸载"></a>安装与卸载</h3><pre class=" language-lang-txt"><code class="language-lang-txt">npm install -g @vue/cli //安装
+npm uninstall -g @vue/cli //卸载
+</code></pre>
+<p>指定版本安装</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">3.0以下😔
+
+npm install -g vue-cli@版本号
+
+3.0以上😀
+
+npm install -g @vue/cli@版本号
+</code></pre>
+<h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><pre class=" language-lang-txt"><code class="language-lang-txt">vue create project//project为项目名称
+</code></pre>
+<p>项目创建选项</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175201.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175206.jpg" alt></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175209.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175211.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175213.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175215.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175216.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175218.jpg" alt="图片来自与手把手撸代码前端"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175220.jpg" alt="图片来自与手把手撸代码前端"></p>
+<h3 id="vue-项目初始化"><a href="#vue-项目初始化" class="headerlink" title="vue 项目初始化"></a>vue 项目初始化</h3><h4 id="vue-config-js"><a href="#vue-config-js" class="headerlink" title="vue.config.js"></a>vue.config.js</h4><pre class=" language-lang-js"><code class="language-lang-js">const path = require('path');
+module.exports = {
+  // 基本路径
+  publicPath: process.env.NODE_ENV === 'production' ? '' : '/',
+  // 输出文件目录
+  outputDir: process.env.NODE_ENV === 'production' ? 'dist' : 'devdist',
+  // eslint-loader 是否在保存的时候检查
+  lintOnSave: true,
+  /**
+   * webpack配置,see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
+   **/
+  chainWebpack: (config) => {
+  },
+  configureWebpack: (config) => {
+    // config.resolve = { // 配置解析别名
+    //   extensions: ['.js', '.json', '.vue'],
+    //   alias: {
+    //     '@': path.resolve(__dirname, './src'),
+    //     'public': path.resolve(__dirname, './public'),
+    //     'components': path.resolve(__dirname, './src/components'),
+    //     'common': path.resolve(__dirname, './src/common'),
+    //     'api': path.resolve(__dirname, './src/api'),
+    //     'views': path.resolve(__dirname, './src/views'),
+    //     'data': path.resolve(__dirname, './src/data')
+    //   }
+    // }
+  },
+  // 生产环境是否生成 sourceMap 文件
+  productionSourceMap: false,
+  // css相关配置
+  css: {
+    // 是否使用css分离插件 ExtractTextPlugin
+    extract: true,
+    // 开启 CSS source maps?
+    sourceMap: false,
+    // css预设器配置项
+    loaderOptions: {
+
+    },
+    // 启用 CSS modules for all css / pre-processor files.
+    modules: false
+  },
+  // use thread-loader for babel & TS in production build
+  // enabled by default if the machine has more than 1 cores
+  parallel: require('os').cpus().length > 1,
+  /**
+   *  PWA 插件相关配置,see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
+   */
+  pwa: {},
+  // webpack-dev-server 相关配置
+  devServer: {
+    open: false, // 编译完成是否打开网页
+    host: '0.0.0.0', // 指定使用地址，默认localhost,0.0.0.0代表可以被外界访问
+    port: 8080, // 访问端口
+    https: false, // 编译失败时刷新页面
+    hot: true, // 开启热加载
+    hotOnly: false,
+    proxy: null, // 设置代理
+    overlay: { // 全屏模式下是否显示脚本错误
+      warnings: true,
+      errors: true
+    },
+    before: app => {
+    }
+  },
+  /**
+   * 第三方插件配置
+   */
+  pluginOptions: {}
+}
+</code></pre>
+<p>问题记录：为什么要建立vue.config.js?</p>
+<h4 id="route重定向"><a href="#route重定向" class="headerlink" title="route重定向"></a>route重定向</h4><p>在route文件夹里的index.js的 const routes 中引入</p>
+<p><strong>注意不要有空格</strong></p>
+<p>在index.js的开头中引入组件 </p>
+<pre class=" language-lang-js"><code class="language-lang-js">import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+
+Vue.use(VueRouter);
+
+const routes = [
+  {
+    path: "/",
+    name: "home",
+    component: Home
+  },
+  {
+    path: "/login",
+    name: "login",
+    component:  () =>
+      import(/* webpackChunkName: "about" */ "../views/login/index.vue")
+  },
+  {
+    path: "/about",
+    name: "about",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
+  }
+];
+
+const router = new VueRouter({
+  routes
+});
+
+export default router;
+</code></pre>
+<p>重定向：</p>
+<pre class=" language-lang-js"><code class="language-lang-js">  {
+    path: "/",
+    redirect: "login"
+  }
+</code></pre>
+<h4 id="引入全局样式"><a href="#引入全局样式" class="headerlink" title="引入全局样式"></a>引入全局样式</h4><p>在vue.config.js的 // css预设器配置项处添加，由于本系统选用的sass的预编译模式，因此需要添加</p>
+<pre class=" language-lang-js"><code class="language-lang-js">        sass: { 
+            prependData: `@import "./src/styles/main.scss";`
+        }
+</code></pre>
+<pre><code>@import "normalize.scss";//在main.scss中引入
+</code></pre><h4 id="vue文件结构"><a href="#vue文件结构" class="headerlink" title="vue文件结构"></a>vue文件结构</h4><p>在vue.config.js文件中关闭登陆验证</p>
+<pre class=" language-lang-js"><code class="language-lang-js">lintOnSave: false,
+</code></pre>
+<p>文件结构</p>
+<pre class=" language-lang-html"><code class="language-lang-html"><template>
+    <div>
+        haahha
+    </div>
+</template>
+<script>
+export default {
+
+}
+</script>
+
+<style scoped>
+
+</style>
+</code></pre>
+<p>注意：</p>
+<ol>
+<li>内容外边必须有一层标签包裹</li>
+<li>style scoped属性是文件内样式</li>
+<li>script 为脚本文件引用区</li>
+<li>在vue中main.js为框架的主入口，如果需要引入一些东西的话直接在main.js中引入就好了</li>
+</ol>
+<p>可以删除app.vue中的样式以及nav</p>
+<h4 id="引入element-ui"><a href="#引入element-ui" class="headerlink" title="引入element-ui"></a>引入element-ui</h4><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><pre class=" language-lang-txt"><code class="language-lang-txt">cnpm i element-ui -S
+npm i element-ui -S
+</code></pre>
+<p>两个选一个用</p>
+<p>引入</p>
+<ol>
+<li>全部引入</li>
+<li>按需引入</li>
+</ol>
+<p>1.全部引入</p>
+<p>在main.js中写入：</p>
+<pre class=" language-lang-js"><code class="language-lang-js">import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import App from './App.vue';
+
+Vue.use(ElementUI);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+</code></pre>
+<p>2.按需引入</p>
+<p>暂时不做详细，看官方文档</p>
+<p><a href="https://element.eleme.io/#/zh-CN/component/quickstart" target="_blank" rel="noopener">https://element.eleme.io/#/zh-CN/component/quickstart</a></p>
+<h5 id="问题（引入后没有样式）"><a href="#问题（引入后没有样式）" class="headerlink" title="问题（引入后没有样式）"></a>问题（引入后没有样式）</h5><p>elementUI引入没有样式的原因：</p>
+<p>在vue.config.js的css中修改requireModuleExtension为true</p>
+<pre class=" language-lang-js"><code class="language-lang-js">      requireModuleExtension: true
+</code></pre>
+<p>即使用CSS models</p>
+<h3 id="vue基础语法使用"><a href="#vue基础语法使用" class="headerlink" title="vue基础语法使用"></a>vue基础语法使用</h3><h4 id="vue-for"><a href="#vue-for" class="headerlink" title="vue-for"></a>vue-for</h4><h2 id="ElementUI"><a href="#ElementUI" class="headerlink" title="ElementUI"></a>ElementUI</h2><p>引入：</p>
+<pre class=" language-lang-html"><code class="language-lang-html"><!--引入ElementUI组件-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</code></pre>
+<pre class=" language-lang-html"><code class="language-lang-html"><!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</code></pre>
+<p><a href="https://element.eleme.io/#/zh-CN/component/quickstart" target="_blank" rel="noopener">https://element.eleme.io/#/zh-CN/component/quickstart</a></p>
+<h2 id="点击弹出表单事件处理"><a href="#点击弹出表单事件处理" class="headerlink" title="点击弹出表单事件处理"></a>点击弹出表单事件处理</h2><pre class=" language-lang-html"><code class="language-lang-html"><!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--引入ElementUI组件-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="css/index.css">
+    <title>reg</title>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<body>
+    <div id="app">
+        <!--Form-->
+        <el-button type="button" @click="dialogFormVisible = true">注册</el-button>
+        <el-dialog title="注册信息填写" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+              <el-form-item label="名称" :label-width="formlabelwidth">
+                  <el-input v-model="form.name" placeholder="username"></el-input>
+              </el-form-item>
+            </el-form>
+        </el-dialog>
+
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<!--import index.js-->
+<script>
+    var Main = {
+    data(){
+        return{
+            dialogFormVisible: false,
+            form: {
+                name: '',
+            },
+            formLabelWidth: '120px'
+        };
+    }
+};
+var Ctor=Vue.extend(Main)
+new Ctor().$mount('#app')
+</script>
+</html>
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191215211442.png" alt="屏幕截图"></p>
+<h2 id="主界面设计"><a href="#主界面设计" class="headerlink" title="主界面设计"></a>主界面设计</h2><h3 id="主题色彩选择"><a href="#主题色彩选择" class="headerlink" title="主题色彩选择"></a>主题色彩选择</h3><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/02/18/html/vue/" class="b-link-green">Vue3.x 学习记录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-env/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Linux pwn题目部署环境搭建">
+                        
+                        <span class="card-title">Linux pwn题目部署环境搭建</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Linux pwn题目部署环境搭建前言环境：Ubuntu 16.04虚拟机
+参考文章：https://www.cnblogs.com/20175211lyz/p/10801501.html
+更换软件源为阿里源
+备份
+sudo cp /etc</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-re2libc/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Pwn基础----ret2libc">
+                        
+                        <span class="card-title">Pwn基础----ret2libc</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Return2libc0x00 前言Ret2libc，故名思意，return to libc,在PWN中即：修改返回地址使其指向libc中的shell
+参考文章：https://www.freebuf.com/news/182894.htm</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

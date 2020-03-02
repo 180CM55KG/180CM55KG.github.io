@@ -1,0 +1,835 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="西南石油大学CTF做题记录, F0und">
+    <meta name="description" content="前言​    起床打CTF了,登陆平台，一看题目简单的python,easy_web，一看一道不会，，，，tcl除了misc,啥都不会
+​    人傻了，先做两道 misc 吧
+Misc部分这次misc一共先发出来了五道题，我做出来四道，那">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>西南石油大学CTF做题记录 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://f0und-1258710057.cos.ap-chengdu.myqcloud.com/0.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        西南石油大学CTF做题记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/swpuctf/" target="_blank">
+                                <span class="chip bg-color">swpuctf</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-06
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        4 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​    起床打CTF了,登陆平台，一看题目简单的python,easy_web，一看一道不会，，，，tcl除了misc,啥都不会</p>
+<p>​    人傻了，先做两道 misc 吧</p>
+<h1 id="Misc部分"><a href="#Misc部分" class="headerlink" title="Misc部分"></a>Misc部分</h1><p>这次misc一共先发出来了五道题，我做出来四道，那一道影流之主…tql</p>
+<h2 id="神奇的二维码"><a href="#神奇的二维码" class="headerlink" title="神奇的二维码"></a>神奇的二维码</h2><p>题目描述：啥也不说了，扫码支付获取flag^_^ || hint1：flag全是小写</p>
+<p>图种套娃题，mp3隐写</p>
+<p>给了张图</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206222617.png" alt="题目"></p>
+<p>不用扫了，swpuctf{flag_is_not_here}</p>
+<p>binwalk直接提取，提取出一大堆东西</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206223558.png" alt="提取后"></p>
+<p>（good.mp3、flag.doc等好几个不是啊，#我忘了）</p>
+<p>思就是套娃题的思路</p>
+<p>拿encode.txt里的东西取解flag在不在里面</p>
+<p>解出来以后取出里面的flag.doc,flag.jpg</p>
+<p>写脚本解flag.doc里面的base64</p>
+<pre class=" language-lang-python"><code class="language-lang-python">import base64
+
+fp=open("flag.txt",'r')
+
+for line in fp:
+    flag=base64.b64decode(line)
+    while base64.b64decode(flag):
+        if 'flag' in flag:
+            print(flag)
+            break
+        else:
+            flag = base64.b64decode(flag)
+</code></pre>
+<p>解出来后拿去解</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">binwalk flag.jpg -e
+</code></pre>
+<p>出来的压缩包</p>
+<p>然后解出来good.mp3,放入Audacity中</p>
+<p>看出来是摩斯密码</p>
+<p>解出来flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">morseisveryveryveryeasy
+</code></pre>
+<p>套上格式提交</p>
+<h2 id="漂流的马里奥"><a href="#漂流的马里奥" class="headerlink" title="漂流的马里奥"></a>漂流的马里奥</h2><p>题目描述：链接：<a href="https://pan.baidu.com/s/1Bj2LJMNwSch-cKMK56K9hg" target="_blank" rel="noopener">https://pan.baidu.com/s/1Bj2LJMNwSch-cKMK56K9hg</a> 提取码：d3fp</p>
+<p>取证分析题</p>
+<p>运行题目给的.exe文件后，电脑桌面上多出来一个内容是ntfs,flag.txt的文件</p>
+<p>ntfs是什么，百度就行了</p>
+<p>然后找ntfs隐藏流查找工具</p>
+<p>Ntfs Streams Editor</p>
+<p>然后让他扫一遍就行了，这里不写了，我放到虚拟机里扫的</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">swupctf{ddg_is_cute}
+</code></pre>
+<h2 id="伟大的侦探"><a href="#伟大的侦探" class="headerlink" title="伟大的侦探"></a>伟大的侦探</h2><p>题目描述：链接：<a href="https://pan.baidu.com/s/1JaMbDl0efPPsGKxA7x3ULw" target="_blank" rel="noopener">https://pan.baidu.com/s/1JaMbDl0efPPsGKxA7x3ULw</a> 提取码：9zcf || hint1：压缩包密码解码之后最后一位是! || hint2：flag没有空格，格式为swpuctf{}</p>
+<p>脑洞题</p>
+<p>先是给了一个压缩包，里面有一个密码.txt</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206230004.png" alt="密码.txt"></p>
+<p>有一说一我找了一下午也没找到这是什么编码</p>
+<p>但终于我在一个misc大佬的博客里找到了这个编码怎么解 附大佬博客：</p>
+<p><a href="https://blog.xiafeng2333.top/author/xiafeng2333/" target="_blank" rel="noopener">https://blog.xiafeng2333.top/author/xiafeng2333/</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206230853.png" alt=""></p>
+<p>解压发现一堆</p>
+<p>火柴人？？？？</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206231053.png" alt=""></p>
+<p>在看了大半天火柴人跳舞以及百度后</p>
+<p>运气爆棚，我搜了以下密码吧，结果发现了这个</p>
+<p>福尔摩斯小人跳舞，原来题目是这个意思啊</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191206231552.jpg" alt=""></p>
+<p>照着上面解密</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">swpuctf{iloveholmesandwllm}
+</code></pre>
+<h2 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h2><p>题目描述</p>
+<p>链接：<a href="https://pan.baidu.com/s/1MKlcjLakWYDjk1B8G1OquQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1MKlcjLakWYDjk1B8G1OquQ</a> 提取码：gx4l || 描述：flag格式为flag{} || hint：ttl || hint2：伪加密</p>
+<p>ttl隐写</p>
+<p>题目说的很清楚了</p>
+<p>打开压缩包发现里面只有一个t.txt</p>
+<p>t.txt里面是63 127 191 255这几个字符</p>
+<p>根据题目的提示</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">63    00111111 
+127   01111111 
+191   10111111 
+255   11111111
+</code></pre>
+<p>每个取前两位组成新的八位二进制</p>
+<p>发现前八位的二进制为</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">00110101 00110000 00110100 01100010
+</code></pre>
+<p>转换成ascii</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">504b
+</code></pre>
+<p>压缩包的开头</p>
+<p>贴上解密脚本</p>
+<pre class=" language-lang-python"><code class="language-lang-python">fp = open('t.txt','r')
+a=fp.readlines()
+p=[]
+for i in a:
+    p.append(int(i))
+
+s=''
+for i in p:
+    if i==63:
+        a='00'
+    elif i==127:
+        a='01'
+    elif i==191:
+        a='10'
+    elif i==255:
+        a='11'
+    s += a
+
+#print(s)
+
+import binascii
+flag=''
+for i in range(0,len(s),8):
+    flag += chr(int(s[i:i+8],2))
+flag=binascii.unhexlify(flag)
+wp=open('res.zip','wb')
+wp.write(flag)
+wp.close()
+</code></pre>
+<p>解出的压缩包里面有base64加密</p>
+<p>上解密脚本：</p>
+<pre class=" language-lang-python"><code class="language-lang-python">import base64
+
+fp=open("flag.txt",'r')
+
+for line in fp:
+    flag=base64.b64decode(line)
+    while base64.b64decode(flag):
+        if 'flag' in flag:
+            print(flag)
+            break
+        else:
+            flag = base64.b64decode(flag)
+</code></pre>
+<p>解出flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{189ff9e5b743ae95f940a6ccc6dbd9ab}
+</code></pre>
+<h2 id="你好好看网课了吗"><a href="#你好好看网课了吗" class="headerlink" title="你好好看网课了吗"></a>你好好看网课了吗</h2><p>网课12.6截至，我看了/xyx，有没有好好看就不一定了</p>
+<p>题目描述<a href="https://pan.baidu.com/s/10aXg8SrgyhQqeceBbD3tZg" target="_blank" rel="noopener">https://pan.baidu.com/s/10aXg8SrgyhQqeceBbD3tZg</a> 提取码：078j || hint1：word文档很重要 || hint2：工具也许是某种视频剪辑工具 || hint3：word文档中的数字很重要 || 压缩包密码都是小写</p>
+<p>不会写，没工具</p>
+<p>个人感觉应该是MP4提取出来音频后，用MP3stego结合word文档中的东西解出来压缩包，然后暴力破解？</p>
+<h1 id="Web部分"><a href="#Web部分" class="headerlink" title="Web部分"></a>Web部分</h1><p>web也就签到题我能做一下</p>
+<h2 id="easy-web"><a href="#easy-web" class="headerlink" title="easy_web"></a>easy_web</h2><p>hint1：不是xss || hint2：使用somd5解flag</p>
+<p>题目说了不是xss,随便注册登陆进去后，发现可以发文章</p>
+<p>在标题处下单引号后，保存返回查看文章，发现SQL语句报错</p>
+<p>结合报错应该就是Limit Sql注入</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/12/07/ctf/misc/swpuctf/" class="b-link-green">西南石油大学CTF做题记录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/01/24/ctf/pwn/pwn-checkin/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="pwn-checkin">
+                        
+                        <span class="card-title">pwn-checkin</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Checkin解题思路一文件属性file查看发现文件是32位的
+Checksecchecksec发现程序开启了NX保护
+反编译IDA反编译查看源代码
+checker函数
+int __cdecl checker(int a1)
+{
+  int</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-01-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/12/04/go-web/puti/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Go-web github 开源项目 puti 学习">
+                        
+                        <span class="card-title">Go-web github 开源项目 puti 学习</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">前言​    学习 GO 已经将近一年的时间，在学校因为杂七杂八的事情学习进度一直很慢，可能还是因为自己的颓废，以及对时间的安排不是很合理吧。
+​    指导老师说项目驱动学习，会提高我的学习效率，而工作室这边也都是商业项目，不能用来学习。</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Go/" class="post-category" target="_blank">
+                                    Go
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/web/" target="_blank">
+                        <span class="chip bg-color">web</span>
+                    </a>
+                    
+                    <a href="/tags/go/" target="_blank">
+                        <span class="chip bg-color">go</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>F0und</title>
+  
+  <subtitle>F0und</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://180CM55KG.github.io/"/>
+  <updated>2020-02-28T08:37:26.653Z</updated>
+  <id>https://180CM55KG.github.io/</id>
+  
+  <author>
+    <name>F0und</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>命题及其联结词</title>
+    <link href="https://180CM55KG.github.io/2020/02/26/math/lisan-1-1-md/"/>
+    <id>https://180CM55KG.github.io/2020/02/26/math/lisan-1-1-md/</id>
+    <published>2020-02-25T21:19:11.000Z</published>
+    <updated>2020-02-28T08:37:26.653Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;命题符号化及联结词&quot;&gt;&lt;a href=&quot;#命题符号化及联结词&quot; class=&quot;headerlink&quot; title=&quot;命题符号化及联结词&quot;&gt;&lt;/a&gt;命题符号化及联结词&lt;/h1&gt;&lt;h2 id=&quot;0x00-前置知识&quot;&gt;&lt;a href=&quot;#0x00-前置知识&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Math" scheme="https://180CM55KG.github.io/categories/Math/"/>
+    
+    
+      <category term="math" scheme="https://180CM55KG.github.io/tags/math/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux pwn题目部署环境搭建</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-env/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-env/</id>
+    <published>2020-02-17T22:20:15.000Z</published>
+    <updated>2020-02-17T14:21:16.156Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Linux-pwn题目部署环境搭建&quot;&gt;&lt;a href=&quot;#Linux-pwn题目部署环境搭建&quot; class=&quot;headerlink&quot; title=&quot;Linux pwn题目部署环境搭建&quot;&gt;&lt;/a&gt;Linux pwn题目部署环境搭建&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vue3.x 学习记录</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/html/vue/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/html/vue/</id>
+    <published>2020-02-17T22:16:29.000Z</published>
+    <updated>2020-02-17T14:18:04.302Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;期末项目学习记录&quot;&gt;&lt;a href=&quot;#期末项目学习记录&quot; class=&quot;headerlink&quot; title=&quot;期末项目学习记录&quot;&gt;&lt;/a&gt;期末项目学习记录&lt;/h1&gt;&lt;h2 id=&quot;vue3-x学习&quot;&gt;&lt;a href=&quot;#vue3-x学习&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="vue" scheme="https://180CM55KG.github.io/categories/vue/"/>
+    
+    
+      <category term="vue" scheme="https://180CM55KG.github.io/tags/vue/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----ret2libc</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-re2libc/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-re2libc/</id>
+    <published>2020-02-17T21:52:16.000Z</published>
+    <updated>2020-02-17T13:55:37.973Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Return2libc&quot;&gt;&lt;a href=&quot;#Return2libc&quot; class=&quot;headerlink&quot; title=&quot;Return2libc&quot;&gt;&lt;/a&gt;Return2libc&lt;/h1&gt;&lt;h2 id=&quot;0x00-前言&quot;&gt;&lt;a href=&quot;#0x00-前言&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----ROP</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-rop/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-rop/</id>
+    <published>2020-02-17T21:50:37.000Z</published>
+    <updated>2020-03-02T03:20:22.351Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;ROP-Return-Oriented-Programming&quot;&gt;&lt;a href=&quot;#ROP-Return-Oriented-Programming&quot; class=&quot;headerlink&quot; title=&quot;ROP  (Return Oriented
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----shellcode</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-shellcode/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-shellcode/</id>
+    <published>2020-02-17T21:46:49.000Z</published>
+    <updated>2020-02-17T13:50:16.933Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Pwn学习-——-shellcode&quot;&gt;&lt;a href=&quot;#Pwn学习-——-shellcode&quot; class=&quot;headerlink&quot; title=&quot;Pwn学习   —— shellcode&quot;&gt;&lt;/a&gt;Pwn学习   —— shellcode&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----保护机制(checksec)</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-basic/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/pwn-basic/</id>
+    <published>2020-02-17T21:36:16.000Z</published>
+    <updated>2020-02-17T13:38:19.328Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;PWN学习记录&quot;&gt;&lt;a href=&quot;#PWN学习记录&quot; class=&quot;headerlink&quot; title=&quot;PWN学习记录&quot;&gt;&lt;/a&gt;PWN学习记录&lt;/h1&gt;&lt;h2 id=&quot;CTF中pwn的保护机制（常见的）&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----ELF文件基础</title>
+    <link href="https://180CM55KG.github.io/2020/02/18/ctf/pwn/linux-elf/"/>
+    <id>https://180CM55KG.github.io/2020/02/18/ctf/pwn/linux-elf/</id>
+    <published>2020-02-17T20:11:34.000Z</published>
+    <updated>2020-02-17T13:38:50.248Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Linux-ELF文件基本常识了解&quot;&gt;&lt;a href=&quot;#Linux-ELF文件基本常识了解&quot; class=&quot;headerlink&quot; title=&quot;Linux-ELF文件基本常识了解&quot;&gt;&lt;/a&gt;Linux-ELF文件基本常识了解&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pwn基础----栈基础</title>
+    <link href="https://180CM55KG.github.io/2020/02/09/ctf/pwn/pwn-zhan/"/>
+    <id>https://180CM55KG.github.io/2020/02/09/ctf/pwn/pwn-zhan/</id>
+    <published>2020-02-08T23:25:00.000Z</published>
+    <updated>2020-02-08T15:33:23.304Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Pwn基础——栈基础&quot;&gt;&lt;a href=&quot;#Pwn基础——栈基础&quot; class=&quot;headerlink&quot; title=&quot;Pwn基础——栈基础&quot;&gt;&lt;/a&gt;Pwn基础——栈基础&lt;/h1&gt;&lt;h2 id=&quot;0x00-前言&quot;&gt;&lt;a href=&quot;#0x00-前言&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pwn-checkin</title>
+    <link href="https://180CM55KG.github.io/2020/01/24/ctf/pwn/pwn-checkin/"/>
+    <id>https://180CM55KG.github.io/2020/01/24/ctf/pwn/pwn-checkin/</id>
+    <published>2020-01-24T14:39:06.000Z</published>
+    <updated>2020-01-24T06:46:10.638Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Checkin解题思路一&quot;&gt;&lt;a href=&quot;#Checkin解题思路一&quot; class=&quot;headerlink&quot; title=&quot;Checkin解题思路一&quot;&gt;&lt;/a&gt;Checkin解题思路一&lt;/h1&gt;&lt;h2 id=&quot;文件属性&quot;&gt;&lt;a href=&quot;#文件属性&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>西南石油大学CTF做题记录</title>
+    <link href="https://180CM55KG.github.io/2019/12/07/ctf/misc/swpuctf/"/>
+    <id>https://180CM55KG.github.io/2019/12/07/ctf/misc/swpuctf/</id>
+    <published>2019-12-06T21:56:30.000Z</published>
+    <updated>2019-12-06T15:54:15.690Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;​   
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="swpuctf" scheme="https://180CM55KG.github.io/tags/swpuctf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Go-web github 开源项目 puti 学习</title>
+    <link href="https://180CM55KG.github.io/2019/12/04/go-web/puti/"/>
+    <id>https://180CM55KG.github.io/2019/12/04/go-web/puti/</id>
+    <published>2019-12-03T17:10:35.000Z</published>
+    <updated>2020-02-17T13:42:03.349Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;​    学习 GO
+        
+      
+    
+    </summary>
+    
+      <category term="Go" scheme="https://180CM55KG.github.io/categories/Go/"/>
+    
+    
+      <category term="web" scheme="https://180CM55KG.github.io/tags/web/"/>
+    
+      <category term="go" scheme="https://180CM55KG.github.io/tags/go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安洵杯CTF easywebpayload</title>
+    <link href="https://180CM55KG.github.io/2019/11/30/ctf/web/axb/"/>
+    <id>https://180CM55KG.github.io/2019/11/30/ctf/web/axb/</id>
+    <published>2019-11-30T14:42:02.000Z</published>
+    <updated>2020-01-24T06:44:09.800Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;WEB&quot;&gt;&lt;a href=&quot;#WEB&quot; class=&quot;headerlink&quot; title=&quot;WEB&quot;&gt;&lt;/a&gt;WEB&lt;/h1&gt;&lt;h2 id=&quot;easy-web&quot;&gt;&lt;a href=&quot;#easy-web&quot; class=&quot;headerlink&quot; title=&quot;easy
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="axbctf" scheme="https://180CM55KG.github.io/tags/axbctf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>本学年工作计划</title>
+    <link href="https://180CM55KG.github.io/2019/11/29/unfinish-work/work/"/>
+    <id>https://180CM55KG.github.io/2019/11/29/unfinish-work/work/</id>
+    <published>2019-11-28T17:00:48.000Z</published>
+    <updated>2019-11-28T09:26:43.499Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;任务清单&quot;&gt;&lt;a href=&quot;#任务清单&quot; class=&quot;headerlink&quot; title=&quot;任务清单&quot;&gt;&lt;/a&gt;任务清单&lt;/h1&gt;&lt;h2 id=&quot;网安之路&quot;&gt;&lt;a href=&quot;#网安之路&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Plan" scheme="https://180CM55KG.github.io/categories/Plan/"/>
+    
+    
+      <category term="Plan" scheme="https://180CM55KG.github.io/tags/Plan/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>南京邮电大学 NCTF 做题记录</title>
+    <link href="https://180CM55KG.github.io/2019/11/27/ctf/web/nctf/"/>
+    <id>https://180CM55KG.github.io/2019/11/27/ctf/web/nctf/</id>
+    <published>2019-11-26T17:56:04.000Z</published>
+    <updated>2020-02-17T13:43:47.970Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第一部分-Web&quot;&gt;&lt;a href=&quot;#第一部分-Web&quot; class=&quot;headerlink&quot; title=&quot;第一部分 Web&quot;&gt;&lt;/a&gt;第一部分
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>成都大学第二届“玄武杯”做题记录2</title>
+    <link href="https://180CM55KG.github.io/2019/11/19/ctf/pwn/cdusec-ctf2/"/>
+    <id>https://180CM55KG.github.io/2019/11/19/ctf/pwn/cdusec-ctf2/</id>
+    <published>2019-11-18T16:35:41.000Z</published>
+    <updated>2020-02-17T13:43:21.197Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第三部分-Pwn&quot;&gt;&lt;a href=&quot;#第三部分-Pwn&quot; class=&quot;headerlink&quot; title=&quot;第三部分 Pwn&quot;&gt;&lt;/a&gt;第三部分 Pwn&lt;/h1&gt;&lt;p&gt;本次pwn就一道题，也不难，但也是我第一次做pwn…&lt;/p&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="pwn" scheme="https://180CM55KG.github.io/tags/pwn/"/>
+    
+      <category term="misc" scheme="https://180CM55KG.github.io/tags/misc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>成都大学第二届“玄武杯”做题记录</title>
+    <link href="https://180CM55KG.github.io/2019/11/18/ctf/web/cdusec-ctf/"/>
+    <id>https://180CM55KG.github.io/2019/11/18/ctf/web/cdusec-ctf/</id>
+    <published>2019-11-17T18:19:33.000Z</published>
+    <updated>2020-02-28T02:55:41.556Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第一部分-web&quot;&gt;&lt;a href=&quot;#第一部分-web&quot; class=&quot;headerlink&quot; title=&quot;第一部分 web&quot;&gt;&lt;/a&gt;第一部分
+        
+      
+    
+    </summary>
+    
+      <category term="CTF" scheme="https://180CM55KG.github.io/categories/CTF/"/>
+    
+    
+      <category term="web" scheme="https://180CM55KG.github.io/tags/web/"/>
+    
+      <category term="ctf" scheme="https://180CM55KG.github.io/tags/ctf/"/>
+    
+      <category term="reverse" scheme="https://180CM55KG.github.io/tags/reverse/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>go-web</title>
+    <link href="https://180CM55KG.github.io/2019/11/08/go-web/go-web/"/>
+    <id>https://180CM55KG.github.io/2019/11/08/go-web/go-web/</id>
+    <published>2019-11-08T14:01:01.000Z</published>
+    <updated>2020-02-17T13:44:39.634Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;第一章-Go与-Web-应用&quot;&gt;&lt;a href=&quot;#第一章-Go与-Web-应用&quot; class=&quot;headerlink&quot; title=&quot;第一章 Go与 Web 应用&quot;&gt;&lt;/a&gt;第一章 Go与 Web 应用&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="Go-web" scheme="https://180CM55KG.github.io/categories/Go-web/"/>
+    
+    
+      <category term="Go" scheme="https://180CM55KG.github.io/tags/Go/"/>
+    
+      <category term="web" scheme="https://180CM55KG.github.io/tags/web/"/>
+    
+      <category term="后端" scheme="https://180CM55KG.github.io/tags/%E5%90%8E%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS-pingfang</title>
+    <link href="https://180CM55KG.github.io/2019/11/08/html/css/css-pingfang/"/>
+    <id>https://180CM55KG.github.io/2019/11/08/html/css/css-pingfang/</id>
+    <published>2019-11-07T16:13:03.000Z</published>
+    <updated>2019-11-07T08:47:16.500Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;CSS常用的苹方字体&quot;&gt;&lt;a href=&quot;#CSS常用的苹方字体&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="CSS" scheme="https://180CM55KG.github.io/categories/CSS/"/>
+    
+    
+      <category term="html" scheme="https://180CM55KG.github.io/tags/html/"/>
+    
+      <category term="css" scheme="https://180CM55KG.github.io/tags/css/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo博客主题之hexo-theme-matery的介绍</title>
+    <link href="https://180CM55KG.github.io/2018/09/28/html/hexo-bo-ke-zhu-ti-zhi-hexo-theme-matery-de-jie-shao/"/>
+    <id>https://180CM55KG.github.io/2018/09/28/html/hexo-bo-ke-zhu-ti-zhi-hexo-theme-matery-de-jie-shao/</id>
+    <published>2018-09-28T13:34:00.000Z</published>
+    <updated>2019-11-18T08:58:45.855Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;a href=&quot;README.md&quot;&gt;English Document&lt;/a&gt; | &lt;a href=&quot;https://blinkfox.github.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;演示示例&lt;/a&gt; |
+        
+      
+    
+    </summary>
+    
+      <category term="前端" scheme="https://180CM55KG.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
+      <category term="Hexo" scheme="https://180CM55KG.github.io/tags/Hexo/"/>
+    
+      <category term="hexo-theme-matery" scheme="https://180CM55KG.github.io/tags/hexo-theme-matery/"/>
+    
+  </entry>
+  
+</feed>

