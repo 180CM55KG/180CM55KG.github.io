@@ -346,7 +346,7 @@ fil">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        532
+                        539
                     </div>
                     
 
@@ -392,8 +392,8 @@ fil">
   char s; // [sp+1h] [bp-Fh]@1
 
   puts("please input");
-  gets(&s, argv);
-  puts(&s);
+  gets(&amp;s, argv);
+  puts(&amp;s);
   puts("ok,bye!!!");
   return 0;
 }
@@ -466,10 +466,10 @@ io.interactive()
 
   write(1, "-Warm Up-\n", 0xAuLL);
   write(1, "WOW:", 4uLL);
-  sprintf(&s, "%p\n", sub_40060D);
-  write(1, &s, 9uLL);
-  write(1, ">", 1uLL);
-  return gets(&v5, ">");
+  sprintf(&amp;s, "%p\n", sub_40060D);
+  write(1, &amp;s, 9uLL);
+  write(1, "&gt;", 1uLL);
+  return gets(&amp;v5, "&gt;");
 }
 </code></pre>
 <pre class=" language-lang-c"><code class="language-lang-c">int sub_40060D()
@@ -725,7 +725,7 @@ io.interactive()
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">31.9k</span>
+                <span class="white-color">33.8k</span>
             
 
             

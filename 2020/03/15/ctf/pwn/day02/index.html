@@ -347,14 +347,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        1.9k
+                        547
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        9 分
+                        3 分
                     </div>
                     
                 
@@ -399,24 +399,24 @@
   char v8; // [sp+4Fh] [bp-9h]@1
 
   printf("Tell me something about yourself: ");
-  fgets(&s, 32, edata);
-  std::string::operator=(&input, &s);
-  std::allocator<char>::allocator(&v6);
-  std::string::string(&v5, "you", &v6);
-  std::allocator<char>::allocator(&v8);
-  std::string::string(&v7, "I", &v8);
-  replace(&v4, &input, &v7);
-  std::string::operator=(&input, &v4, v0, &v5);
-  std::string::~string(&v4);
-  std::string::~string(&v7);
-  std::allocator<char>::~allocator(&v8);
-  std::string::~string(&v5);
-  std::allocator<char>::~allocator(&v6);
-  v1 = std::string::c_str(&input);
-  strcpy(&s, v1);
-  return printf("So, %s\n", &s);
+  fgets(&amp;s, 32, edata);
+  std::string::operator=(&amp;input, &amp;s);
+  std::allocator<char>::allocator(&amp;v6);
+  std::string::string(&amp;v5, "you", &amp;v6);
+  std::allocator<char>::allocator(&amp;v8);
+  std::string::string(&amp;v7, "I", &amp;v8);
+  replace(&amp;v4, &amp;input, &amp;v7);
+  std::string::operator=(&amp;input, &amp;v4, v0, &amp;v5);
+  std::string::~string(&amp;v4);
+  std::string::~string(&amp;v7);
+  std::allocator<char>::~allocator(&amp;v8);
+  std::string::~string(&amp;v5);
+  std::allocator<char>::~allocator(&amp;v6);
+  v1 = std::string::c_str(&amp;input);
+  strcpy(&amp;s, v1);
+  return printf("So, %s\n", &amp;s);
 }
-</code></pre>
+</char></char></char></char></code></pre>
 <pre class=" language-lang-txt"><code class="language-lang-txt">std::string *__stdcall replace(std::string *a1, std::string *a2, std::string *a3)
 {
   int v4; // [sp+Ch] [bp-4Ch]@0
@@ -439,34 +439,34 @@
 
   while ( std::string::find(a2, a3, 0) != -1 )
   {
-    std::allocator<char>::allocator(&v7);
+    std::allocator<char>::allocator(&amp;v7);
     v8 = std::string::find(a2, a3, 0);
-    std::string::begin(&v9);
-    __gnu_cxx::__normal_iterator<char *,std::string>::operator+(&v10);
-    std::string::begin(&v11);
-    std::string::string<__gnu_cxx::__normal_iterator<char *,std::string>>(&v6, v11, v10, &v7);
-    std::allocator<char>::~allocator(&v7);
-    std::allocator<char>::allocator(&v12);
-    std::string::end(&v13);
+    std::string::begin(&amp;v9);
+    __gnu_cxx::__normal_iterator<char *,std::string="">::operator+(&amp;v10);
+    std::string::begin(&amp;v11);
+    std::string::string&lt;__gnu_cxx::__normal_iterator<char *,std::string="">&gt;(&amp;v6, v11, v10, &amp;v7);
+    std::allocator<char>::~allocator(&amp;v7);
+    std::allocator<char>::allocator(&amp;v12);
+    std::string::end(&amp;v13);
     v14 = std::string::length(a3);
     v16 = std::string::find(a2, a3, 0);
-    std::string::begin(&v17);
-    __gnu_cxx::__normal_iterator<char *,std::string>::operator+(&v15);
-    __gnu_cxx::__normal_iterator<char *,std::string>::operator+(&v18);
-    std::string::string<__gnu_cxx::__normal_iterator<char *,std::string>>(&v5, v18, v13, &v12);
-    std::allocator<char>::~allocator(&v12);
-    std::operator+<char,std::char_traits<char>,std::allocator<char>>(&v20);
-    std::operator+<char,std::char_traits<char>,std::allocator<char>>(&v19);
-    std::string::operator=(a2, &v19, &v5, v4);
-    std::string::~string(&v19);
-    std::string::~string(&v20);
-    std::string::~string(&v5);
-    std::string::~string(&v6);
+    std::string::begin(&amp;v17);
+    __gnu_cxx::__normal_iterator<char *,std::string="">::operator+(&amp;v15);
+    __gnu_cxx::__normal_iterator<char *,std::string="">::operator+(&amp;v18);
+    std::string::string&lt;__gnu_cxx::__normal_iterator<char *,std::string="">&gt;(&amp;v5, v18, v13, &amp;v12);
+    std::allocator<char>::~allocator(&amp;v12);
+    std::operator+<char,std::char_traits<char>,std::allocator<char>&gt;(&amp;v20);
+    std::operator+<char,std::char_traits<char>,std::allocator<char>&gt;(&amp;v19);
+    std::string::operator=(a2, &amp;v19, &amp;v5, v4);
+    std::string::~string(&amp;v19);
+    std::string::~string(&amp;v20);
+    std::string::~string(&amp;v5);
+    std::string::~string(&amp;v6);
   }
   std::string::string(a1, a2);
   return a1;
 }
-</code></pre>
+</char></char,std::char_traits<char></char></char,std::char_traits<char></char></char></char></char></char></char></char></char></char></code></pre>
 <pre class=" language-lang-txt"><code class="language-lang-txt">int get_flag()
 {
   return system("cat flag.txt");
@@ -523,7 +523,7 @@ io.interactive()
 
   v2 = 0.0;
   puts("Let's guess the number.");
-  gets(&v1);
+  gets(&amp;v1);
   if ( v2 == 11.28125 )
     result = system("cat /flag");
   else
@@ -686,30 +686,29 @@ print(d)
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
-            </div>
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/03/15/ctf/pwn/day02/">
+                <a href="/2020/03/16/ctf/pwn/day03/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="pwn练习-Day02">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Pwn练习-Day03">
                         
-                        <span class="card-title">pwn练习-Day02</span>
+                        <span class="card-title">Pwn练习-Day03</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">Day020x00 前言今天的这两道题同样很水，因此我决定加道入门的RSA玩玩，主要是堆学不动了，歇一歇 :smile_cat:
-0x10 pwn1_sctf_2016题目来源 buuoj.cn
-题目考点：经典栈溢出算偏移
-题目难度：入门
-</div>
+                    <div class="summary">Day030x10 前言越来越难啦，，，一天真就写了两道题
+PS:这两道题还算有点意思，就放博客上了，前面的没什么意思
+今天就不加入门的RSA玩了
+0x20 ciscn_2019_c_1题目来源：buuoj.cn 
+考点：ret2libc，</div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-14
-                            </span>
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-15
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
@@ -722,7 +721,6 @@ print(d)
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -864,7 +862,7 @@ fil</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">31.9k</span>
+                <span class="white-color">33.8k</span>
             
 
             

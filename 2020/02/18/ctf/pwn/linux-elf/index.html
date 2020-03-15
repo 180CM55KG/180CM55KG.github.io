@@ -450,14 +450,14 @@ ret2libc3: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically
 <pre class=" language-lang-txt"><code class="language-lang-txt">00001060 <test@plt>:
     1060:    ff a3 14 00 00 00        jmp    DWORD PTR [ebx+0x14]
     1066:    68 10 00 00 00           push   0x10
-    106b:    e9 c0 ff ff ff           jmp    1030 <.plt>
-</code></pre>
+    106b:    e9 c0 ff ff ff           jmp    1030 &lt;.plt&gt;
+</test@plt></code></pre>
 <p>查看 main()函数 中调用 test@plt 的反汇编代码</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">    11ee:    e8 cd fe ff ff           call   10c0 <__x86.get_pc_thunk.bx>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    11ee:    e8 cd fe ff ff           call   10c0 &lt;__x86.get_pc_thunk.bx&gt;
     11f3:    81 c3 0d 2e 00 00        add    ebx,0x2e0d
     11f9:    e8 bb ff ff ff           call   11b9 <fun>
     11fe:    e8 5d fe ff ff           call   1060 <test@plt>
-</code></pre>
+</test@plt></fun></code></pre>
 <p><strong>x86.gett_pc_thunk.bx 函数与之前的 </strong>x86.get_pc_thunk.ax 功能一样 ，得出 ebx = 0x11f3 + 0x2e0d = 0×4000 ，ebx + 0×14 = 0×4014 。首先 jmp 指令，跳转到 0×4014 这个地址，这个地址在 .got.plt 节中 ：</p>
 <p><a href="https://image.3001.net/images/20180912/1536732068_5b98aba48c7ed.png" target="_blank" rel="noopener"><img src="https://image.3001.net/images/20180912/1536732068_5b98aba48c7ed.png!small" alt=".got.plt."></a></p>
 <p>也就是当程序需要调用到其他模块中的函数时例如 fun() ，就去访问保存在 .got.plt 中的 fun@plt 。这里有两种情况，第一种就是第一次使用这个函数，这个地方就存放着第二条指令的地址，也就相当于什么都不做。用 objdump -d -s got -j .got.plt 命令查看节中的内容</p>
@@ -705,7 +705,7 @@ Canary：-fn</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">31.9k</span>
+                <span class="white-color">33.8k</span>
             
 
             

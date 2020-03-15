@@ -403,7 +403,7 @@ gcc -fstack-protector-all -o test test.c //启用堆栈保护，为所有函数�
 2 - 表示在1的基础上增加栈（heap）的随机化。
 </code></pre>
 <p>liunx下关闭PIE的命令如下：</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">sudo -s echo 0 > /proc/sys/kernel/randomize_va_space
+<pre class=" language-lang-txt"><code class="language-lang-txt">sudo -s echo 0 &gt; /proc/sys/kernel/randomize_va_space
 </code></pre>
 <h2 id="GDB-peda的基本调试命令"><a href="#GDB-peda的基本调试命令" class="headerlink" title="GDB-peda的基本调试命令"></a>GDB-peda的基本调试命令</h2><pre class=" language-lang-txt"><code class="language-lang-txt">peda的一个实用命令checksec检测安全保护。
 
@@ -447,7 +447,7 @@ a 按十六进制格式显示变量。
 c 按字符格式显示变量。
 f 按浮点数格式显示变量。
 
-x/<n/f/u> <addr>
+x/<n f="" u=""> <addr>
 
 n、f、u是可选的参数。
 
@@ -491,7 +491,7 @@ shellcode - 生成或下载常用的shellcode。
 skeleton - 生成python漏洞利用代码模板
 vmmap -- Get virtual mapping address ranges of section(s) in debugged process  //可以用来查看栈、bss段是否可以执行
 xormem - 用一个键异或存储区域
-</code></pre>
+</addr></n></code></pre>
 <pre class=" language-lang-txt"><code class="language-lang-txt">info file  // 查看当前文件的信息，例如程序入口点
 
 info break // 查看当前断点信息
@@ -761,7 +761,7 @@ Ctrl + x  再按a // 回到传统模式，即退出layout，回到执行layout�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">31.9k</span>
+                <span class="white-color">33.8k</span>
             
 
             
