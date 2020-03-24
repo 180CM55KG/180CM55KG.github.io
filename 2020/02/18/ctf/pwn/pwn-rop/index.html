@@ -425,8 +425,8 @@ sub eax, ebx; ret;    # eax -= ebx
 <p>第二，要小心 gadget 是否会破坏前面各个 gadget 已经实现的部分，比如可能修改某个已经写入数值的寄存器。另外，要特别小心 gadget 对 ebp 和 esp 的操作，因为它们的变化会改变返回地址的位置，进而使后续的 gadget 无法执行。</p>
 <h2 id="0x60-example1-easy"><a href="#0x60-example1-easy" class="headerlink" title="0x60 example1 (easy)"></a>0x60 example1 (easy)</h2><p>本题同样来自于CTF-wiki上的一道练习：ret2syscall</p>
 <p>题目源码</p>
-<pre class=" language-lang-c"><code class="language-lang-c">#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
+<pre class=" language-lang-c"><code class="language-lang-c">#include &lt;stdio.h>
+#include &lt;stdlib.h>
 
 char *shell = "/bin/sh";
 
@@ -534,14 +534,14 @@ sh.interactive()
   int v6; // [sp+38h] [bp-18h]@1
   int fd[2]; // [sp+48h] [bp-8h]@1
 
-  memset(&amp;buf, 0, 0x38uLL);
+  memset(&buf, 0, 0x38uLL);
   v6 = 0;
   setbuf(_bss_start, 0LL);
   v3 = open("./some_life_experience", 0);
   *(_QWORD *)fd = v3;
-  read(v3, &amp;buf, 0x3CuLL);
-  puts(&amp;buf);
-  read(0, &amp;buf, 0x100uLL);
+  read(v3, &buf, 0x3CuLL);
+  puts(&buf);
+  read(0, &buf, 0x100uLL);
   return 0;
 }
 </code></pre>
@@ -549,7 +549,7 @@ sh.interactive()
 {
   char buf; // [sp+0h] [bp-10h]@1
 
-  read(0, &amp;buf, 0xA0uLL);
+  read(0, &buf, 0xA0uLL);
   return 0LL;
 }
 </code></pre>
@@ -605,11 +605,11 @@ p.sendline(payload)
 p.sendline('./flag\x00')
 p.interactive()
 </code></pre>
-<h2 id="0x80-ROPgadget-命令"><a href="#0x80-ROPgadget-命令" class="headerlink" title="0x80 ROPgadget 命令"></a>0x80 ROPgadget 命令</h2><pre class=" language-lang-txt"><code class="language-lang-txt">usage: ROPgadget [-h] [-v] [-c] [--binary &lt;binary&gt;] [--opcode &lt;opcodes&gt;]
-                 [--string &lt;string&gt;] [--memstr &lt;string&gt;] [--depth &lt;nbyte&gt;]
-                 [--only &lt;key&gt;] [--filter &lt;key&gt;] [--range &lt;start-end&gt;]
-                 [--badbytes &lt;byte&gt;] [--rawArch &lt;arch&gt;] [--rawMode &lt;mode&gt;]
-                 [--offset &lt;hexaddr&gt;] [--ropchain] [--thumb] [--console]
+<h2 id="0x80-ROPgadget-命令"><a href="#0x80-ROPgadget-命令" class="headerlink" title="0x80 ROPgadget 命令"></a>0x80 ROPgadget 命令</h2><pre class=" language-lang-txt"><code class="language-lang-txt">usage: ROPgadget [-h] [-v] [-c] [--binary &lt;binary>] [--opcode &lt;opcodes>]
+                 [--string &lt;string>] [--memstr &lt;string>] [--depth &lt;nbyte>]
+                 [--only &lt;key>] [--filter &lt;key>] [--range &lt;start-end>]
+                 [--badbytes &lt;byte>] [--rawArch &lt;arch>] [--rawMode &lt;mode>]
+                 [--offset &lt;hexaddr>] [--ropchain] [--thumb] [--console]
                  [--norop] [--nojop] [--nosys] [--multibr] [--all]
 
 description:
@@ -636,18 +636,18 @@ optional arguments:
   -h, --help           show this help message and exit
   -v, --version        Display the ROPgadget's version
   -c, --checkUpdate    Checks if a new version is available
-  --binary &lt;binary&gt;    Specify a binary filename to analyze
-  --opcode &lt;opcodes&gt;   Search opcode in executable segment
-  --string &lt;string&gt;    Search string in readable segment
-  --memstr &lt;string&gt;    Search each byte in all readable segment
-  --depth &lt;nbyte&gt;      Depth for search engine (default 10)
-  --only &lt;key&gt;         Only show specific instructions
-  --filter &lt;key&gt;       Suppress specific instructions
-  --range &lt;start-end&gt;  Search between two addresses (0x...-0x...)
-  --badbytes &lt;byte&gt;    Rejects specific bytes in the gadget's address
-  --rawArch &lt;arch&gt;     Specify an arch for a raw file
-  --rawMode &lt;mode&gt;     Specify a mode for a raw file
-  --offset &lt;hexaddr&gt;   Specify an offset for gadget addresses
+  --binary &lt;binary>    Specify a binary filename to analyze
+  --opcode &lt;opcodes>   Search opcode in executable segment
+  --string &lt;string>    Search string in readable segment
+  --memstr &lt;string>    Search each byte in all readable segment
+  --depth &lt;nbyte>      Depth for search engine (default 10)
+  --only &lt;key>         Only show specific instructions
+  --filter &lt;key>       Suppress specific instructions
+  --range &lt;start-end>  Search between two addresses (0x...-0x...)
+  --badbytes &lt;byte>    Rejects specific bytes in the gadget's address
+  --rawArch &lt;arch>     Specify an arch for a raw file
+  --rawMode &lt;mode>     Specify a mode for a raw file
+  --offset &lt;hexaddr>   Specify an offset for gadget addresses
   --ropchain           Enable the ROP chain generation
   --thumb              Use the thumb mode for the search engine (ARM only)
   --console            Use an interactive console for search engine
@@ -963,7 +963,7 @@ edx 0
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.2k</span>
+                <span class="white-color">48k</span>
             
 
             

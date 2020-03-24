@@ -379,7 +379,7 @@ int __cdecl main(int argc, const char **argv, const char **envp">
   char buf; // [sp+6h] [bp-Ah]@1
 
   printf("tell me your name?", argv, envp);
-  read(0, &amp;buf, 0x64uLL);
+  read(0, &buf, 0x64uLL);
   return 0;
 }
 </code></pre>
@@ -465,10 +465,10 @@ pwn.close()
 </code></pre>
 <p>这一看就是url编码</p>
 <p>然后解码</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">qwlr{�1yo_Es1d}w h a t's t h e n e x t a f t e r t t h e U R L
+<pre class=" language-lang-txt"><code class="language-lang-txt">&#113;&#119;&#108;&#114;&#123;&#744810295113;&#49;&#121;&#111;&#95;&#69;&#115;&#49;&#100;&#125;w h a t's t h e n e x t a f t e r t t h e U R L
 </code></pre>
 <p>这在一看就是Unicode编码，不过需要改一下</p>
-<pre class=" language-lang-txt"><code class="language-lang-txt">qwlr{J0f_q1yo_Es1d}
+<pre class=" language-lang-txt"><code class="language-lang-txt">&#113;&#119;&#108;&#114;&#123;&#74;&#48;&#102;&#95;&#113;&#49;&#121;&#111;&#95;&#69;&#115;&#49;&#100;&#125;
 </code></pre>
 <pre class=" language-lang-txt"><code class="language-lang-txt">qwlr{J0f_q1yo_Es1d}//解出来这个
 </code></pre>
@@ -670,12 +670,12 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简</div>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ctf/" target="_blank">
-                        <span class="chip bg-color">ctf</span>
-                    </a>
-                    
                     <a href="/tags/web/" target="_blank">
                         <span class="chip bg-color">web</span>
+                    </a>
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
                     </a>
                     
                     <a href="/tags/reverse/" target="_blank">
@@ -753,7 +753,7 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.2k</span>
+                <span class="white-color">48k</span>
             
 
             

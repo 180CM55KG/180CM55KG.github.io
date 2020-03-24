@@ -349,7 +349,7 @@ npm install -g ">
                     
                     <div class="info-break-policy">
                         <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
-                        969
+                        961
                     </div>
                     
 
@@ -392,7 +392,7 @@ npm install -g @vue/cli@版本号
 </code></pre>
 <p>项目创建选项</p>
 <p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175201.jpg" alt="图片来自与手把手撸代码前端"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175206.jpg" alt=""></p>
+<p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175206.jpg" alt></p>
 <p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175209.jpg" alt="图片来自与手把手撸代码前端"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175211.jpg" alt="图片来自与手把手撸代码前端"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191217175213.jpg" alt="图片来自与手把手撸代码前端"></p>
@@ -411,9 +411,9 @@ module.exports = {
   /**
    * webpack配置,see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
    **/
-  chainWebpack: (config) =&gt; {
+  chainWebpack: (config) => {
   },
-  configureWebpack: (config) =&gt; {
+  configureWebpack: (config) => {
     // config.resolve = { // 配置解析别名
     //   extensions: ['.js', '.json', '.vue'],
     //   alias: {
@@ -442,9 +442,9 @@ module.exports = {
     // 启用 CSS modules for all css / pre-processor files.
     modules: false
   },
-  // use thread-loader for babel &amp; TS in production build
+  // use thread-loader for babel & TS in production build
   // enabled by default if the machine has more than 1 cores
-  parallel: require('os').cpus().length &gt; 1,
+  parallel: require('os').cpus().length > 1,
   /**
    *  PWA 插件相关配置,see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
    */
@@ -462,7 +462,7 @@ module.exports = {
       warnings: true,
       errors: true
     },
-    before: app =&gt; {
+    before: app => {
     }
   },
   /**
@@ -490,7 +490,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component:  () =&gt;
+    component:  () =>
       import(/* webpackChunkName: "about" */ "../views/login/index.vue")
   },
   {
@@ -499,7 +499,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =&gt;
+    component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   }
 ];
@@ -537,7 +537,7 @@ export default {
 }
 </script>
 
-<style scoped="">
+<style scoped>
 
 </style>
 </code></pre>
@@ -569,7 +569,7 @@ Vue.use(ElementUI);
 
 new Vue({
   el: '#app',
-  render: h =&gt; h(App)
+  render: h => h(App)
 });
 </code></pre>
 <p>2.按需引入</p>
@@ -590,9 +590,9 @@ new Vue({
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </code></pre>
 <p><a href="https://element.eleme.io/#/zh-CN/component/quickstart" target="_blank" rel="noopener">https://element.eleme.io/#/zh-CN/component/quickstart</a></p>
-<h2 id="点击弹出表单事件处理"><a href="#点击弹出表单事件处理" class="headerlink" title="点击弹出表单事件处理"></a>点击弹出表单事件处理</h2><pre class=" language-lang-html"><code class="language-lang-html">
-
-
+<h2 id="点击弹出表单事件处理"><a href="#点击弹出表单事件处理" class="headerlink" title="点击弹出表单事件处理"></a>点击弹出表单事件处理</h2><pre class=" language-lang-html"><code class="language-lang-html"><!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -600,8 +600,8 @@ new Vue({
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="css/index.css">
     <title>reg</title>
-
-
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+<body>
     <div id="app">
         <!--Form-->
         <el-button type="button" @click="dialogFormVisible = true">注册</el-button>
@@ -614,8 +614,8 @@ new Vue({
         </el-dialog>
 
     </div>
-
-
+</body>
+<!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -635,7 +635,7 @@ new Vue({
 var Ctor=Vue.extend(Main)
 new Ctor().$mount('#app')
 </script>
-
+</html>
 </code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20191215211442.png" alt="屏幕截图"></p>
 <h2 id="主界面设计"><a href="#主界面设计" class="headerlink" title="主界面设计"></a>主界面设计</h2><h3 id="主题色彩选择"><a href="#主题色彩选择" class="headerlink" title="主题色彩选择"></a>主题色彩选择</h3><script>
@@ -658,7 +658,7 @@ new Ctor().$mount('#app')
           });
       </script>
             </div>
-            <hr/>
+            <hr>
 
             
 
@@ -867,7 +867,7 @@ sudo cp /etc</div>
 
             
                 &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
-                <span class="white-color">33.2k</span>
+                <span class="white-color">48k</span>
             
 
             
