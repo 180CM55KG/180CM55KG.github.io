@@ -1,0 +1,890 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="对于线程的个人理解, F0und">
+    <meta name="description" content="Thread0x10 作业要求编程实现多执行体的一个同步或者互斥问题的解决方案
+
+写出问题的描述
+写出程序的设计思想
+写出程序的源代码
+写出程序的运行结果
+
+0x20 问题描述前置知识：多执行体、同步、互斥
+0x10 同步和互斥当有多个线程">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>对于线程的个人理解 | F0und</title>
+    <link rel="icon" type="image/png" href="/medias/fav.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">F0und</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">F0und</div>
+        <div class="logo-desc">
+            
+            今天不学习，今天就变垃圾
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        对于线程的个人理解
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+</style>
+<div class="row">
+    <div class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Thread/" target="_blank">
+                                <span class="chip bg-color">Thread</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/operating-system/" class="post-category" target="_blank">
+                                operating-system
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-03
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        1.1k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        3 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h1><h2 id="0x10-作业要求"><a href="#0x10-作业要求" class="headerlink" title="0x10 作业要求"></a>0x10 作业要求</h2><p>编程实现多执行体的一个同步或者互斥问题的解决方案</p>
+<ol>
+<li>写出问题的描述</li>
+<li>写出程序的设计思想</li>
+<li>写出程序的源代码</li>
+<li>写出程序的运行结果</li>
+</ol>
+<h2 id="0x20-问题描述"><a href="#0x20-问题描述" class="headerlink" title="0x20 问题描述"></a>0x20 问题描述</h2><p>前置知识：多执行体、同步、互斥</p>
+<h3 id="0x10-同步和互斥"><a href="#0x10-同步和互斥" class="headerlink" title="0x10 同步和互斥"></a>0x10 同步和互斥</h3><p>当有多个线程的时候，经常需要去同步这些线程以访问<strong>同一个数据或资源</strong>。例如，假设有一个程序，其中一个线程用于把文件<strong>读</strong>到内存，而另一个线程用于<strong>统计</strong>文件中的字符数。当然，在把整个文件调入内存之前，统计它的计数是没有意义的。但是，由于每个操作都有自己的线程，操作系统会把两个线程当作是<strong>互不相干</strong>的任务分别执行，这样就可能在没有把整个文件装入内存时统计字数。为解决此问题，你必须使两个线程同步工作。</p>
+<p>所谓<strong>同步</strong>，是指在不同进程之间的若干程序片断，它们的运行必须严格按照规定的某种先后次序来运行，这种先后次序<strong>依赖于要完成的特定的任务</strong>。如果用对资源的访问来定义的话，同步是指<strong>在互斥的基础上（大多数情况），通过其它机制实现访问者对资源的有序访问</strong>。在大多数情况下，同步已经实现了互斥，特别是所有写入资源的情况必定是互斥的。少数情况是指可以允许多个访问者同时访问资源。</p>
+<p>所谓<strong>互斥</strong>，是指散布在不同进程之间的若干程序片断，当某个进程运行其中一个程序片段时，其它进程就不能运行它们之中的任一程序片段，只能等到该进程运行完这个程序片段后才可以运行。如果用对资源的访问来定义的话，互斥某一资源同时只允许一个访问者对其进行访问，具有唯一性和排它性。但互斥无法限制访问者对资源的访问顺序，即访问是无序的。</p>
+<h3 id="0x20-多线程同步和互斥有几种实现方法"><a href="#0x20-多线程同步和互斥有几种实现方法" class="headerlink" title="0x20 多线程同步和互斥有几种实现方法"></a>0x20 多线程同步和互斥有几种实现方法</h3><p>线程间的同步方法大体可分为两类：用户模式和内核模式。顾名思义，内核模式就是指利用系统内核对象的单一性来进行同步，使用时需要切换内核态与用户态，而用户模式就是不需要切换到内核态，只在用户态完成操作。</p>
+<p>用户模式下的方法有：原子操作（例如一个单一的全局变量），临界区。</p>
+<p>内核模式下的方法有：事件，信号量，互斥量。</p>
+<p>1、临界区:通过对多线程的串行化来访问公共资源或一段代码，速度快，适合控制数据访问。<br>2、互斥量:为协调共同对一个共享资源的单独访问而设计的。<br>3、信号量:为控制一个具有有限数量用户资源而设计。<br>4、事 件:用来通知线程有一些事件已发生，从而启动后继任务的开始。</p>
+<h3 id="0x30-Example"><a href="#0x30-Example" class="headerlink" title="0x30 Example"></a>0x30 Example</h3><p>这里让我们来假设一个问题，我们对生产、消费实现同步，比如我们要生产苹果并且通过超市将他卖出去，实现多生产者多消费者线程的同步，假如我们有20个生产者，20个消费者，我们要实现的就是当生产者生产出来的时候就由消费者来竞争购买即生产与购买的同步进行</p>
+<p>这里我使用Go语言演示，我们先定义出我们需要的结构体</p>
+<pre class=" language-lang-go"><code class="language-lang-go">//生产者-消费者 channel 实现 一边生产 一边消费
+type (
+    Producer interface {
+        produceApple(s *superMakert) //生产苹果
+    }
+
+    Consumer interface {
+        buyApple(s *superMakert) //超市买苹果
+    }
+
+    superMakert struct {
+        //list包 实现了双向链表
+        //apples *list.List
+        apples chan Apple
+    }
+
+    ProducerImpl struct {
+        Producer //实现生产苹果的接口
+    }
+
+    ConsumerImpl struct {
+        Consumer //实现消费苹果的接口
+    }
+    //苹果的属性,
+    Apple struct {
+        weight float64 //重量
+        number int     //编号
+    }
+)
+</code></pre>
+<p>实现生产环节</p>
+<pre class=" language-lang-go"><code class="language-lang-go">func (p *ProducerImpl) produceApple(s *superMakert) {
+    number := 1
+    for {
+        apple := Apple{
+            number: number,
+            weight: rand.Float64(),
+        }
+        number++
+        fmt.Printf("生产了编号为%d,重量为%0.2f的苹果\r\n", apple.number, apple.weight)
+        s.apples <- apple
+    }
+}
+</code></pre>
+<p>实现购买环节</p>
+<pre class=" language-lang-go"><code class="language-lang-go">func (c *ConsumerImpl) buyApple(s *superMakert) {
+    for {
+        element, ok := <-s.apples
+        if ok {
+            fmt.Printf("买了编号为%d,重量为%0.2f的苹果\r\n", element.number, element.weight)
+        } else {
+            fmt.Printf("没有买到苹果")
+        }
+    }
+}
+</code></pre>
+<p>主函数</p>
+<pre class=" language-lang-go"><code class="language-lang-go">func main() {
+    //WaitGroup 对象内部有一个计数器，最初从0开始，它有三个方法：Add(), Done(), Wait() 用来控制计数器的数量。Add(n) 把计数器设置为n ，Done() 每次把计数器-1 ，wait() 会阻塞代码的运行，直到计数器地值减为0。
+    //WaitGroup用于等待一组线程的结束。父线程调用Add方法来设定应等待的线程的数量。
+    //每个被等待的线程在结束时应调用Done方法。同时，主线程里可以调用Wait方法阻塞至所有线程结束
+    wg := new(sync.WaitGroup)
+    p := new(ProducerImpl)
+    c := new(ConsumerImpl)
+    a := &superMakert{apples: make(chan Apple, 20)}
+
+    for i := 0; i < 20; i++ {
+        wg.Add(1) //每创建一个goroutine，就把任务队列中任务的数量+1
+        go func() { //goroutine
+            p.produceApple(a)
+            wg.Done() //任务完成-1
+        }()
+    }
+
+    for j := 0; j < 20; j++ {
+        wg.Add(1) //每创建一个goroutine，就把任务队列中任务的数量+1
+        go func() {
+            c.buyApple(a)
+            wg.Done() //任务完成-1
+        }()
+    }
+    wg.Wait()
+}
+</code></pre>
+<h2 id="0x30-程序思想"><a href="#0x30-程序思想" class="headerlink" title="0x30 程序思想"></a>0x30 程序思想</h2><p>程序思想：</p>
+<p>​    1.生产线程进行时，首先将任务队列中的任务加一，当任务完成时在减一</p>
+<p>​    2.消费线程进行时，首先将任务队列中的任务加一，当任务完成时在减一</p>
+<p>​    3.当消费线程跟不上生产进程时或者生产进程跟不上消费进程时，就阻塞代码进行，等到进程一致时在解放，以此来实现线程的同步</p>
+<h2 id="0x40-源代码"><a href="#0x40-源代码" class="headerlink" title="0x40 源代码"></a>0x40 源代码</h2><pre class=" language-lang-go"><code class="language-lang-go">package main
+
+import (
+    "fmt"
+    "math/rand"
+    "sync"
+)
+
+//生产者-消费者 channel 实现 一边生产 一边消费
+type (
+    Producer interface {
+        produceApple(s *superMakert) //生产苹果
+    }
+
+    Consumer interface {
+        buyApple(s *superMakert) //超市买苹果
+    }
+
+    superMakert struct {
+        //list包 实现了双向链表
+        //apples *list.List
+        apples chan Apple
+    }
+
+    ProducerImpl struct {
+        Producer //实现生产苹果的接口
+    }
+
+    ConsumerImpl struct {
+        Consumer //实现消费苹果的接口
+    }
+
+    Apple struct {
+        weight float64 //重量
+        number int     //编号
+    }
+)
+
+//实现接口里面的方法
+func (p *ProducerImpl) produceApple(s *superMakert) {
+    number := 1
+    for {
+        apple := Apple{
+            number: number,
+            weight: rand.Float64(),
+        }
+        number++
+        fmt.Printf("生产了编号为%d,重量为%0.2f的苹果\r\n", apple.number, apple.weight)
+        s.apples <- apple
+    }
+}
+
+//实现接口里面的方法
+func (c *ConsumerImpl) buyApple(s *superMakert) {
+    for {
+        element, ok := <-s.apples
+        if ok {
+            fmt.Printf("买了编号为%d,重量为%0.2f的苹果\r\n", element.number, element.weight)
+        } else {
+            fmt.Printf("没有买到苹果")
+        }
+
+    }
+}
+
+func main() {
+    //WaitGroup用于等待一组线程的结束。父线程调用Add方法来设定应等待的线程的数量。
+    //每个被等待的线程在结束时应调用Done方法。同时，主线程里可以调用Wait方法阻塞至所有线程结束
+    wg := new(sync.WaitGroup)
+    p := new(ProducerImpl)
+    c := new(ConsumerImpl)
+    a := &superMakert{apples: make(chan Apple, 20)}
+
+    for i := 0; i < 20; i++ {
+        wg.Add(1)
+        go func() { //goroutine
+            p.produceApple(a)
+            wg.Done()
+        }()
+    }
+
+    for j := 0; j < 20; j++ {
+        wg.Add(1)
+        go func() {
+            c.buyApple(a)
+            wg.Done()
+        }()
+    }
+    wg.Wait()
+}
+</code></pre>
+<h2 id="0x50-运行结果"><a href="#0x50-运行结果" class="headerlink" title="0x50 运行结果"></a>0x50 运行结果</h2><p><img src="https://cdn.jsdelivr.net/gh/180CM55KG/cdn/img/20200401204018.png" alt=""></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+            </div>
+            <hr/>
+
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="https://180CM55KG.github.io" class="b-link-green">F0und</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2020/04/03/go-web/thread/" class="b-link-green">对于线程的个人理解</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/04/03/go-web/thread/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="对于线程的个人理解">
+                        
+                        <span class="card-title">对于线程的个人理解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">Thread0x10 作业要求编程实现多执行体的一个同步或者互斥问题的解决方案
+
+写出问题的描述
+写出程序的设计思想
+写出程序的源代码
+写出程序的运行结果
+
+0x20 问题描述前置知识：多执行体、同步、互斥
+0x10 同步和互斥当有多个线程</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/operating-system/" class="post-category" target="_blank">
+                                    operating-system
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Thread/" target="_blank">
+                        <span class="chip bg-color">Thread</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/03/go-web/mysql/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Mysql入门术语及知识点">
+                        
+                        <span class="card-title">Mysql入门术语及知识点</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary">MySQL基础术语扫盲0x00 前言摘抄与菜鸟教程中，还有一些自己觉得入门有必要知道的一些知识
+数据库共有3种类型，为关系数据库、非关系型数据库和键值数据库。
+1、关系数据库
+MySQL、MariaDB（MySQL的代替品，英文维基百科从M</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/MySQL/" class="post-category" target="_blank">
+                                    MySQL
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/mysql/" target="_blank">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div class="col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+            本站由&copy;<a href="https://blinkfox.github.io/" target="_blank">Blinkfox</a>基于
+            <a href="https://hexo.io/" target="_blank">Hexo</a> 的
+            <a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">hexo-theme-matery</a>主题搭建.
+
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">56.5k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/180CM55KG/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1845477611@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1845477611" class="tooltipped" data-tooltip="QQ联系我: 1845477611" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
